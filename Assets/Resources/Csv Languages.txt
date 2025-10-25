@@ -1,0 +1,443 @@
+{
+    [
+      "\"\"",
+      "English",
+      "Test"
+    ],
+    [
+      "Designer",
+      "by Thomas Tang (DZ)",
+      "\"\""
+    ],
+    [
+      "Last Update",
+      "Last Updated: October 24th, 2025",
+      "\"\""
+    ],
+    [
+      "Translator Credit",
+      "\"\"",
+      "\"\""
+    ],
+    [
+      "Language",
+      "Language",
+      "\"\""
+    ],
+    [
+      "Loading",
+      "Loading",
+      "\"\""
+    ],
+    [
+      "Select Region",
+      "Select Region",
+      "\"\""
+    ],
+    [
+      "US West Coast",
+      "US West Coast",
+      "\"\""
+    ],
+    [
+      "US East Coast",
+      "US East Coast",
+      "\"\""
+    ],
+    [
+      "Europe",
+      "Europe",
+      "\"\""
+    ],
+    [
+      "Asia",
+      "Asia",
+      "\"\""
+    ],
+    [
+      "Offline",
+      "Play Offline",
+      "\"\""
+    ],
+    [
+      "Connect",
+      "Connect",
+      "\"\""
+    ],
+    [
+      "Enter username",
+      "Enter username",
+      "\"\""
+    ],
+    [
+      "Disconnect",
+      "Disconnect",
+      "\"\""
+    ],
+    [
+      "Disconnected from server",
+      "Disconnected from the server.",
+      "\"\""
+    ],
+    [
+      "Failed to connect to server",
+      "Failed to connect to the server.",
+      "\"\""
+    ],
+    [
+      "Reconnect",
+      "Reconnect",
+      "\"\""
+    ],
+    [
+      "Online Tutorial 1",
+      "To play multiplayer: Have 1 person create a room, then their room should be displayed below. Everyone also must have joined the same server region.",
+      "\"\""
+    ],
+    [
+      "Online Tutorial 2",
+      "Click a button below to join a room, or manually type in the host's username (yellow rooms are spectator only)",
+      "\"\""
+    ],
+    [
+      "Create",
+      "Create",
+      "\"\""
+    ],
+    [
+      "Create Room with players",
+      "Create a room with how many players?",
+      "\"\""
+    ],
+    [
+      "Enter hostname",
+      "Enter host's username",
+      "\"\""
+    ],
+    [
+      "Join",
+      "Join",
+      "\"\""
+    ],
+    [
+      "Player Count",
+      "$Current$ / $Max$ Players",
+      "\"\""
+    ],
+    [
+      "Type in username",
+      "You have to type in a username.",
+      "\"\""
+    ],
+    [
+      "Attempt to reconnect",
+      "Attempting to reconnect to $Room$'s room...",
+      "\"\""
+    ],
+    [
+      "Failed to reconnect",
+      "Failed to reconnect to $Room$'s room.",
+      "\"\""
+    ],
+    [
+      "Type into chat",
+      "Type into chat",
+      "\"\""
+    ],
+    [
+      "Undo",
+      "Undo",
+      "\"\""
+    ],
+    [
+      "Short",
+      "Short",
+      "\"\""
+    ],
+    [
+      "Long",
+      "Long",
+      "\"\""
+    ],
+    [
+      "Player Playing",
+      "$Player$ is playing.",
+      "\"\""
+    ],
+    [
+      "Player Spectating",
+      "$Player$ is spectating.",
+      "\"\""
+    ],
+    [
+      "Player Reconnected",
+      "$Player$ reconnected.",
+      "\"\""
+    ],
+    [
+      "Player Disconnected",
+      "$Player$ has disconnected.",
+      "\"\""
+    ],
+    [
+      "Player Quit",
+      "$Player$ has quit the room.",
+      "\"\""
+    ],
+    [
+      "Waiting on Players",
+      "Waiting on $Num$ players...",
+      "\"\""
+    ],
+    [
+      "Change View",
+      "Change View",
+      "\"\""
+    ],
+    [
+      "Coast",
+      "Coast",
+      "\"\""
+    ],
+    [
+      "City",
+      "City",
+      "\"\""
+    ],
+    [
+      "Woods",
+      "Woods",
+      "\"\""
+    ],
+    [
+      "Village",
+      "Village",
+      "\"\""
+    ],
+    [
+      "Pause to Read",
+      "A pause to let you read things.",
+      "\"\""
+    ],
+    [
+      "Pause to Undo",
+      "Last chance to undo anything.",
+      "\"\""
+    ],
+    [
+      "Blank",
+      "\"\"",
+      "\"\""
+    ],
+    [
+      "Draw Card",
+      "$Player$ draws $Card$.",
+      "\"\""
+    ],
+    [
+      "Draw Card Others",
+      "$Player$ draws 1 Card.",
+      "\"\""
+    ],
+    [
+      "Add Box",
+      "$Player$ adds $Num$ Box on $Card$.",
+      "\"\""
+    ],
+    [
+      "Remove Box",
+      "$Player$ removes $Num$ Box from $Card$.",
+      "\"\""
+    ],
+    [
+      "Add Coin",
+      "$Player$ gets +$Num$ Coin.",
+      "\"\""
+    ],
+    [
+      "Lose Coin",
+      "$Player$ loses $Num$ Coin.",
+      "\"\""
+    ],
+    [
+      "Coin",
+      "Coin",
+      "\"\""
+    ],
+    [
+      "Card",
+      "Card",
+      "\"\""
+    ],
+    [
+      "Box",
+      "Box",
+      "\"\""
+    ],
+    [
+      "Boat",
+      "Boat",
+      "\"\""
+    ],
+    [
+      "Boat TextOne",
+      "Each time a Card moves out of this Area, +1 Coin per Box on it.",
+      "\"\""
+    ],
+    [
+      "Boat TextTwo",
+      "\"\"",
+      "\"\""
+    ],
+    [
+      "Squirrel",
+      "Squirrel",
+      "\"\""
+    ],
+    [
+      "Squirrel TextOne",
+      "VISIT: Move 1 Card in this Area to the next Area (clockwise).",
+      "\"\""
+    ],
+    [
+      "Squirrel TextTwo",
+      "\"\"",
+      "\"\""
+    ],
+    [
+      "Farmer",
+      "Farmer",
+      "\"\""
+    ],
+    [
+      "Farmer TextOne",
+      "VISIT: +1 Coin per Box on this.",
+      "\"\""
+    ],
+    [
+      "Farmer TextTwo",
+      "\"\"",
+      "\"\""
+    ],
+    [
+      "Merchant",
+      "Merchant",
+      "\"\""
+    ],
+    [
+      "Merchant TextOne",
+      "VISIT: Remove 0-3 Box from Card in this Area, for +2 Coin each.",
+      "\"\""
+    ],
+    [
+      "Merchant TextTwo",
+      "\"\"",
+      "\"\""
+    ],
+    [
+      "Woodcutter",
+      "Woodcutter",
+      "\"\""
+    ],
+    [
+      "Woodcutter TextOne",
+      "VISIT: +1 Box, -1 Box.",
+      "\"\""
+    ],
+    [
+      "Woodcutter TextTwo",
+      "\"\"",
+      "\"\""
+    ],
+    [
+      "Ferry",
+      "Ferry",
+      "\"\""
+    ],
+    [
+      "Ferry TextOne",
+      "VISIT: +1 Coin per 2 Card in this Area (round down).",
+      "\"\""
+    ],
+    [
+      "Ferry TextTwo",
+      "PLAY: Move 1 Card from the Village to the City.",
+      "\"\""
+    ],
+    [
+      "Blacksmith",
+      "Blacksmith",
+      "\"\""
+    ],
+    [
+      "Blacksmith TextOne",
+      "VISIT: +1 Box on a Card in this Area. If it had 0 Box on it, +2 Coin.",
+      "\"\""
+    ],
+    [
+      "Blacksmith TextTwo",
+      "\"\"",
+      "\"\""
+    ],
+    [
+      "Worker",
+      "Worker",
+      "\"\""
+    ],
+    [
+      "Worker TextOne",
+      "VISIT: You may remove 1 Box from here for +3 Coin.",
+      "\"\""
+    ],
+    [
+      "Worker TextTwo",
+      "\"\"",
+      "\"\""
+    ],
+    [
+      "Militia",
+      "Militia",
+      "\"\""
+    ],
+    [
+      "Militia TextOne",
+      "Each time you put a Box on this, +2 Coin (per Box).",
+      "\"\""
+    ],
+    [
+      "Militia TextTwo",
+      "\"\"",
+      "\"\""
+    ],
+    [
+      "Cargo",
+      "Cargo",
+      "\"\""
+    ],
+    [
+      "Cargo TextOne",
+      "Each time you remove a Box from this, +2 Coin (per Box).",
+      "\"\""
+    ],
+    [
+      "Cargo TextTwo",
+      "\"\"",
+      "\"\""
+    ],
+    [
+      "Pirate Ship",
+      "Pirate Ship",
+      "\"\""
+    ],
+    [
+      "Pirate Ship TextOne",
+      "VISIT: Move this to the next Area (clockwise).",
+      "\"\""
+    ],
+    [
+      "Pirate Ship TextTwo",
+      "When this moves to the Coast, +2 Coin per Box on this.",
+      "\"\""
+    ]
+  ]
+}
