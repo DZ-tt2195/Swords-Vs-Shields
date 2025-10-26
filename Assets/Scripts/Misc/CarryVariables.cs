@@ -41,30 +41,6 @@ public class CarryVariables : MonoBehaviour
             Application.targetFrameRate = 60;
             DontDestroyOnLoad(this.gameObject);
             rightClickBackground.transform.gameObject.SetActive(false);
-
-            Test(2, 6, 1);
-
-            void Test(int numPlayers, int numRounds, int toRemove)
-            {
-                List<int> list = new();
-                for (int i = 1; i <= numPlayers; i++)
-                    list.Add(i);
-
-                int index = list.IndexOf(toRemove);
-                list.RemoveAt(index);
-
-                for (int i = 1; i <= numRounds; i++)
-                {
-                    int firstAnswer = (index - 1 + i) % list.Count;
-                    int secondAnswer = (index - i);
-
-                    while (secondAnswer < 0)
-                    {
-                        secondAnswer += (list.Count);
-                    }
-                    Debug.Log($"Round {i}: {list[firstAnswer]}, {list[secondAnswer]}");
-                }
-            }
         }
         else
         {

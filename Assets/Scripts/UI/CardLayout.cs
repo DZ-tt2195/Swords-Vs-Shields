@@ -48,16 +48,7 @@ public class CardLayout : MonoBehaviour, IPointerClickHandler
         this.transform.localEulerAngles = new(0, 0, rotation);
         this.rotation = rotation;
 
-        background.color = dataFile.startingArea switch
-        {
-            CardAreas.Coast => Color.blue,
-            CardAreas.City => Color.gray,
-            CardAreas.Woods => Color.forestGreen,
-            CardAreas.Village => Color.red,
-            _ => Color.black
-        };
-
-        cardName.text = $"{Translator.inst.Translate(dataFile.cardName)} - {dataFile.startingBox} Box";
+        cardName.text = $"{Translator.inst.Translate(dataFile.cardName)}";
         cardArt.sprite = dataFile.sprite;
         string textOne = Translator.inst.Translate($"{dataFile.cardName} TextOne");
         string textTwo = Translator.inst.Translate($"{dataFile.cardName} TextTwo");

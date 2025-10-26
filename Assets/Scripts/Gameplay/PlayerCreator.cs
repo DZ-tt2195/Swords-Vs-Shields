@@ -167,21 +167,9 @@ public class PlayerCreator : PhotonCompatible
             [PlayerProp.Waiting.ToString()] = false,
 
             [PlayerProp.Coin.ToString()] = 0,
-            [PlayerProp.UseCoast.ToString()] = 3,
-            [PlayerProp.UseCity.ToString()] = 3,
-            [PlayerProp.UseWoods.ToString()] = 3,
-            [PlayerProp.UseVillage.ToString()] = 3,
-            [PlayerProp.UseDelay.ToString()] = 1,
-
             [PlayerProp.MyHand.ToString()] = new int[0],
             [PlayerProp.MyDeck.ToString()] = new int[0],
             [PlayerProp.MyDiscard.ToString()] = new int[0],
-
-            [PlayerProp.CardsInCoast.ToString()] = new int[0],
-            [PlayerProp.CardsInCity.ToString()] = new int[0],
-            [PlayerProp.CardsInWoods.ToString()] = new int[0],
-            [PlayerProp.CardsInVillage.ToString()] = new int[0],
-            [PlayerProp.CardsInDelay.ToString()] = new int[0],
         };
         PhotonNetwork.LocalPlayer.SetCustomProperties(playerProps);
     }

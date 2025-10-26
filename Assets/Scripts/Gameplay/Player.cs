@@ -7,7 +7,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine.UI;
 
-public enum PlayerProp { Spectator, MyHand, MyDeck, MyDiscard, Coin, Waiting, UseCoast, UseCity, UseWoods, UseVillage, UseDelay, CardsInCoast, CardsInCity, CardsInWoods, CardsInVillage, CardsInDelay }
+public enum PlayerProp { Spectator, Waiting, MyHand, MyDeck, MyDiscard, Coin }
 
 public class Player : PhotonCompatible
 {
@@ -488,31 +488,6 @@ public class Player : PhotonCompatible
         }
 
         playerText.text = $"{this.name} - {GetInt(PlayerProp.Coin.ToString())} Coin\n";
-        playerText.text += $"{GetInt(PlayerProp.UseCoast.ToString())} {Translator.inst.Translate("Coast")} " +
-            $"{GetInt(PlayerProp.UseCity.ToString())} {Translator.inst.Translate("City")} " +
-            $"{GetInt(PlayerProp.UseWoods.ToString())} {Translator.inst.Translate("Woods")} " +
-            $"{GetInt(PlayerProp.UseVillage.ToString())} {Translator.inst.Translate("Village")} ";
-
-        ChangeArea(coastCards, GetCardList(PlayerProp.CardsInCoast.ToString()));
-        ChangeArea(cityCards, GetCardList(PlayerProp.CardsInCity.ToString()));
-        ChangeArea(woodsCards, GetCardList(PlayerProp.CardsInWoods.ToString()));
-        ChangeArea(villageCards, GetCardList(PlayerProp.CardsInVillage.ToString()));
-
-        void ChangeArea(List<MiniCardDisplay> displays, List<Card> cards)
-        {
-            for (int i = 0; i<displays.Count; i++)
-            {
-                if (i < cards.Count)
-                {
-                    displays[i].gameObject.SetActive(true);
-                    displays[i].NewCard(cards[i], GetInt(cards[i].BoxString()));
-                }
-                else
-                {
-                    displays[i].gameObject.SetActive(false);
-                }
-            }
-        }
     }
 
     #endregion

@@ -9,7 +9,7 @@ using System;
 using Photon.Pun;
 using System.Text.RegularExpressions;
 
-public enum CardAreas { Coast, City, Woods, Village, Delay, None }
+public enum AbilityType { AffectYou, AffectOther, None }
 
 public class Card : PhotonCompatible
 {
@@ -36,15 +36,9 @@ public class Card : PhotonCompatible
             ExitGames.Client.Photon.Hashtable initialProps = new()
             {
                 [BoxString()] = 0,
-                [AreaString()] = (int)CardAreas.None
             };
             PhotonNetwork.CurrentRoom.SetCustomProperties(initialProps);
         }
-    }
-
-    public string AreaString()
-    {
-        return $"{this.photonView.ViewID}_Area";
     }
 
     public string BoxString()
@@ -134,98 +128,6 @@ public class Card : PhotonCompatible
     #endregion
 
 #region Properties
-
-    public void ChangeBoxRPC(Player player, int num, int logged)
-    {
-        if (num == 0)
-            return;
-
-        Log.inst.NewRollback(this, () => ChangeBox(false, player, num));
-        if (num > 0)
-            Log.inst.AddMyText($"Add Box-Player-{player.name}-Num-{num}-Card-{this.name}", false, logged);
-        else
-            Log.inst.AddMyText($"Remove Box-Player-{player.name}-Num-{Mathf.Abs(num)}-Card-{this.name}", false, logged);
-
-        thisCard.WhenBoxOnThis(player, this, num, logged+1);
-    }
-
-    void ChangeBox(bool undo, Player player, int num)
-    {
-        int boxesHere = player.GetInt(BoxString());
-        boxesHere += (undo) ? -num : num;
-        player.WillChangeMasterProperty(BoxString(), boxesHere);
-    }
-
-    public void PlayToAreaRPC(Player player, int logged)
-    {
-        int currentArea = player.GetInt(AreaString());
-        PlayerProp toPlay = AreaToListName(thisCard.dataFile.startingArea);
-        foreach (Card card in player.GetCardList(toPlay.ToString()))
-            card.thisCard.WhenPlayOther(player, card, this, logged + 1);
-
-        Log.inst.NewRollback(this, () => PlayToArea(false, player, currentArea, thisCard.dataFile.startingArea));
-        this.ChangeBoxRPC(player, thisCard.dataFile.startingBox, logged + 1);
-        thisCard.WhenPlayThis(player, this, logged + 1);
-    }
-
-    void PlayToArea(bool undo, Player player, int oldLocation, CardAreas newArea)
-    {
-        List<Card> listOfArea = player.GetCardList(AreaToListName(newArea).ToString());
-        if (undo)
-        {
-            listOfArea.Remove(this);
-            player.WillChangeMasterProperty(AreaString(), oldLocation);
-        }
-        else
-        {
-            listOfArea.Add(this);
-            player.WillChangeMasterProperty(AreaString(), (int)newArea);
-        }
-        player.WillChangeMasterProperty(newArea.ToString(), player.ConvertCardList(listOfArea));
-    }
-
-    public void MoveToAreaRPC(Player player, CardAreas newArea, int logged)
-    {
-        CardAreas myArea = (CardAreas)player.GetInt(AreaString());
-        if (myArea == newArea)
-            return;
-
-        Log.inst.NewRollback(this, () => MoveToArea(false, player, myArea, newArea));
-        this.thisCard.WhenThisMove(player, this, logged + 1);
-
-        foreach (Card card in player.GetCardList(myArea.ToString()))
-        {
-            if (card != this)
-                card.thisCard.WhenOtherMove(player, card, this, logged + 1);
-        }
-
-        foreach (Card card in player.GetCardList(newArea.ToString()))
-        {
-            if (card != this)
-                card.thisCard.WhenOtherMove(player, card, this, logged + 1);
-        }
-    }
-
-    void MoveToArea(bool undo, Player player, CardAreas removedFrom, CardAreas movedInto)
-    {
-        List<Card> listOfOldArea = player.GetCardList(AreaToListName(removedFrom).ToString());
-        List<Card> listOfNewArea = player.GetCardList(AreaToListName(movedInto).ToString());
-
-        if (undo)
-        {
-            listOfOldArea.Add(this);
-            listOfNewArea.Remove(this);
-            player.WillChangeMasterProperty(AreaString(), (int)removedFrom);
-        }
-        else
-        {
-            listOfOldArea.Remove(this);
-            listOfNewArea.Add(this);
-            player.WillChangeMasterProperty(AreaString(), (int)movedInto);
-        }
-        player.WillChangeMasterProperty(removedFrom.ToString(), player.ConvertCardList(listOfOldArea));
-        player.WillChangeMasterProperty(movedInto.ToString(), player.ConvertCardList(listOfNewArea));
-    }
 
     public void MakeDecision(Action action)
     {

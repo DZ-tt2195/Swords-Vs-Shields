@@ -240,30 +240,6 @@ public class PhotonCompatible : MonoBehaviourPunCallbacks
         return !PhotonNetwork.IsConnected || PhotonNetwork.IsMasterClient;
     }
 
-    public PlayerProp AreaToListName(CardAreas area)
-    {
-        return area switch
-        {
-            CardAreas.Coast => PlayerProp.CardsInCoast,
-            CardAreas.City => PlayerProp.CardsInCity,
-            CardAreas.Woods => PlayerProp.CardsInWoods,
-            CardAreas.Village => PlayerProp.CardsInVillage,
-            _ => throw new NotImplementedException(),
-        };
-    }
-
-    public CardAreas ListNameToArea(PlayerProp area)
-    {
-        return area switch
-        {
-            PlayerProp.CardsInCoast => CardAreas.Coast,
-            PlayerProp.CardsInCity => CardAreas.City,
-            PlayerProp.CardsInWoods => CardAreas.Woods,
-            PlayerProp.CardsInVillage => CardAreas.Village,
-            _ => throw new NotImplementedException(),
-        };
-    }
-
     #endregion
 
 }

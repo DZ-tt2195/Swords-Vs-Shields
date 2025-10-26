@@ -19,8 +19,9 @@ using Photon.Pun;
 public class CardData
 {
     public string cardName;
-    public int startingBox;
-    public CardAreas startingArea;
+    public int startingHealth;
+    public AbilityType typeOne;
+    public AbilityType typeTwo;
     public string artCredit;
     public Sprite sprite;
 }
@@ -34,7 +35,7 @@ public class Translator : PhotonCompatible
     Dictionary<string, Dictionary<string, string>> keyTranslate = new();
     public List<CardData> playerCardFiles { get; private set; }
 
-    string sheetURL = "1_lM8HoBF4oWhX33mzhJ8Cge4M0qnmuUyocGEP_0WjNQ";
+    string sheetURL = "1t-hSHonNfzuxCmlJTtRS5ITwkhDuF6mBJoBnRDbs0nk";
     string apiKey = "AIzaSyCl_GqHd1-WROqf7i2YddE3zH6vSv3sNTA";
     string baseUrl = "https://sheets.googleapis.com/v4/spreadsheets/";
     [Scene][SerializeField] string toLoad;
@@ -261,8 +262,8 @@ public class Translator : PhotonCompatible
                                 field.SetValue(nextData, StringToBool(sheetValue));
                             else if (field.FieldType == typeof(string))
                                 field.SetValue(nextData, sheetValue);
-                            else if (field.FieldType == typeof(CardAreas))
-                                field.SetValue(nextData, StringToArea(sheetValue));
+                            else if (field.FieldType == typeof(AbilityType))
+                                field.SetValue(nextData, StringToAbilityType(sheetValue));
                             else if (field.FieldType == typeof(Sprite))
                                 field.SetValue(nextData, Resources.Load<Sprite>($"Card Art/{data[i][0]}"));
                         }
@@ -291,16 +292,16 @@ public class Translator : PhotonCompatible
         }
     }
 
-    CardAreas StringToArea(string line)
+    AbilityType StringToAbilityType(string line)
     {
         line = line.Trim();
         try
         {
-            return (CardAreas)Enum.Parse(typeof(CardAreas), line);
+            return (AbilityType)Enum.Parse(typeof(AbilityType), line);
         }
         catch (FormatException)
         {
-            return CardAreas.City;
+            return AbilityType.None;
         }
     }
 
