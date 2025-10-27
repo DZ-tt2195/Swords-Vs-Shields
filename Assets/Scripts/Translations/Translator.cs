@@ -22,6 +22,8 @@ public class CardData
     public int startingHealth;
     public AbilityType typeOne;
     public AbilityType typeTwo;
+    public int greenCost;
+    public int redCost;
     public string artCredit;
     public Sprite sprite;
 }

@@ -2,6 +2,7 @@ using System.Text.RegularExpressions;
 using UnityEngine;
 using System;
 
+public enum AbilityType { AffectYou, AffectOther, None }
 public class CardType
 {
     public CardData dataFile { get; private set; }
@@ -16,32 +17,22 @@ public class CardType
         Log.inst.NewDecisionContainer(card, () => card.MakeDecision(action), logged);
     }
 
-    public virtual void WhenPlayThis(Player player, Card thisCard, int logged)
+    public virtual AbilityType CanUseAbiltyOne(Player player, Card thisCard)
+    {
+        return AbilityType.None;
+    }
+
+    public virtual void DoAbilityOne(Player player, Card thisCard, int logged)
     {
 
     }
 
-    public virtual void WhenPlayOther(Player player, Card thisCard, Card playedCard, int logged)
+    public virtual AbilityType CanUseAbiltyTwo(Player player, Card thisCard)
     {
-
+        return AbilityType.None;
     }
 
-    public virtual void WhenThisMove(Player player, Card thisCard, int logged)
-    {
-
-    }
-
-    public virtual void WhenOtherMove(Player player, Card thisCard, Card movedCard, int logged)
-    {
-
-    }
-
-    public virtual void WhenVisit(Player player, Card thisCard, int logged)
-    {
-
-    }
-
-    public virtual void WhenBoxOnThis(Player player, Card thisCard, int num, int logged)
+    public virtual void DoAbilityTwo(Player player, Card thisCard, int logged)
     {
 
     }

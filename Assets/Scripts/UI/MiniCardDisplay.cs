@@ -9,7 +9,8 @@ public class MiniCardDisplay : MonoBehaviour, IPointerClickHandler
     public Button button { get; private set; }
     public Card card { get; private set; }
     [SerializeField] Image image;
-    [SerializeField] TMP_Text boxText;
+    [SerializeField] TMP_Text description;
+    [SerializeField] Image drawX;
     public Image border;
 
     public void OnPointerClick(PointerEventData eventData)
@@ -29,11 +30,13 @@ public class MiniCardDisplay : MonoBehaviour, IPointerClickHandler
         try { this.border.SetAlpha(PlayerCreator.inst.opacity); } catch { }
     }
 
-    public void NewCard(Card card, int boxAmount)
+    public void NewCard(Card card)
     {
         this.card = card;
         image.sprite = card.thisCard.dataFile.sprite;
-        boxText.transform.parent.gameObject.SetActive(boxAmount > 0);
-        boxText.text = $"{boxAmount} Box";
+
+        string text = "";
+        description.transform.parent.gameObject.SetActive(!text.Equals(""));
+        description.text = KeywordTooltip.instance.EditText(text);
     }
 }

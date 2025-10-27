@@ -9,8 +9,6 @@ using System;
 using Photon.Pun;
 using System.Text.RegularExpressions;
 
-public enum AbilityType { AffectYou, AffectOther, None }
-
 public class Card : PhotonCompatible
 {
 
@@ -31,19 +29,19 @@ public class Card : PhotonCompatible
         Canvas canvas = GameObject.Find("Canvas").GetComponent<Canvas>();
         this.transform.localScale = Vector3.Lerp(Vector3.one, canvas.transform.localScale, 0.5f);
 
-        if (!PhotonNetwork.CurrentRoom.CustomProperties.ContainsKey(BoxString()))
+        if (!PhotonNetwork.CurrentRoom.CustomProperties.ContainsKey(HealthString()))
         {
             ExitGames.Client.Photon.Hashtable initialProps = new()
             {
-                [BoxString()] = 0,
+                [HealthString()] = 0,
             };
             PhotonNetwork.CurrentRoom.SetCustomProperties(initialProps);
         }
     }
 
-    public string BoxString()
+    public string HealthString()
     {
-        return $"{this.photonView.ViewID}_Box";
+        return $"{this.photonView.ViewID}_Health";
     }
 
     public void AssignCard(CardData dataFile)

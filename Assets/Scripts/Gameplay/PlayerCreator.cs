@@ -166,10 +166,13 @@ public class PlayerCreator : PhotonCompatible
             [PlayerProp.Spectator.ToString()] = false,
             [PlayerProp.Waiting.ToString()] = false,
 
-            [PlayerProp.Coin.ToString()] = 0,
+            [PlayerProp.GreenCoin.ToString()] = 0,
+            [PlayerProp.RedCoin.ToString()] = 0,
+
             [PlayerProp.MyHand.ToString()] = new int[0],
             [PlayerProp.MyDeck.ToString()] = new int[0],
             [PlayerProp.MyDiscard.ToString()] = new int[0],
+            [PlayerProp.MyTroops.ToString()] = new int[0],
         };
         PhotonNetwork.LocalPlayer.SetCustomProperties(playerProps);
     }

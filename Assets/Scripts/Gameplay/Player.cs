@@ -7,7 +7,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine.UI;
 
-public enum PlayerProp { Spectator, Waiting, MyHand, MyDeck, MyDiscard, Coin }
+public enum PlayerProp { Spectator, Waiting, MyHand, MyDeck, MyDiscard, MyTroops, GreenCoin, RedCoin }
 
 public class Player : PhotonCompatible
 {
@@ -25,12 +25,6 @@ public class Player : PhotonCompatible
     [Foldout("UI", true)]
     Button resignButton;
     Transform keepHand;
-    TMP_Dropdown playerDropdown;
-    [SerializeField] List<MiniCardDisplay> coastCards;
-    [SerializeField] List<MiniCardDisplay> cityCards;
-    [SerializeField] List<MiniCardDisplay> woodsCards;
-    [SerializeField] List<MiniCardDisplay> villageCards;
-    [SerializeField] TMP_Text playerText;
 
     protected override void Awake()
     {
@@ -40,17 +34,6 @@ public class Player : PhotonCompatible
         masterPropertyToChange = new();
 
         resignButton = GameObject.Find("Resign Button").GetComponent<Button>();
-        playerDropdown = GameObject.Find("Player Dropdown").GetComponent<TMP_Dropdown>();
-
-        if (photonView.AmOwner)
-        {
-            playerDropdown.onValueChanged.AddListener(Bottom);
-            void Bottom(int value)
-            {
-                foreach (Photon.Realtime.Player player in PlayerCreator.inst.playerDictionary.Keys)
-                    PlayerCreator.inst.playerDictionary[player].transform.localPosition = new(-10000, -10000);
-            }
-        }
     }
 
     private void Start()
@@ -71,26 +54,6 @@ public class Player : PhotonCompatible
         initialized = true;
         this.name = username;
         PlayerCreator.inst.playerDictionary.Add(this.photonView.Owner, this);
-
-        int addedOption = playerDropdown.options.Count;
-        playerDropdown.AddOptions(new List<string>() { username });
-        playerDropdown.onValueChanged.AddListener(MoveScreen);
-
-        if (this.photonView.AmOwner)
-        {
-            playerDropdown.value = addedOption;
-            if (addedOption == 0)
-                MoveScreen(addedOption);
-        }
-
-        void MoveScreen(int value)
-        {
-            if (value == addedOption)
-            {
-                this.transform.localPosition = Vector3.zero;
-                UpdateUI();
-            }
-        }
     }
 
     #endregion
@@ -237,22 +200,44 @@ public class Player : PhotonCompatible
             masterPropertyToChange.Add(masterProperty, changeInto);
     }
 
-    public void CoinRPC(int num, int logged)
+    #endregion
+
+#region Coins
+
+    public void GreenCoinRPC(int num, int logged)
     {
         if (num == 0)
             return;
         if (num > 0)
-            Log.inst.AddMyText($"Add Coin-Player-{this.name}-Num-{num}", false, logged);
+            Log.inst.AddMyText($"Add Green Coin-Player-{this.name}-Num-{num}", false, logged);
         else
-            Log.inst.AddMyText($"Lose Coin-Player-{this.name}-Num-{Mathf.Abs(num)}", false, logged);
-        Log.inst.NewRollback(this, () => ChangeCoin(false, num));
+            Log.inst.AddMyText($"Lose Green Coin-Player-{this.name}-Num-{Mathf.Abs(num)}", false, logged);
+        Log.inst.NewRollback(this, () => ChangeGreen(false, num));
     }
 
-    void ChangeCoin(bool undo, int num)
+    void ChangeGreen(bool undo, int num)
     {
-        int coinTotal = GetInt(PlayerProp.Coin.ToString());
+        int coinTotal = GetInt(PlayerProp.GreenCoin.ToString());
         coinTotal += (undo) ? -num : num;
-        WillChangePlayerProperty(PlayerProp.Coin.ToString(), coinTotal);
+        WillChangePlayerProperty(PlayerProp.GreenCoin.ToString(), coinTotal);
+    }
+
+    public void GreenRedRPC(int num, int logged)
+    {
+        if (num == 0)
+            return;
+        if (num > 0)
+            Log.inst.AddMyText($"Add Red Coin-Player-{this.name}-Num-{num}", false, logged);
+        else
+            Log.inst.AddMyText($"Lose Red Coin-Player-{this.name}-Num-{Mathf.Abs(num)}", false, logged);
+        Log.inst.NewRollback(this, () => ChangeRed(false, num));
+    }
+
+    void ChangeRed(bool undo, int num)
+    {
+        int coinTotal = GetInt(PlayerProp.RedCoin.ToString());
+        coinTotal += (undo) ? -num : num;
+        WillChangePlayerProperty(PlayerProp.RedCoin.ToString(), coinTotal);
     }
 
     #endregion
@@ -486,8 +471,6 @@ public class Player : PhotonCompatible
             if (PhotonNetwork.LocalPlayer.ActorNumber == this.photonView.ControllerActorNr && myHand[i].layout.GetAlpha() == 0)
                 myHand[i].FlipCardRPC(1, 0.25f, 0);
         }
-
-        playerText.text = $"{this.name} - {GetInt(PlayerProp.Coin.ToString())} Coin\n";
     }
 
     #endregion

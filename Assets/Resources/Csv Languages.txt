@@ -240,28 +240,33 @@
       "\"\""
     ],
     [
-      "Add Box",
-      "$Player$ adds $Num$ Box on $Card$.",
+      "Add Green Coin",
+      "$Player$ gets +$Num$ GreenCoin.",
       "\"\""
     ],
     [
-      "Remove Box",
-      "$Player$ removes $Num$ Box from $Card$.",
+      "Lose Green Coin",
+      "$Player$ loses $Num$ GreenCoin.",
       "\"\""
     ],
     [
-      "Add Coin",
-      "$Player$ gets +$Num$ Coin.",
+      "Add Red Coin",
+      "$Player$ gets +$Num$ RedCoin.",
       "\"\""
     ],
     [
-      "Lose Coin",
-      "$Player$ loses $Num$ Coin.",
+      "Lose Red Coin",
+      "$Player$ loses $Num$ RedCoin.",
       "\"\""
     ],
     [
-      "Coin",
-      "Coin",
+      "GreenCoin",
+      "GreenCoin",
+      "\"\""
+    ],
+    [
+      "RedCoin",
+      "RedCoin",
       "\"\""
     ],
     [
@@ -270,8 +275,8 @@
       "\"\""
     ],
     [
-      "Box",
-      "Box",
+      "Health",
+      "Health",
       "\"\""
     ],
     [
