@@ -88,6 +88,7 @@ GameObject:
   - component: {fileID: 8542204120425306810}
   - component: {fileID: 2940023228715246589}
   - component: {fileID: 4351112556885492556}
+  - component: {fileID: 8187117402281259775}
   m_Layer: 0
   m_Name: Mini Card
   m_TagString: Untagged
@@ -170,7 +171,6 @@ MonoBehaviour:
   image: {fileID: 8542204120425306810}
   description: {fileID: 2118490078713619185}
   drawX: {fileID: 662516540725695784}
-  border: {fileID: 7047500319205305858}
 --- !u!114 &4351112556885492556
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -215,6 +215,19 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &8187117402281259775
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 844680881825469666}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d952c9909c8f4945a75f0133ba86a2c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ButtonSelect
+  border: {fileID: 7047500319205305858}
 --- !u!1 &4814810490348310334
 GameObject:
   m_ObjectHideFlags: 0

@@ -7,7 +7,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine.UI;
 
-public enum PlayerProp { Spectator, Waiting, MyHand, MyDeck, MyDiscard, MyTroops, GreenCoin, RedCoin }
+public enum PlayerProp { Spectator, Waiting, MyHand, MyDeck, MyDiscard, MyTroops, MyHealth, GreenCoin, RedCoin }
 
 public class Player : PhotonCompatible
 {
@@ -24,7 +24,7 @@ public class Player : PhotonCompatible
 
     [Foldout("UI", true)]
     Button resignButton;
-    Transform keepHand;
+    [SerializeField] Transform keepHand;
 
     protected override void Awake()
     {
@@ -54,6 +54,7 @@ public class Player : PhotonCompatible
         initialized = true;
         this.name = username;
         PlayerCreator.inst.playerDictionary.Add(this.photonView.Owner, this);
+        UpdateUI();
     }
 
     #endregion
@@ -322,11 +323,11 @@ public class Player : PhotonCompatible
             {
                 Card nextCard = listOfCards[j];
                 int number = j;
-                Button cardButton = nextCard.button;
+                Button cardButton = nextCard.selectMe.button;
 
                 cardButton.onClick.RemoveAllListeners();
                 cardButton.interactable = true;
-                nextCard.border.gameObject.SetActive(true);
+                nextCard.selectMe.border.gameObject.SetActive(true);
                 cardButton.onClick.AddListener(ClickedThis);
 
                 void ClickedThis()
@@ -340,9 +341,9 @@ public class Player : PhotonCompatible
             {
                 foreach (Card nextCard in listOfCards)
                 {
-                    nextCard.button.onClick.RemoveAllListeners();
-                    nextCard.button.interactable = false;
-                    nextCard.border.gameObject.SetActive(false);
+                    nextCard.selectMe.button.onClick.RemoveAllListeners();
+                    nextCard.selectMe.button.interactable = false;
+                    nextCard.selectMe.border.gameObject.SetActive(false);
                 }
             }
         }
@@ -381,31 +382,6 @@ public class Player : PhotonCompatible
             if (Input.GetKeyDown(KeyCode.Alpha4))
                 PhotonNetwork.Disconnect();
         }
-    }
-
-    public Photon.Realtime.Player OtherPlayerInteraction(int advance)
-    {
-        List<Photon.Realtime.Player> allPlayers = GetPlayers(false).Item1;
-        int myIndex = allPlayers.IndexOf(photonView.Owner);
-        allPlayers.RemoveAt(myIndex);
-
-        if (allPlayers.Count == 0)
-        {
-            return this.photonView.Owner;
-        }
-        else if (advance > 0)
-        {
-            int firstAnswer = (myIndex - 1 + advance) % allPlayers.Count;
-            return allPlayers[firstAnswer];
-        }
-        else if (advance < 0)
-        {
-            int secondAnswer = (myIndex - Mathf.Abs(advance));
-            while (secondAnswer < 0)
-                secondAnswer += (allPlayers.Count);
-            return allPlayers[secondAnswer];
-        }
-        return null;
     }
 
     [PunRPC]
@@ -460,16 +436,54 @@ public class Player : PhotonCompatible
         masterDiscard.AddRange(GetCardList(PlayerProp.MyDiscard.ToString()));
         ChangePlayerProperties(this, PlayerProp.MyDiscard, new int[0]);
         ChangeRoomProperties(RoomProp.MasterDiscard, ConvertCardList(masterDiscard));
+
+        DoFunction(() => UpdateUI(), RpcTarget.All);
     }
 
+    [PunRPC]
     public void UpdateUI()
     {
         List<Card> myHand = GetCardList(PlayerProp.MyHand.ToString());
+        float start = -1100;
+        float end = 475;
+        float gap = 225;
+        float midPoint = (start + end) / 2;
+        int maxFit = (int)((Mathf.Abs(start) + Mathf.Abs(end)) / gap);
+
         for (int i = 0; i < myHand.Count; i++)
         {
-            myHand[i].MoveCardRPC(new(-1000 + i * 200, -550), 0.25f, Vector3.one);
-            if (PhotonNetwork.LocalPlayer.ActorNumber == this.photonView.ControllerActorNr && myHand[i].layout.GetAlpha() == 0)
+            Card nextCard = myHand[i];
+            nextCard.transform.SetParent(keepHand);
+            nextCard.transform.SetSiblingIndex(i);
+
+            float offByOne = myHand.Count - 1;
+            float startingX = (myHand.Count <= maxFit) ? midPoint - (gap * (offByOne / 2f)) : (start);
+            float difference = (myHand.Count <= maxFit) ? gap : gap * (maxFit / offByOne);
+
+            if (photonView.AmOwner || (bool)GetPlayerProperty(PhotonNetwork.LocalPlayer, PlayerProp.Spectator.ToString()))
+            {
+                Vector2 newPosition = new(startingX + difference * i, -550);
+                nextCard.MoveCardRPC(newPosition, 0.25f, Vector3.one);
                 myHand[i].FlipCardRPC(1, 0.25f, 0);
+            }
+        }
+
+        (PlayerDisplay myDisplay, List<MiniCardDisplay> myTroopDisplays) = PlayerCreator.inst.PlayerUI(photonView.Controller);
+        string descriptionText = $"{this.name}\n{myHand.Count} Card\n{GetInt(PlayerProp.GreenCoin.ToString())} GreenCoin\n{GetInt(PlayerProp.RedCoin.ToString())} RedCoin";
+        myDisplay.AssignInfo(this, GetInt(PlayerProp.MyHealth.ToString()), KeywordTooltip.instance.EditText(descriptionText));
+
+        List<Card> myTroops = GetCardList(PlayerProp.MyTroops.ToString());
+        for (int i = 0; i < myTroopDisplays.Count; i++)
+        {
+            if (i < myTroops.Count)
+            {
+                myTroopDisplays[i].gameObject.SetActive(true);
+                myTroopDisplays[i].NewCard(this, myTroops[i]);
+            }
+            else
+            {
+                myTroopDisplays[i].gameObject.SetActive(false);
+            }
         }
     }
 

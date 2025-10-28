@@ -34,8 +34,6 @@ public class ConnectToLobby : MonoBehaviourPunCallbacks
     [SerializeField] Button joinManual;
     [SerializeField] Button disconnectButton;
     List<JoinRoomButton> listOfJoinButtons = new();
-    [SerializeField] Slider playerSlider;
-    [SerializeField] TMP_Text playerSliderLabel;
 
     private void Start()
     {
@@ -47,14 +45,6 @@ public class ConnectToLobby : MonoBehaviourPunCallbacks
             listOfJoinButtons.Add(child.GetComponent<JoinRoomButton>());
         foreach (JoinRoomButton button in listOfJoinButtons)
             button.ClearInfo();
-
-        playerSlider.onValueChanged.AddListener(ChangePlayerSlider);
-        ChangePlayerSlider(1);
-
-        void ChangePlayerSlider(float value)
-        {
-            playerSliderLabel.text = $"{value:F0}";
-        }
 
         username.text = PlayerPrefs.GetString("Online Username");
         error.gameObject.SetActive(false);
@@ -195,7 +185,7 @@ public class ConnectToLobby : MonoBehaviourPunCallbacks
         ExitGames.Client.Photon.Hashtable customProps = new()
         {
             { RoomProp.Game.ToString(), Application.productName },
-            { RoomProp.CanPlay.ToString(), (int)playerSlider.value },
+            { RoomProp.CanPlay.ToString(), 2 },
             { RoomProp.JoinAsSpec.ToString(), false },
         };
 

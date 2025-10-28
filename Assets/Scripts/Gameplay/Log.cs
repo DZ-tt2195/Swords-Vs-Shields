@@ -315,19 +315,12 @@ public class Log : PhotonCompatible
             if (slider.beDestroyed)
                 Destroy(slider.gameObject);
         }
-        Card[] allCards = FindObjectsByType<Card>(FindObjectsSortMode.None);
-        foreach (Card card in allCards)
+        ButtonSelect[] allSelectables = FindObjectsByType<ButtonSelect>(FindObjectsSortMode.None);
+        foreach (ButtonSelect select in allSelectables)
         {
-            card.button.interactable = false;
-            card.button.onClick.RemoveAllListeners();
-            card.border.gameObject.SetActive(false);
-        }
-        MiniCardDisplay[] allDisplays = FindObjectsByType<MiniCardDisplay>(FindObjectsSortMode.None);
-        foreach (MiniCardDisplay card in allDisplays)
-        {
-            card.button.interactable = false;
-            card.button.onClick.RemoveAllListeners();
-            card.border.gameObject.SetActive(false);
+            select.button.interactable = false;
+            select.button.onClick.RemoveAllListeners();
+            select.border.gameObject.SetActive(false);
         }
 
         if (currentContainer != null && currentContainer.parent != null && clear)
@@ -461,13 +454,12 @@ public class Log : PhotonCompatible
 
             ChangeScrolling();
             currentContainer = null;
-            PlayerCreator.inst.playerDictionary[PhotonNetwork.LocalPlayer].UpdateUI();
+
+            foreach (var KVP in PlayerCreator.inst.playerDictionary)
+                PlayerCreator.inst.playerDictionary[KVP.Key].UpdateUI();
 
             foreach (DecisionContainer container in initialContainers)
-            {
-                //Debug.Log($"initial container: {container.actionName}");
                 Iterate(container);
-            }
 
             void Iterate(DecisionContainer container)
             {

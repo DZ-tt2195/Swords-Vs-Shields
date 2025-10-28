@@ -1,25 +1,18 @@
 using UnityEngine;
-using UnityEngine.UI;
 using MyBox;
 using System.Collections;
-using TMPro;
-using System.Collections.Generic;
-using System.Linq;
 using System;
 using Photon.Pun;
-using System.Text.RegularExpressions;
 
 public class Card : PhotonCompatible
 {
 
 #region Setup
 
-    public Button button;
-    public Image border;
-    public CardLayout layout;
-
+    public CardLayout layout { get; private set; }
     bool flipping;
     public CardType thisCard { get; private set; }
+    public ButtonSelect selectMe { get; private set; }
 
     protected override void Awake()
     {
@@ -28,6 +21,8 @@ public class Card : PhotonCompatible
 
         Canvas canvas = GameObject.Find("Canvas").GetComponent<Canvas>();
         this.transform.localScale = Vector3.Lerp(Vector3.one, canvas.transform.localScale, 0.5f);
+        selectMe = GetComponent<ButtonSelect>();
+        layout = GetComponent<CardLayout>();
 
         if (!PhotonNetwork.CurrentRoom.CustomProperties.ContainsKey(HealthString()))
         {
@@ -116,11 +111,6 @@ public class Card : PhotonCompatible
 
         this.transform.localEulerAngles = originalRot;
         flipping = false;
-    }
-
-    private void FixedUpdate()
-    {
-        try { this.border.SetAlpha(PlayerCreator.inst.opacity); } catch { }
     }
 
     #endregion

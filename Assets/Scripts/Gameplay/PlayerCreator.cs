@@ -15,11 +15,6 @@ public class PlayerCreator : PhotonCompatible
 #region Setup
 
     public static PlayerCreator inst;
-
-    public static float minX { get; private set; }
-    public static float maxX { get; private set; }
-    public static float minY { get; private set; }
-    public static float maxY { get; private set; }
     public Dictionary<Photon.Realtime.Player, Player> playerDictionary = new();
 
     [Foldout("UI and Animation", true)]
@@ -27,6 +22,9 @@ public class PlayerCreator : PhotonCompatible
     public float opacity { get; private set; }
     bool decrease = true;
     public Canvas canvas { get; private set; }
+    [SerializeField] List<PlayerDisplay> playerDisplays = new();
+    [SerializeField] List<MiniCardDisplay> cardDisplayOne = new();
+    [SerializeField] List<MiniCardDisplay> cardDisplayTwo = new();
 
     protected override void Awake()
     {
@@ -34,16 +32,7 @@ public class PlayerCreator : PhotonCompatible
         this.bottomType = this.GetType();
         inst = this;
         PhotonNetwork.AutomaticallySyncScene = true;
-
-        float cameraHeight = 2f * mainCamera.orthographicSize;
-        float cameraWidth = cameraHeight * mainCamera.aspect;
         canvas = GameObject.Find("Canvas").GetComponent<Canvas>();
-
-        minX = mainCamera.transform.position.x - cameraWidth / 2f;
-        maxX = mainCamera.transform.position.x + cameraWidth / 2f;
-        minY = mainCamera.transform.position.y - cameraHeight / 2f;
-        maxY = mainCamera.transform.position.y + cameraHeight / 2f;
-
         Invoke(nameof(Setup), 0.25f);
     }
 
@@ -168,6 +157,7 @@ public class PlayerCreator : PhotonCompatible
 
             [PlayerProp.GreenCoin.ToString()] = 0,
             [PlayerProp.RedCoin.ToString()] = 0,
+            [PlayerProp.MyHealth.ToString()] = 20,
 
             [PlayerProp.MyHand.ToString()] = new int[0],
             [PlayerProp.MyDeck.ToString()] = new int[0],
@@ -175,6 +165,15 @@ public class PlayerCreator : PhotonCompatible
             [PlayerProp.MyTroops.ToString()] = new int[0],
         };
         PhotonNetwork.LocalPlayer.SetCustomProperties(playerProps);
+    }
+
+    public (PlayerDisplay, List<MiniCardDisplay>) PlayerUI(Photon.Realtime.Player player)
+    {
+        List<Photon.Realtime.Player> allPlayers = GetPlayers(false).Item1;
+        if (allPlayers.IndexOf(player) == 0)
+            return (playerDisplays[0], cardDisplayOne);
+        else
+            return (playerDisplays[1], cardDisplayTwo);
     }
 
     #endregion
