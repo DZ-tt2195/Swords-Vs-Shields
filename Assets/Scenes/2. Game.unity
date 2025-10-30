@@ -14004,13 +14004,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ecc57a8a1c9f741ed8934d204c2776ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TurnManager
-  toInsert:
-  - {fileID: 11400000, guid: 00fc411b43ca741a8ba26c2ad1f5f639, type: 2}
-  - {fileID: 11400000, guid: 22d186fc69b0a427d8c70390e3fb5666, type: 2}
-  - {fileID: 11400000, guid: c5bedb44218084aefa9f223fd5ae434f, type: 2}
   turnsInOrder:
   - {fileID: 11400000, guid: fec9d6254ca6941e5ac92e3722687fcb, type: 2}
-  - {fileID: 11400000, guid: 2e9399825a8f243b780cefbb76f5512c, type: 2}
+  - {fileID: 11400000, guid: 8f3df4719b0394e2fb775ad57b52897d, type: 2}
+  - {fileID: 11400000, guid: 13eea17614e9343cfa0303e9fd900e1b, type: 2}
+  - {fileID: 11400000, guid: 6b22bb7c130894be99f5d4743a47a54a, type: 2}
   - {fileID: 11400000, guid: f84daf9b34d804c8dac3c078a97517ad, type: 2}
   instructions: {fileID: 1354491169}
 --- !u!114 &1409310384

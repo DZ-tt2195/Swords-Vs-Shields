@@ -253,14 +253,12 @@ public class Player : PhotonCompatible
     {
         if (possibleChoices.Count == 0 && autoResolve)
         {
-            Log.inst.PopStack();
             return null;
         }
         else if (possibleChoices.Count == 1 && autoResolve)
         {
             if (possibleChoices[0].action != null)
                 Log.inst.inReaction.Add(possibleChoices[0].action);
-            Log.inst.PopStack();
             return null;
         }
         else
@@ -282,14 +280,12 @@ public class Player : PhotonCompatible
     {
         if (possibleCards.Count == 0 && autoResolve)
         {
-            Log.inst.PopStack();
             return null;
         }
         else if (possibleCards.Count == 1 && autoResolve)
         {
             CardButtonInfo onlyOne = possibleCards[0];
             Log.inst.inReaction.Add(() => onlyOne.action?.Invoke(onlyOne.card));
-            Log.inst.PopStack();
             return null;
         }
         else
@@ -311,12 +307,10 @@ public class Player : PhotonCompatible
     {
         if (listOfCards.Count == 0 && autoResolve)
         {
-            Log.inst.PopStack();
         }
         else if (listOfCards.Count == 1 && autoResolve)
         {
             Log.inst.inReaction.Add(() => action?.Invoke(listOfCards[0]));
-            Log.inst.PopStack();
         }
         else
         {
@@ -358,7 +352,6 @@ public class Player : PhotonCompatible
         if (min == max && autoResolve)
         {
             Log.inst.inReaction.Add(() => action?.Invoke(min));
-            Log.inst.PopStack();
             return null;
         }
         else
@@ -404,12 +397,13 @@ public class Player : PhotonCompatible
     void EndTurn()
     {
         Log.inst.inReaction.Add(Done);
-        if (!endPause)
-            Log.inst.PopStack();
-        else if (Log.inst.undosInLog.Count >= 1)
-            ChooseButtonInPopup(new() { new("Done", Color.white) }, "Pause to Undo", new(0, 325), false);
-        else
-            ChooseButtonInPopup(new() { new("Done", Color.white) }, "Pause to Read", new(0, 325), false);
+        if (endPause)
+        {
+            if (Log.inst.undosInLog.Count >= 1)
+                ChooseButtonInPopup(new() { new("Done", Color.white) }, "Pause to Undo", new(0, 325), false);
+            else
+                ChooseButtonInPopup(new() { new("Done", Color.white) }, "Pause to Read", new(0, 325), false);
+        }
 
         void Done()
         {

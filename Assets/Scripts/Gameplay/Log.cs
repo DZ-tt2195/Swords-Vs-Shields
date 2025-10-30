@@ -454,6 +454,7 @@ public class Log : PhotonCompatible
 
             ChangeScrolling();
             currentContainer = null;
+            storeUndoPoint = false;
 
             foreach (var KVP in PlayerCreator.inst.playerDictionary)
                 PlayerCreator.inst.playerDictionary[KVP.Key].UpdateUI();
@@ -497,6 +498,8 @@ public class Log : PhotonCompatible
                 {
                     //Debug.Log($"forward: {currentContainer.actionName}");
                     currentContainer.action.Compile().Invoke();
+                    if (storeUndoPoint == false)
+                        PopStack(run);
                 }
             }
         }

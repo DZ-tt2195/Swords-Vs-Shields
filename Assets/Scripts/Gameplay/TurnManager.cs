@@ -8,7 +8,6 @@ using TMPro;
 public class TurnManager : PhotonCompatible
 {
     public static TurnManager inst;
-    [SerializeField] List<ExchangeInfo> toInsert = new();
     [SerializeField] List<Turn> turnsInOrder = new();
     [SerializeField] TMP_Text instructions;
 
@@ -17,23 +16,13 @@ public class TurnManager : PhotonCompatible
         base.Awake();
         inst = this;
         this.bottomType = this.GetType();
-
-        for (int i = 1; i <= 6; i++)
-        {
-            foreach (ExchangeInfo playerTurn in toInsert)
-            {
-                ExchangeInfo clone = Instantiate(playerTurn);
-                clone.thisRound = i;
-                turnsInOrder.Insert(turnsInOrder.Count - 2, clone);
-            }
-        }
     }
 
-    int GetCurrentTurn()
+    int GetCurrentPhase()
     {
         try
         {
-            return (int)GetRoomProperty(RoomProp.CurrentTurn);
+            return (int)GetRoomProperty(RoomProp.CurrentPhase);
         }
         catch
         {
@@ -43,7 +32,7 @@ public class TurnManager : PhotonCompatible
 
     public void DoTurnAction(Player player)
     {
-        turnsInOrder[GetCurrentTurn()].ForPlayer(player);
+        turnsInOrder[GetCurrentPhase()].ForPlayer(player);
     }
 
     [PunRPC]
@@ -91,8 +80,17 @@ public class TurnManager : PhotonCompatible
                 foreach (Photon.Realtime.Player player in spectators)
                     DoFunction(() => Instructions(-1, $"Waiting on Players-Num-{players.Count}"), player);
 
-                int currentTurn = (int)GetRoomProperty(RoomProp.CurrentTurn);
-                ChangeRoomProperties(RoomProp.CurrentTurn, currentTurn + 1, currentTurn);
+                int phaseTracker = (int)GetRoomProperty(RoomProp.CurrentPhase);
+                int roundTracker = (int)GetRoomProperty(RoomProp.CurrentRound);
+                if (phaseTracker == 3)
+                {
+                    ChangeRoomProperties(RoomProp.CurrentPhase, 1, phaseTracker);
+                    ChangeRoomProperties(RoomProp.CurrentRound, roundTracker + 1, roundTracker);
+                }
+                else if (phaseTracker != 4)
+                {
+                    ChangeRoomProperties(RoomProp.CurrentPhase, phaseTracker + 1, phaseTracker);
+                }
                 Invoke(nameof(NewPrompt), 0.25f);
             }
         }
@@ -100,7 +98,7 @@ public class TurnManager : PhotonCompatible
 
     void NewPrompt()
     {
-        turnsInOrder[GetCurrentTurn()].ForMaster();
+        turnsInOrder[GetCurrentPhase()].ForMaster();
         foreach (var KVP in PlayerCreator.inst.playerDictionary)
             KVP.Value.DoFunction(() => KVP.Value.StartTurn(), KVP.Key);
     }
@@ -109,7 +107,7 @@ public class TurnManager : PhotonCompatible
     {
         return (changedProps.ContainsKey(propertyName) && changedProps[propertyName].Equals(expected));
     }
-
+    /*
     void PlayerDraw(Player player)
     {
         Log.inst.NewDecisionContainer(this, () => InstantDraw(player), 0);
@@ -125,5 +123,5 @@ public class TurnManager : PhotonCompatible
             player.DrawCardRPC(1, 0);
         }
     }
-
+    */
 }

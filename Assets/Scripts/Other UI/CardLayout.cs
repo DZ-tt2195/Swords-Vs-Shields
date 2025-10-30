@@ -48,21 +48,39 @@ public class CardLayout : MonoBehaviour, IPointerClickHandler
         this.transform.localEulerAngles = new(0, 0, rotation);
         this.rotation = rotation;
 
-        cardName.text = $"{Translator.inst.Translate(dataFile.cardName)}";
+        cardName.text = KeywordTooltip.instance.EditText($"{Translator.inst.Translate(dataFile.cardName)} {dataFile.startingHealth} Health");
         cardArt.sprite = dataFile.sprite;
         string textOne = Translator.inst.Translate($"{dataFile.cardName} TextOne");
         string textTwo = Translator.inst.Translate($"{dataFile.cardName} TextTwo");
 
-        if (textTwo.Equals(""))
+        if (dataFile.typeTwo == AbilityType.None)
         {
             UseBigBox(true);
-            bigText.textBox.text = KeywordTooltip.instance.EditText(textOne);
+            ApplyText(bigText, textOne, dataFile.typeOne);
+
         }
         else
         {
             UseBigBox(false);
-            smallTextOne.textBox.text = KeywordTooltip.instance.EditText(textOne);
-            smallTextTwo.textBox.text = KeywordTooltip.instance.EditText(textTwo);
+            ApplyText(smallTextOne, textOne, dataFile.typeOne);
+            ApplyText(smallTextTwo, textTwo, dataFile.typeTwo);
+        }
+    }
+
+    void ApplyText(TextPairing pairing, string text, AbilityType type)
+    {
+        pairing.textBox.text = KeywordTooltip.instance.EditText(text);
+        switch (type)
+        {
+            case AbilityType.AffectYou:
+                pairing.image.color = Color.green;
+                break;
+            case AbilityType.AffectOther:
+                pairing.image.color = Color.red;
+                break;
+            case AbilityType.Misc:
+                pairing.image.color = Color.gray;
+                break;
         }
     }
 

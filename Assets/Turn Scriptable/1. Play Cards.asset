@@ -9,6 +9,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 18745aa1828644e3982f4bf1a5f6ae76, type: 3}
-  m_Name: 4. Final Turn
-  m_EditorClassIdentifier: Assembly-CSharp::FinalTurn
+  m_Script: {fileID: 11500000, guid: 272d5cf804f4b4104949412729f94e39, type: 3}
+  m_Name: 1. Play Cards
+  m_EditorClassIdentifier: Assembly-CSharp::PlayCard

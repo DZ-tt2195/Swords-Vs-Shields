@@ -7,7 +7,7 @@ using System.Collections;
 using MyBox;
 using TMPro;
 
-public enum RoomProp { Game, CanPlay, JoinAsSpec, MasterDeck, MasterDiscard, CurrentTurn }
+public enum RoomProp { Game, CanPlay, JoinAsSpec, MasterDeck, MasterDiscard, CurrentPhase, CurrentRound }
 
 public class PlayerCreator : PhotonCompatible
 {
@@ -39,33 +39,7 @@ public class PlayerCreator : PhotonCompatible
     void Setup()
     {
         if (!PhotonNetwork.CurrentRoom.CustomProperties.ContainsKey(RoomProp.MasterDeck.ToString()))
-        {
-            ExitGames.Client.Photon.Hashtable initialProps = new()
-            {
-                [RoomProp.MasterDiscard.ToString()] = new int[0],
-                [RoomProp.CurrentTurn.ToString()] = 0,
-            };
-            List<int> startingDeck = new();
-            List<int> cardID = new();
-
-            for (int i = 0; i < Translator.inst.playerCardFiles.Count; i++)
-            {
-                for (int j = 0; j < 2; j++)
-                {
-                    GameObject nextCard = MakeObject(CarryVariables.inst.cardPrefab.gameObject);
-                    PhotonView cardPV = nextCard.GetComponent<PhotonView>();
-
-                    startingDeck.Add(cardPV.ViewID);
-                    cardID.Add(i);
-                    initialProps.Add($"{cardPV.ViewID}_Box", 0);
-                }
-            }
-            DoFunction(() => CreateCards(startingDeck.ToArray(), cardID.ToArray()));
-
-            startingDeck = startingDeck.Shuffle();
-            initialProps.Add(RoomProp.MasterDeck.ToString(), startingDeck.ToArray());
-            PhotonNetwork.CurrentRoom.SetCustomProperties(initialProps);
-        }
+            CreateRoom();
 
         if (!PhotonNetwork.OfflineMode)
         {
@@ -145,6 +119,36 @@ public class PlayerCreator : PhotonCompatible
             opacity += 0.05f;
         if (opacity < 0 || opacity > 1)
             decrease = !decrease;
+    }
+
+    void CreateRoom()
+    {
+        ExitGames.Client.Photon.Hashtable initialProps = new()
+        {
+            [RoomProp.MasterDiscard.ToString()] = new int[0],
+            [RoomProp.CurrentPhase.ToString()] = 0,
+            [RoomProp.CurrentRound.ToString()] = 0,
+        };
+        List<int> startingDeck = new();
+        List<int> cardID = new();
+
+        for (int i = 0; i < Translator.inst.playerCardFiles.Count; i++)
+        {
+            for (int j = 0; j < 2; j++)
+            {
+                GameObject nextCard = MakeObject(CarryVariables.inst.cardPrefab.gameObject);
+                PhotonView cardPV = nextCard.GetComponent<PhotonView>();
+
+                startingDeck.Add(cardPV.ViewID);
+                cardID.Add(i);
+                initialProps.Add($"{cardPV.ViewID}_Box", 0);
+            }
+        }
+        DoFunction(() => CreateCards(startingDeck.ToArray(), cardID.ToArray()));
+
+        startingDeck = startingDeck.Shuffle();
+        initialProps.Add(RoomProp.MasterDeck.ToString(), startingDeck.ToArray());
+        PhotonNetwork.CurrentRoom.SetCustomProperties(initialProps);
     }
 
     void CreatePlayer()
