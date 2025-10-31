@@ -68,6 +68,7 @@ public class KeywordTooltip : MonoBehaviour
         string answer = Regex.Replace(text, "(?<=[a-z])(?=[A-Z])", " ");
         answer = Regex.Replace(answer, @",(\s*(\n|$))", "$1");
         answer = Regex.Replace(answer, @"-(\s*(\n|$))", "$1");
+        answer = answer.Replace("-u003e", "->");
 
         foreach (KeywordHover link in linkedKeywords)
         {

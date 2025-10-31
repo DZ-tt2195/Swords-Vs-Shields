@@ -73,13 +73,13 @@ public class CardLayout : MonoBehaviour, IPointerClickHandler
         switch (type)
         {
             case AbilityType.AffectYou:
-                pairing.image.color = Color.green;
+                pairing.image.color = new Color(0, 0.66f, 0); //green
                 break;
             case AbilityType.AffectOther:
-                pairing.image.color = Color.red;
+                pairing.image.color = new Color(1, 0.33f, 0.33f); //light red
                 break;
-            case AbilityType.Misc:
-                pairing.image.color = Color.gray;
+            case AbilityType.PlayEffect:
+                pairing.image.color = new Color(0.66f, 0.66f, 0.66f); //gray
                 break;
         }
     }

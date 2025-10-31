@@ -11,7 +11,7 @@
     ],
     [
       "Last Update",
-      "Last Updated: October 24th, 2025",
+      "Last Updated: October 31st, 2025",
       "\"\""
     ],
     [
@@ -281,12 +281,12 @@
     ],
     [
       "Boat TextOne",
-      "1 RedCoin -\u003e Deal 2 damage.",
+      "1 Coin -\u003e Deal 2 damage.",
       "\"\""
     ],
     [
       "Boat TextTwo",
-      "\"\"",
+      "PLAY: +1 Coin",
       "\"\""
     ]
   ]

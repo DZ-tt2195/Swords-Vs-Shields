@@ -43,6 +43,7 @@ public class Card : PhotonCompatible
     {
         string noSpaces = dataFile.cardName.Replace(" ", "");
         thisCard = (CardType)Activator.CreateInstance(Type.GetType(noSpaces), dataFile);
+
         this.layout.FillInCards(dataFile, 0, 0);
         this.name = dataFile.cardName;
         KeywordTooltip.instance.NewCardRC(dataFile.cardName, this.layout);

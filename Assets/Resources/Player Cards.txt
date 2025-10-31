@@ -4,18 +4,18 @@
       "textBoxOne",
       "textBoxTwo",
       "startingHealth",
-      "abilityOne",
-      "abilityTwo",
+      "typeOne",
+      "typeTwo",
       "artCredit",
       "effects"
     ],
     [
       "Boat",
-      "1 RedCoin -\u003e Deal 2 damage.",
-      "\"\"",
-      "6",
+      "1 Coin -\u003e Deal 2 damage.",
+      "PLAY: +1 Coin",
+      "3",
       "AffectOther",
-      "None",
+      "PlayEffect",
       "X",
       "Coin, CareBox"
     ]

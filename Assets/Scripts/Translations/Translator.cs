@@ -7,10 +7,6 @@ using UnityEngine.Networking;
 using System.IO;
 using UnityEngine.SceneManagement;
 using MyBox;
-using TMPro;
-using UnityEngine.InputSystem;
-using UnityEditor;
-using UnityEngine.UI;
 using System;
 using System.Reflection;
 using Photon.Pun;
@@ -40,7 +36,7 @@ public class Translator : PhotonCompatible
     string baseUrl = "https://sheets.googleapis.com/v4/spreadsheets/";
     [Scene][SerializeField] string toLoad;
 
-    private void Awake()
+    protected override void Awake()
     {
         //Debug.Log(string.Format($"hi {0}", "lol"));
         //Debug.Log(string.Format($"hi {{0}}", "lol"));
@@ -53,8 +49,19 @@ public class Translator : PhotonCompatible
 
             if (!PlayerPrefs.HasKey("Language")) PlayerPrefs.SetString("Language", "English");
             TxtLanguages();
-            StartCoroutine(DownloadLanguages());
-            StartCoroutine(GetCardData());
+
+            StartCoroutine(AllSetup());
+
+            IEnumerator AllSetup()
+            {
+                CoroutineGroup group = new(this);
+                group.StartCoroutine(DownloadLanguages());
+                group.StartCoroutine(GetCardData());
+
+                while (group.AnyProcessing)
+                    yield return null;
+                SceneManager.LoadScene(toLoad);
+            }
         }
         else
         {
@@ -111,7 +118,7 @@ public class Translator : PhotonCompatible
 
             if (www.result == UnityWebRequest.Result.ConnectionError || www.result == UnityWebRequest.Result.ProtocolError)
             {
-                Debug.LogError($"Download failed: {www.error}");
+                //Debug.LogError($"Download failed: {www.error}");
             }
             else
             {
@@ -146,7 +153,6 @@ public class Translator : PhotonCompatible
                 list[i] = numLines[i].Split("\",");
             return list;
         }
-        SceneManager.LoadScene(toLoad);
     }
 
     void GetLanguages(string[][] data)
@@ -235,7 +241,9 @@ public class Translator : PhotonCompatible
             {
                 string nextLine = data[1][i].Trim().Replace("\"", "");
                 if (!columnIndex.ContainsKey(nextLine))
+                {
                     columnIndex.Add(nextLine, i);
+                }
             }
 
             for (int i = 2; i < data.Length; i++)
@@ -253,24 +261,20 @@ public class Translator : PhotonCompatible
                 {
                     if (columnIndex.TryGetValue(field.Name, out int index))
                     {
-                        try
-                        {
-                            string sheetValue = data[i][index];
-                            if (field.FieldType == typeof(int))
-                                field.SetValue(nextData, StringToInt(sheetValue));
-                            else if (field.FieldType == typeof(bool))
-                                field.SetValue(nextData, StringToBool(sheetValue));
-                            else if (field.FieldType == typeof(string))
-                                field.SetValue(nextData, sheetValue);
-                            else if (field.FieldType == typeof(AbilityType))
-                                field.SetValue(nextData, StringToAbilityType(sheetValue));
-                            else if (field.FieldType == typeof(Sprite))
-                                field.SetValue(nextData, Resources.Load<Sprite>($"Card Art/{data[i][0]}"));
-                        }
-                        catch
-                        {
-                            Debug.LogError($"{field.Name}, {index}");
-                        }
+                        string sheetValue = data[i][index];
+                        if (field.FieldType == typeof(int))
+                            field.SetValue(nextData, StringToInt(sheetValue));
+                        else if (field.FieldType == typeof(bool))
+                            field.SetValue(nextData, StringToBool(sheetValue));
+                        else if (field.FieldType == typeof(string))
+                            field.SetValue(nextData, sheetValue);
+                        else if (field.FieldType == typeof(AbilityType))
+                            field.SetValue(nextData, StringToAbilityType(sheetValue));
+                    }
+                    else
+                    {
+                        if (field.FieldType == typeof(Sprite))
+                            field.SetValue(nextData, Resources.Load<Sprite>($"Card Art/{data[i][0]}"));
                     }
                 }
             }
@@ -360,11 +364,11 @@ public class Translator : PhotonCompatible
             try
             {
                 answer = keyTranslate[("English")][key];
-                Debug.Log($"{key} failed to translate in {PlayerPrefs.GetString("Language")}");
+                //Debug.Log($"{key} failed to translate in {PlayerPrefs.GetString("Language")}");
             }
             catch
             {
-                Debug.Log($"{key} failed to translate at all");
+                //Debug.Log($"{key} failed to translate at all");
                 return key;
             }
         }

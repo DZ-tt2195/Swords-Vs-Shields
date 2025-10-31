@@ -1,5 +1,5 @@
 Designer=by Thomas Tang (DZ)
-Last Update=Last Updated: October 24th, 2025
+Last Update=Last Updated: October 31st, 2025
 Translator Credit=
 Language=Language
 Loading=Loading
@@ -53,5 +53,5 @@ Lose Health Player=$Player$ loses $Num$ Health.
 Add Health Troop=$Player$'s $Troop$ gets +$Num$ Health.
 Lose Health Troop=$Player$'s $Troop$ loses $Num$ Health.
 Boat=Boat
-Boat TextOne=1 RedCoin -u003e Deal 2 damage.
-Boat TextTwo=
+Boat TextOne=1 Coin -u003e Deal 2 damage.
+Boat TextTwo=PLAY: +1 Coin
