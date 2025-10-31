@@ -75,7 +75,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Player
   endPause: 1
   keepHand: {fileID: 3096770194485844380}
-  keepDiscard: {fileID: 7888794284168391607}
 --- !u!1 &4119645918277154154
 GameObject:
   m_ObjectHideFlags: 0

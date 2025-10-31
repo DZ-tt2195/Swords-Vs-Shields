@@ -33,6 +33,12 @@ public class PlayerCreator : PhotonCompatible
         inst = this;
         PhotonNetwork.AutomaticallySyncScene = true;
         canvas = GameObject.Find("Canvas").GetComponent<Canvas>();
+
+        foreach (MiniCardDisplay display in cardDisplayOne)
+            display.gameObject.SetActive(false);
+        foreach (MiniCardDisplay display in cardDisplayTwo)
+            display.gameObject.SetActive(false);
+
         Invoke(nameof(Setup), 0.25f);
     }
 

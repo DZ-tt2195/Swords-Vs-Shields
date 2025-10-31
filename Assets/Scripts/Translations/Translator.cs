@@ -1,10 +1,6 @@
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text.RegularExpressions;
 using UnityEngine;
-using UnityEngine.Networking;
-using System.IO;
 using UnityEngine.SceneManagement;
 using MyBox;
 using System;
@@ -30,43 +26,51 @@ public class Translator : PhotonCompatible
     public static Translator inst;
     Dictionary<string, Dictionary<string, string>> keyTranslate = new();
     public List<CardData> playerCardFiles { get; private set; }
-
-    string sheetURL = "1t-hSHonNfzuxCmlJTtRS5ITwkhDuF6mBJoBnRDbs0nk";
-    string apiKey = "AIzaSyCl_GqHd1-WROqf7i2YddE3zH6vSv3sNTA";
-    string baseUrl = "https://sheets.googleapis.com/v4/spreadsheets/";
     [Scene][SerializeField] string toLoad;
 
     protected override void Awake()
     {
-        //Debug.Log(string.Format($"hi {0}", "lol"));
-        //Debug.Log(string.Format($"hi {{0}}", "lol"));
-
         if (inst == null)
         {
             inst = this;
             DontDestroyOnLoad(this.gameObject);
             Application.targetFrameRate = 60;
-
-            if (!PlayerPrefs.HasKey("Language")) PlayerPrefs.SetString("Language", "English");
-            TxtLanguages();
-
-            StartCoroutine(AllSetup());
-
-            IEnumerator AllSetup()
-            {
-                CoroutineGroup group = new(this);
-                group.StartCoroutine(DownloadLanguages());
-                group.StartCoroutine(GetCardData());
-
-                while (group.AnyProcessing)
-                    yield return null;
-                SceneManager.LoadScene(toLoad);
-            }
         }
         else
         {
             Destroy(this.gameObject);
         }
+    }
+
+    private void Start()
+    {
+        if (!PlayerPrefs.HasKey("Language"))
+            PlayerPrefs.SetString("Language", "English");
+
+        TxtLanguages();
+        CsvLanguages(ReadFile("Csv Languages"));
+        playerCardFiles = GetCardData<CardData>(ReadFile("Player Cards"));
+        KeywordTooltip.instance.SwitchLanguage();
+        SceneManager.LoadScene(toLoad);
+    }
+
+    #endregion
+
+#region Reading Files
+
+    public static string[][] ReadFile(string range)
+    {
+        TextAsset data = Resources.Load($"{range}") as TextAsset;
+
+        string editData = data.text;
+        editData = editData.Replace("],", "").Replace("{", "").Replace("}", "");
+
+        string[] numLines = editData.Split("[");
+        string[][] list = new string[numLines.Length][];
+
+        for (int i = 0; i < numLines.Length; i++)
+            list[i] = numLines[i].Split("\",");
+        return list;
     }
 
     void TxtLanguages()
@@ -104,58 +108,7 @@ public class Translator : PhotonCompatible
         }
     }
 
-    #endregion
-
-#region Downloading
-
-    IEnumerator Download(string range)
-    {
-        if (Application.isEditor)
-        {
-            string url = $"{baseUrl}{sheetURL}/values/{range}?key={apiKey}";
-            using UnityWebRequest www = UnityWebRequest.Get(url);
-            yield return www.SendWebRequest();
-
-            if (www.result == UnityWebRequest.Result.ConnectionError || www.result == UnityWebRequest.Result.ProtocolError)
-            {
-                //Debug.LogError($"Download failed: {www.error}");
-            }
-            else
-            {
-                string filePath = $"Assets/Resources/{range}.txt";
-                File.WriteAllText($"{filePath}", www.downloadHandler.text);
-
-                string[] allLines = File.ReadAllLines($"{filePath}");
-                List<string> modifiedLines = allLines.ToList();
-                modifiedLines.RemoveRange(1, 3);
-                File.WriteAllLines($"{filePath}", modifiedLines.ToArray());
-                //Debug.Log($"downloaded {range}");
-            }
-        }
-    }
-
-    IEnumerator DownloadLanguages()
-    {
-        yield return Download("Csv Languages");
-        GetLanguages(ReadFile("Csv Languages"));
-
-        string[][] ReadFile(string range)
-        {
-            TextAsset data = Resources.Load($"{range}") as TextAsset;
-
-            string editData = data.text;
-            editData = editData.Replace("],", "").Replace("{", "").Replace("}", "");
-
-            string[] numLines = editData.Split("[");
-            string[][] list = new string[numLines.Length][];
-
-            for (int i = 0; i < numLines.Length; i++)
-                list[i] = numLines[i].Split("\",");
-            return list;
-        }
-    }
-
-    void GetLanguages(string[][] data)
+    void CsvLanguages(string[][] data)
     {
         for (int i = 1; i < data[1].Length; i++)
         {
@@ -164,7 +117,6 @@ public class Translator : PhotonCompatible
             keyTranslate.Add(data[1][i], newDictionary);
         }
 
-        List<(string, string)> listOfKeys = new();
         for (int i = 2; i < data.Length; i++)
         {
             for (int j = 0; j < data[i].Length; j++)
@@ -175,144 +127,91 @@ public class Translator : PhotonCompatible
                     string language = data[1][j];
                     string key = data[i][0];
                     keyTranslate[language][key] = data[i][j];
-
-                    if (j == 1)
-                        listOfKeys.Add((data[i][0], data[i][1]));
                 }
             }
         }
-        KeywordTooltip.instance.SwitchLanguage();
-        CreateBaseTxtFile(listOfKeys);
     }
 
-    void CreateBaseTxtFile(List<(string, string)> listOfKeys)
+    List<T> GetCardData<T>(string[][] data) where T : new()
     {
-        if (Application.isEditor)
+        Dictionary<string, int> columnIndex = new();
+        List<T> toReturn = new();
+
+        for (int i = 0; i < data[1].Length; i++)
         {
-            string baseText = "";
-            foreach ((string key, string value) in listOfKeys)
-                baseText += $"{key}={value}\n";
-
-            string filePath = $"Assets/Resources/BaseTxtFile.txt";
-            File.WriteAllText($"{filePath}", baseText);
-
-            /*
-            string filePath = Path.Combine(Application.persistentDataPath, "BaseTxtFile.txt");
-            using (StreamWriter writer = new StreamWriter(filePath))
+            string nextLine = data[1][i].Trim().Replace("\"", "");
+            if (!columnIndex.ContainsKey(nextLine))
             {
-                foreach (string input in listOfKeys)
-                    writer.WriteLine($"{input}=");
-            }*/
-        }
-    }
-
-    IEnumerator GetCardData()
-    {
-        CoroutineGroup group = new(this);
-        group.StartCoroutine(Download("Player Cards"));
-
-        while (group.AnyProcessing)
-            yield return null;
-
-        playerCardFiles = GetDataFiles<CardData>(ReadFile("Player Cards"));
-
-        string[][] ReadFile(string range)
-        {
-            TextAsset data = Resources.Load($"{range}") as TextAsset;
-
-            string editData = data.text;
-            editData = editData.Replace("],", "").Replace("{", "").Replace("}", "");
-
-            string[] numLines = editData.Split("[");
-            string[][] list = new string[numLines.Length][];
-
-            for (int i = 0; i < numLines.Length; i++)
-            {
-                list[i] = numLines[i].Split("\",");
+                columnIndex.Add(nextLine, i);
             }
-            return list;
         }
-        List<T> GetDataFiles<T>(string[][] data) where T : new()
+
+        for (int i = 2; i < data.Length; i++)
         {
-            Dictionary<string, int> columnIndex = new();
-            List<T> toReturn = new();
+            for (int j = 0; j < data[i].Length; j++)
+                data[i][j] = data[i][j].Trim().Replace("\"", "").Replace("\\", "").Replace("]", "");
 
-            for (int i = 0; i < data[1].Length; i++)
+            if (data[i][0].IsNullOrEmpty())
+                continue;
+
+            T nextData = new();
+            toReturn.Add(nextData);
+
+            foreach (FieldInfo field in typeof(T).GetFields(BindingFlags.Public | BindingFlags.Instance))
             {
-                string nextLine = data[1][i].Trim().Replace("\"", "");
-                if (!columnIndex.ContainsKey(nextLine))
+                if (columnIndex.TryGetValue(field.Name, out int index))
                 {
-                    columnIndex.Add(nextLine, i);
-                }
-            }
+                    string sheetValue = data[i][index];
+                    if (field.FieldType == typeof(int))
+                        field.SetValue(nextData, StringToInt(sheetValue));
+                    else if (field.FieldType == typeof(bool))
+                        field.SetValue(nextData, StringToBool(sheetValue));
+                    else if (field.FieldType == typeof(string))
+                        field.SetValue(nextData, sheetValue);
+                    else if (field.FieldType == typeof(AbilityType))
+                        field.SetValue(nextData, StringToAbilityType(sheetValue));
 
-            for (int i = 2; i < data.Length; i++)
-            {
-                for (int j = 0; j < data[i].Length; j++)
-                    data[i][j] = data[i][j].Trim().Replace("\"", "").Replace("\\", "").Replace("]", "");
-
-                if (data[i][0].IsNullOrEmpty())
-                    continue;
-
-                T nextData = new();
-                toReturn.Add(nextData);
-
-                foreach (FieldInfo field in typeof(T).GetFields(BindingFlags.Public | BindingFlags.Instance))
-                {
-                    if (columnIndex.TryGetValue(field.Name, out int index))
+                    int StringToInt(string line)
                     {
-                        string sheetValue = data[i][index];
-                        if (field.FieldType == typeof(int))
-                            field.SetValue(nextData, StringToInt(sheetValue));
-                        else if (field.FieldType == typeof(bool))
-                            field.SetValue(nextData, StringToBool(sheetValue));
-                        else if (field.FieldType == typeof(string))
-                            field.SetValue(nextData, sheetValue);
-                        else if (field.FieldType == typeof(AbilityType))
-                            field.SetValue(nextData, StringToAbilityType(sheetValue));
+                        line = line.Trim();
+                        try
+                        {
+                            return (line.Equals("")) ? -1 : int.Parse(line);
+                        }
+                        catch (FormatException)
+                        {
+                            return -1;
+                        }
                     }
-                    else
+
+                    AbilityType StringToAbilityType(string line)
                     {
-                        if (field.FieldType == typeof(Sprite))
-                            field.SetValue(nextData, Resources.Load<Sprite>($"Card Art/{data[i][0]}"));
+                        line = line.Trim();
+                        try
+                        {
+                            return (AbilityType)Enum.Parse(typeof(AbilityType), line);
+                        }
+                        catch (FormatException)
+                        {
+                            return AbilityType.None;
+                        }
+                    }
+
+                    bool StringToBool(string line)
+                    {
+                        line = line.Trim();
+                        return line == "TRUE";
                     }
                 }
+                else
+                {
+                    if (field.FieldType == typeof(Sprite))
+                        field.SetValue(nextData, Resources.Load<Sprite>($"Card Art/{data[i][0]}"));
+                }
             }
+        }
 
-            return toReturn;
-        }
-    }
-
-    int StringToInt(string line)
-    {
-        line = line.Trim();
-        try
-        {
-            return (line.Equals("")) ? -1 : int.Parse(line);
-        }
-        catch (FormatException)
-        {
-            return -1;
-        }
-    }
-
-    AbilityType StringToAbilityType(string line)
-    {
-        line = line.Trim();
-        try
-        {
-            return (AbilityType)Enum.Parse(typeof(AbilityType), line);
-        }
-        catch (FormatException)
-        {
-            return AbilityType.None;
-        }
-    }
-
-    bool StringToBool(string line)
-    {
-        line = line.Trim();
-        return line == "TRUE";
+        return toReturn;
     }
 
     #endregion
