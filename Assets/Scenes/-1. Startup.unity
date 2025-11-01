@@ -247,7 +247,11 @@ MonoBehaviour:
   tooltipText: {fileID: 1828323579}
   linkedKeywords: []
   spriteKeywords:
-  - englishString: Coin
+  - englishString: RedCoin
+    translatedString: 
+    description: 
+    color: {r: 0, g: 0, b: 0, a: 0}
+  - englishString: GreenCoin
     translatedString: 
     description: 
     color: {r: 0, g: 0, b: 0, a: 0}

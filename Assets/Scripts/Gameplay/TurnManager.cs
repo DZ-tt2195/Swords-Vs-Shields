@@ -30,9 +30,9 @@ public class TurnManager : PhotonCompatible
         }
     }
 
-    public void DoTurnAction(Player player)
+    public Action GetTurnAction(Player player)
     {
-        turnsInOrder[GetCurrentPhase()].ForPlayer(player);
+        return () => turnsInOrder[GetCurrentPhase()].ForPlayer(player);
     }
 
     [PunRPC]

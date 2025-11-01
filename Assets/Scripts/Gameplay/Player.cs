@@ -7,7 +7,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine.UI;
 
-public enum PlayerProp { Spectator, Waiting, MyHand, MyDeck, MyDiscard, MyTroops, MyHealth, Coin, Action }
+public enum PlayerProp { Spectator, Waiting, MyHand, MyDeck, MyDiscard, MyTroops, MyHealth, GreenCoin, RedCoin, Action }
 
 public class Player : PhotonCompatible
 {
@@ -82,14 +82,14 @@ public class Player : PhotonCompatible
                 Log.inst.AddMyText($"Player Draw-Card-{toDraw[num].name}", false, logged);
                 toDraw.Add(myDeck[num]);
             }
-            Log.inst.NewRollback(this, () => AddToHand(false, toDraw));
+            Log.inst.NewRollback(() => AddToHand(toDraw));
         }
     }
 
-    void AddToHand(bool undo, List<Card> cardsToAdd)
+    void AddToHand(List<Card> cardsToAdd)
     {
         List<Card> myHand = GetCardList(PlayerProp.MyHand.ToString());
-        if (undo)
+        if (!Log.inst.forward)
         {
             cardsDrawnThisTurn -= cardsToAdd.Count;
             foreach (Card card in cardsToAdd)
@@ -100,7 +100,7 @@ public class Player : PhotonCompatible
             cardsDrawnThisTurn += cardsToAdd.Count;
             foreach (Card card in cardsToAdd)
             {
-                Debug.Log($"drew {card.photonView.ViewID}");
+                //Debug.Log($"drew {card.photonView.ViewID}");
                 myHand.Add(card);
             }
         }
@@ -205,22 +205,33 @@ public class Player : PhotonCompatible
 
 #region Resources
 
-    public void CoinRPC(int num, int logged)
+    void ChangeInt(int num, string property)
+    {
+        int coinTotal = GetInt(property);
+        coinTotal += (!Log.inst.forward) ? -num : num;
+        WillChangePlayerProperty(property, coinTotal);
+    }
+
+    public void GreenCoinRPC(int num, int logged)
     {
         if (num == 0)
             return;
         if (num > 0)
-            Log.inst.AddMyText($"Add Coin-Player-{this.name}-Num-{num}", false, logged);
+            Log.inst.AddMyText($"Add Green Coin-Player-{this.name}-Num-{num}", false, logged);
         else
-            Log.inst.AddMyText($"Lose Coin-Player-{this.name}-Num-{Mathf.Abs(num)}", false, logged);
-        Log.inst.NewRollback(this, () => ChangeInt(false, num, PlayerProp.Coin.ToString()));
+            Log.inst.AddMyText($"Lose Green Coin-Player-{this.name}-Num-{Mathf.Abs(num)}", false, logged);
+        Log.inst.NewRollback(() => ChangeInt(num, PlayerProp.GreenCoin.ToString()));
     }
 
-    void ChangeInt(bool undo, int num, string property)
+    public void RedCoinRPC(int num, int logged)
     {
-        int coinTotal = GetInt(property);
-        coinTotal += (undo) ? -num : num;
-        WillChangePlayerProperty(property, coinTotal);
+        if (num == 0)
+            return;
+        if (num > 0)
+            Log.inst.AddMyText($"Add Red Coin-Player-{this.name}-Num-{num}", false, logged);
+        else
+            Log.inst.AddMyText($"Lose Red Coin-Player-{this.name}-Num-{Mathf.Abs(num)}", false, logged);
+        Log.inst.NewRollback(() => ChangeInt(num, PlayerProp.RedCoin.ToString()));
     }
 
     public void ActionRPC(int num, int logged)
@@ -231,7 +242,7 @@ public class Player : PhotonCompatible
             Log.inst.AddMyText($"Add Action-Player-{this.name}-Num-{num}", false, logged);
         else
             Log.inst.AddMyText($"Lose Action-Player-{this.name}-Num-{Mathf.Abs(num)}", false, logged);
-        Log.inst.NewRollback(this, () => ChangeInt(false, num, PlayerProp.Action.ToString()));
+        Log.inst.NewRollback(() => ChangeInt(num, PlayerProp.Action.ToString()));
     }
 
     public void HealthRPC(int num, int logged)
@@ -242,7 +253,7 @@ public class Player : PhotonCompatible
             Log.inst.AddMyText($"Add Health Player-Player-{this.name}-Num-{num}", false, logged);
         else
             Log.inst.AddMyText($"Lose Health Player-Player-{this.name}-Num-{Mathf.Abs(num)}", false, logged);
-        Log.inst.NewRollback(this, () => ChangeInt(false, num, PlayerProp.MyHealth.ToString()));
+        Log.inst.NewRollback(() => ChangeInt(num, PlayerProp.MyHealth.ToString()));
     }
 
     #endregion
@@ -389,8 +400,8 @@ public class Player : PhotonCompatible
         ChangePlayerProperties(this, PlayerProp.Waiting, false);
         endPause = true;
 
-        TurnManager.inst.DoTurnAction(this);
-        Log.inst.NewDecisionContainer(this, () => EndTurn(), -1);
+        Log.inst.NewDecisionContainer(() => TurnManager.inst.GetTurnAction(this), 0);
+        Log.inst.NewDecisionContainer(() => EndTurn(), 0);
         Log.inst.PopStack();
     }
 
@@ -467,7 +478,10 @@ public class Player : PhotonCompatible
         }
 
         (PlayerDisplay myDisplay, List<MiniCardDisplay> myTroopDisplays) = PlayerCreator.inst.PlayerUI(photonView.Controller);
-        string descriptionText = $"{this.name}\n{myHand.Count} Card\n{GetInt(PlayerProp.Coin.ToString())} Coin\n{GetInt(PlayerProp.Action.ToString())} Action";
+        string descriptionText = $"{this.name}\n{myHand.Count} Card" +
+            $"\n{GetInt(PlayerProp.GreenCoin.ToString())} GreenCoin" +
+            $"\n{GetInt(PlayerProp.RedCoin.ToString())} RedCoin" +
+            $"\n{GetInt(PlayerProp.Action.ToString())} Action";
         myDisplay.AssignInfo(this, GetInt(PlayerProp.MyHealth.ToString()), KeywordTooltip.instance.EditText(descriptionText));
 
         List<Card> myTroops = GetCardList(PlayerProp.MyTroops.ToString());

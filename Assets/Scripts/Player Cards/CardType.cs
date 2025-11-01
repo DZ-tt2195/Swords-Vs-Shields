@@ -12,11 +12,6 @@ public class CardType
         this.dataFile = dataFile;
     }
 
-    protected void MakeDecision(Card card, Action action, int logged)
-    {
-        Log.inst.NewDecisionContainer(card, () => card.MakeDecision(action), logged);
-    }
-
     public virtual AbilityType CanUseAbiltyOne(Player player, Card thisCard)
     {
         return AbilityType.None;

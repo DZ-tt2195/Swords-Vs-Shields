@@ -11,8 +11,8 @@
     ],
     [
       "Boat",
-      "1 Coin -\u003e Deal 2 damage.",
-      "PLAY: +1 Coin",
+      "1 RedCoin -\u003e Deal 2 damage.",
+      "PLAY: +1 RedCoin",
       "3",
       "AffectOther",
       "PlayEffect",

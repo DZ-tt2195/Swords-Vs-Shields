@@ -33,60 +33,32 @@ public class DecisionContainer
         }
     }
 
-    public PhotonCompatible source { get; private set; }
     public Expression<Action> action { get; private set; }
     public int logged { get; private set; }
-    public bool forward { get; private set; }
     public DecisionContainer parent;
-    public string actionName { get; private set; }
-    //public string parameters;
 
-    public DecisionContainer(DecisionContainer parentContainer, PhotonCompatible source, int logged, bool forward, Expression<Action> action)
+    public DecisionContainer(DecisionContainer parentContainer, int logged, Expression<Action> action)
     {
-        this.complete = !forward;
+        this.complete = false;
         listOfDCs = new();
         listOfRBs = new();
-        this.source = source;
         this.action = action;
         this.logged = logged;
         parent = parentContainer;
         parentContainer?.listOfDCs.Add(this);
-        this.forward = forward;
-
-        if (action != null)
-        {
-            (string instruction, object[] parameters) = this.source.TranslateFunction(action);
-            actionName = instruction;
-        }
-        /*
-        string answer = $"";
-        foreach (object obj in parameters)
-            answer += $"{obj}, ";
-        this.parameters = answer;*/
     }
 }
 
 public class RollBack
 {
-    public PhotonCompatible source { get; private set; }
     public Expression<Action> action { get; private set; }
     public DecisionContainer parent { get; private set; }
-    public string actionName { get; private set; }
-    //public string parameters;
 
-    public RollBack(DecisionContainer parentContainer, PhotonCompatible source, Expression<Action> action)
+    public RollBack(DecisionContainer parentContainer, Expression<Action> action)
     {
-        this.source = source;
         this.action = action;
         parent = parentContainer;
         parentContainer?.listOfRBs.Add(this);
-        /*
-        (string instruction, object[] parameters) = this.source.TranslateFunction(action);
-        actionName = instruction;
-        string answer = $"";
-        foreach (object obj in parameters)
-            answer += $"{obj}, ";
-        this.parameters = answer;*/
     }
 }
 
@@ -139,6 +111,7 @@ public class Log : PhotonCompatible
     [SerializeField] Button undoButton;
     [SerializeField] Slider logTypeSlider;
     bool storeUndoPoint = false;
+    public bool forward { get; private set; }
 
     protected override void Awake()
     {
@@ -178,12 +151,12 @@ public class Log : PhotonCompatible
     public void AddMyText(string logText, bool important, int indent = 0, bool isUndo = true)
     {
         if (indent >= 0)
-            NewRollback(this, () => AddToCurrent(false, logText, indent, important, isUndo));
+            NewRollback(() => AddToCurrent(logText, indent, important, isUndo));
     }
 
-    void AddToCurrent(bool undo, string logText, int indent, bool important, bool isUndo)
+    void AddToCurrent(string logText, int indent, bool important, bool isUndo)
     {
-        if (undo)
+        if (!Log.inst.forward)
         {
             int count = currentLogTexts.Count-1;
             LogText nextText = currentLogTexts[count];
@@ -339,6 +312,7 @@ public class Log : PhotonCompatible
     {
         DecisionContainer toThisPoint = undosInLog[^1].undoToThis;
         ClearCurrentDecision(true);
+        forward = false;
 
         for (int i = completedDecisions.Count - 1; i >= 0; i--)
         {
@@ -350,18 +324,12 @@ public class Log : PhotonCompatible
             for (int j = container.listOfRBs.Count - 1; j >= 0; j--)
             {
                 RollBack next = container.listOfRBs[j];
-                (string instruction, object[] parameters) = next.source.TranslateFunction(next.action);
-                object[] newParameters = parameters.ToArray();
-                newParameters[0] = true;
-                next.source.StringParameters(instruction, newParameters);
+                currentContainer.action.Compile().Invoke();
                 container.listOfRBs.RemoveAt(j);
             }
 
-            if (!container.forward)
-            {
                 completedDecisions.Remove(container);
                 container.parent.listOfDCs.Remove(container);
-            }
 
             if (container == toThisPoint)
             {
@@ -375,7 +343,7 @@ public class Log : PhotonCompatible
                 if (index == 0)
                 {
                     container.parent.listOfDCs.Clear();
-                    Debug.Log($"parent DCs cleared");
+                    //Debug.Log($"parent DCs cleared");
                 }
             }
         }
@@ -385,16 +353,16 @@ public class Log : PhotonCompatible
 
 #region New Steps
 
-    public RollBack NewRollback(PhotonCompatible source, Expression<Action> action)
+    public RollBack NewRollback(Expression<Action> action)
     {
-        RollBack next = new(currentContainer, source, action);
+        RollBack next = new(currentContainer, action);
         action.Compile().Invoke();
         return next;
     }
 
-    public DecisionContainer NewDecisionContainer(PhotonCompatible source, Expression<Action> action, int logged)
+    public DecisionContainer NewDecisionContainer(Expression<Action> action, int logged)
     {
-        DecisionContainer next = new(currentContainer, source, logged, true, action);
+        DecisionContainer next = new(currentContainer, logged, action);
         if (currentContainer == null)
             initialContainers.Add(next);
         return next;
@@ -423,6 +391,7 @@ public class Log : PhotonCompatible
 
     public void PopStack(bool run = true)
     {
+        forward = true;
         List<Action> newActions = new();
         for (int i = 0; i < inReaction.Count; i++)
             newActions.Add(inReaction[i]);

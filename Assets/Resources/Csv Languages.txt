@@ -200,11 +200,6 @@
       "\"\""
     ],
     [
-      "Blank",
-      "\"\"",
-      "\"\""
-    ],
-    [
       "Card",
       "Card",
       "\"\""
@@ -220,19 +215,34 @@
       "\"\""
     ],
     [
-      "Coin",
-      "Coin",
+      "GreenCoin",
+      "GreenCoin",
       "\"\""
     ],
     [
       "Add Coin",
-      "$Player$ gets +$Num$ Coin.",
+      "$Player$ gets +$Num$ GreenCoin.",
       "\"\""
     ],
     [
       "Lose Coin",
-      "$Player$ loses $Num$ Coin.",
+      "$Player$ loses $Num$ GreenCoin.",
       "\"\""
+    ],
+    [
+      "RedCoin",
+      "RedCoin",
+      "\"\""
+    ],
+    [
+      "Add Red Coin",
+      "$Player$ gets +$Num$ RedCoin.",
+      "\"\""
+    ],
+    [
+      "Lose Red Coin",
+      "$Player$ loses $Num$ RedCoin.",
+      "\"'"
     ],
     [
       "Action",
@@ -275,18 +285,38 @@
       "\"\""
     ],
     [
+      "Blank",
+      "\"\"",
+      "\"\""
+    ],
+    [
+      "Play Card",
+      "Round $Num$ - Play Card",
+      "\"\""
+    ],
+    [
+      "Use Green",
+      "Round $Num$ - Use Green Abilities",
+      "\"\""
+    ],
+    [
+      "Use Red",
+      "Round $Num$ - Use Red Abilities",
+      "\"\""
+    ],
+    [
       "Boat",
       "Boat",
       "\"\""
     ],
     [
       "Boat TextOne",
-      "1 Coin -\u003e Deal 2 damage.",
+      "1 RedCoin -\u003e Deal 2 damage.",
       "\"\""
     ],
     [
       "Boat TextTwo",
-      "PLAY: +1 Coin",
+      "PLAY: +1 RedCoin",
       "\"\""
     ]
   ]

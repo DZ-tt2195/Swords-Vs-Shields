@@ -165,7 +165,8 @@ public class PlayerCreator : PhotonCompatible
             [PlayerProp.Spectator.ToString()] = false,
             [PlayerProp.Waiting.ToString()] = false,
 
-            [PlayerProp.Coin.ToString()] = 0,
+            [PlayerProp.GreenCoin.ToString()] = 0,
+            [PlayerProp.RedCoin.ToString()] = 0,
             [PlayerProp.Action.ToString()] = 0,
             [PlayerProp.MyHealth.ToString()] = 20,
 
