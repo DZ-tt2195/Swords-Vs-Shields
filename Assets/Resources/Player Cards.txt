@@ -18,6 +18,16 @@
       "PlayEffect",
       "X",
       "Coin, CareBox"
+    ],
+    [
+      "Cargo",
+      "1 RedCoin -\u003e Deal 2 damage.",
+      "PLAY: +1 RedCoin",
+      "3",
+      "AffectOther",
+      "PlayEffect",
+      "X",
+      "Coin, CareBox"
     ]
   ]
 }

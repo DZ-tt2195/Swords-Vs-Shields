@@ -28,7 +28,10 @@ public class MiniCardDisplay : MonoBehaviour, IPointerClickHandler
         this.card = card;
         image.sprite = card.thisCard.dataFile.sprite;
 
-        string text = $"{player.GetInt(card.HealthString())}";
+        int currentHealth = TurnManager.inst.GetInt(card.HealthString());
+        drawX.gameObject.SetActive(currentHealth <= 0);
+
+        string text = $"{currentHealth} Health";
         description.text = KeywordTooltip.instance.EditText(text);
     }
 }

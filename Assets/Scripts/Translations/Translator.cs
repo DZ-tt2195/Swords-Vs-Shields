@@ -241,7 +241,7 @@ public class Translator : PhotonCompatible
             toTranslate.Add((first, second));
         }
 
-        if (TranslationExists($"{splitUp[0]} Others") && PhotonNetwork.LocalPlayer.ActorNumber != owner)
+        if (TranslationExists($"{splitUp[0]} Others") && (int)PhotonNetwork.LocalPlayer.CustomProperties[PlayerProp.Position.ToString()] != owner)
             targetText += Translate($"{splitUp[0]} Others", toTranslate);
         else
             targetText += Translate($"{splitUp[0]}", toTranslate);

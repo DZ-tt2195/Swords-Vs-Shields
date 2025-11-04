@@ -16,6 +16,7 @@ public static class FileManager
     [MenuItem("Tools/Download From Spreadsheet")]
     public static void DownloadFiles()
     {
+        Debug.Log($"starting downloads");
         EditorCoroutineUtility.StartCoroutineOwnerless(Download("Csv Languages"));
         EditorCoroutineUtility.StartCoroutineOwnerless(Download("Player Cards"));
     }

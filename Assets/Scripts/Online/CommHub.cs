@@ -82,7 +82,7 @@ public class CommHub : PhotonCompatible
 
     public override void OnPlayerLeftRoom(Photon.Realtime.Player otherPlayer)
     {
-        if (PhotonNetwork.IsMasterClient && !(bool)GetPlayerProperty(otherPlayer, PlayerProp.Spectator.ToString()))
+        if (PhotonNetwork.IsMasterClient && (int)GetPlayerProperty(otherPlayer, PlayerProp.Position.ToString()) >= 0)
         {
             if (otherPlayer.IsInactive)
             {

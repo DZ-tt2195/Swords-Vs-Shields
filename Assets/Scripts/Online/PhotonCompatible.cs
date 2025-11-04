@@ -140,17 +140,17 @@ public class PhotonCompatible : MonoBehaviourPunCallbacks
 
         foreach (Photon.Realtime.Player nextPlayer in PhotonNetwork.CurrentRoom.Players.Values.OrderBy(p => p.ActorNumber))
         {
-            if ((bool)GetPlayerProperty(nextPlayer, PlayerProp.Spectator.ToString()))
+            if ((int)GetPlayerProperty(nextPlayer, PlayerProp.Position.ToString()) == -1)
             {
                 spectators.Add(nextPlayer);
                 if (printLog)
-                    Debug.Log($"spectating (inactive: {nextPlayer.IsInactive}): {nextPlayer.NickName}");
+                    Debug.Log($"spectating (inactive: {nextPlayer.IsInactive}, {nextPlayer.ActorNumber}): {nextPlayer.NickName}");
             }
             else
             {
                 players.Add(nextPlayer);
                 if (printLog)
-                    Debug.Log($"playing (inactive: {nextPlayer.IsInactive}): {nextPlayer.NickName}");
+                    Debug.Log($"playing (inactive: {nextPlayer.IsInactive}, {nextPlayer.ActorNumber}): {nextPlayer.NickName}");
             }
         }
 

@@ -7,7 +7,7 @@ using System.Collections;
 using MyBox;
 using TMPro;
 
-public enum RoomProp { Game, CanPlay, JoinAsSpec, MasterDeck, MasterDiscard, CurrentPhase, CurrentRound }
+public enum RoomProp { Game, CanPlay, JoinAsSpec, MasterDeck, MasterDiscard, CurrentPhase, CurrentRound, P0_Health, P1_Health }
 
 public class PlayerCreator : PhotonCompatible
 {
@@ -15,7 +15,7 @@ public class PlayerCreator : PhotonCompatible
 #region Setup
 
     public static PlayerCreator inst;
-    public Dictionary<Photon.Realtime.Player, Player> playerDictionary = new();
+    public List<Player> listOfPlayers = new();
 
     [Foldout("UI and Animation", true)]
     public Camera mainCamera;
@@ -60,8 +60,8 @@ public class PlayerCreator : PhotonCompatible
                 CommHub.inst.ShareMessageRPC($"Player Spectating-Player-{playerName}", true);
                 ExitGames.Client.Photon.Hashtable playerProps = new()
                 {
-                    [PlayerProp.Spectator.ToString()] = true,
                     [PlayerProp.Waiting.ToString()] = true,
+                    [PlayerProp.Position.ToString()] = -1,
                 };
                 PhotonNetwork.LocalPlayer.SetCustomProperties(playerProps);
             }
@@ -134,6 +134,8 @@ public class PlayerCreator : PhotonCompatible
             [RoomProp.MasterDiscard.ToString()] = new int[0],
             [RoomProp.CurrentPhase.ToString()] = 0,
             [RoomProp.CurrentRound.ToString()] = 0,
+            [RoomProp.P0_Health.ToString()] = 20,
+            [RoomProp.P1_Health.ToString()] = 20,
         };
         List<int> startingDeck = new();
         List<int> cardID = new();
@@ -159,16 +161,15 @@ public class PlayerCreator : PhotonCompatible
 
     void CreatePlayer()
     {
-        MakeObject(CarryVariables.inst.playerPrefab.gameObject);
+        int count = listOfPlayers.Count;
         ExitGames.Client.Photon.Hashtable playerProps = new()
         {
-            [PlayerProp.Spectator.ToString()] = false,
             [PlayerProp.Waiting.ToString()] = false,
+            [PlayerProp.Position.ToString()] = count,
 
             [PlayerProp.GreenCoin.ToString()] = 0,
             [PlayerProp.RedCoin.ToString()] = 0,
             [PlayerProp.Action.ToString()] = 0,
-            [PlayerProp.MyHealth.ToString()] = 20,
 
             [PlayerProp.MyHand.ToString()] = new int[0],
             [PlayerProp.MyDeck.ToString()] = new int[0],
@@ -176,12 +177,12 @@ public class PlayerCreator : PhotonCompatible
             [PlayerProp.MyTroops.ToString()] = new int[0],
         };
         PhotonNetwork.LocalPlayer.SetCustomProperties(playerProps);
+        MakeObject(CarryVariables.inst.playerPrefab.gameObject);
     }
 
-    public (PlayerDisplay, List<MiniCardDisplay>) PlayerUI(Photon.Realtime.Player player)
+    public (PlayerDisplay, List<MiniCardDisplay>) PlayerUI(int playerPosition)
     {
-        List<Photon.Realtime.Player> allPlayers = GetPlayers(false).Item1;
-        if (allPlayers.IndexOf(player) == 0)
+        if (playerPosition == 0)
             return (playerDisplays[0], cardDisplayOne);
         else
             return (playerDisplays[1], cardDisplayTwo);

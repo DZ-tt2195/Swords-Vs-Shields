@@ -7,7 +7,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine.UI;
 
-public enum PlayerProp { Spectator, Waiting, MyHand, MyDeck, MyDiscard, MyTroops, MyHealth, GreenCoin, RedCoin, Action }
+public enum PlayerProp { Position, Waiting, MyHand, MyDeck, MyDiscard, MyTroops, GreenCoin, RedCoin, Action }
 
 public class Player : PhotonCompatible
 {
@@ -15,24 +15,18 @@ public class Player : PhotonCompatible
 #region Setup
 
     bool initialized = false;
-
-    [Foldout("Undo/Share", true)]
-    ExitGames.Client.Photon.Hashtable playerPropertyToChange;
-    ExitGames.Client.Photon.Hashtable masterPropertyToChange;
-    int cardsDrawnThisTurn = 0;
     public bool endPause = true;
+    public int myPosition { get; private set; }
 
-    [Foldout("UI", true)]
     Button resignButton;
     [SerializeField] Transform keepHand;
+    PlayerDisplay myPlayerDisplay;
+    List<MiniCardDisplay> allMyTroopDisplays;
 
     protected override void Awake()
     {
         base.Awake();
         this.bottomType = this.GetType();
-        playerPropertyToChange = new();
-        masterPropertyToChange = new();
-
         resignButton = GameObject.Find("Resign Button").GetComponent<Button>();
     }
 
@@ -41,7 +35,9 @@ public class Player : PhotonCompatible
         if (photonView.AmOwner)
         {
             if (!initialized)
+            {
                 DoFunction(() => SendName(PlayerPrefs.GetString("Online Username")), RpcTarget.AllBuffered);
+            }
             Invoke(nameof(StartTurn), 0.5f);
         }
     }
@@ -53,7 +49,12 @@ public class Player : PhotonCompatible
         this.transform.localPosition = new(-10000, -10000);
         initialized = true;
         this.name = username;
-        PlayerCreator.inst.playerDictionary.Add(this.photonView.Owner, this);
+        myPosition = (int)GetPlayerProperty(this, PlayerProp.Position);
+        PlayerCreator.inst.listOfPlayers.Insert(myPosition, this);
+
+        (PlayerDisplay myDisplay, List<MiniCardDisplay> myTroopDisplays) = PlayerCreator.inst.PlayerUI(myPosition);
+        myPlayerDisplay = myDisplay;
+        allMyTroopDisplays = myTroopDisplays;
         UpdateUI();
     }
 
@@ -68,19 +69,19 @@ public class Player : PhotonCompatible
 
         IEnumerator WaitToDraw()
         {
-            List<Card> myDeck = GetCardList(PlayerProp.MyDeck.ToString());
-            while (myDeck.Count < (amount+cardsDrawnThisTurn))
+            List<Card> myDeck = TurnManager.inst.GetCardList(PlayerProp.MyDeck.ToString());
+            while (myDeck.Count < amount)
             {
-                myDeck = GetCardList(PlayerProp.MyDeck.ToString());
+                myDeck = TurnManager.inst.GetCardList(PlayerProp.MyDeck.ToString());
                 yield return null;
             }
 
             List<Card> toDraw = new();
             for (int i = 0; i < amount; i++)
             {
-                int num = cardsDrawnThisTurn + i;
-                Log.inst.AddMyText($"Player Draw-Card-{toDraw[num].name}", false, logged);
-                toDraw.Add(myDeck[num]);
+                Card card = myDeck[i];
+                Log.inst.AddMyText($"Draw Card-Player-{this.name}-Card-{card.name}", false, logged);
+                toDraw.Add(card);
             }
             Log.inst.NewRollback(() => AddToHand(toDraw));
         }
@@ -88,23 +89,29 @@ public class Player : PhotonCompatible
 
     void AddToHand(List<Card> cardsToAdd)
     {
-        List<Card> myHand = GetCardList(PlayerProp.MyHand.ToString());
+        List<Card> myHand = TurnManager.inst.GetCardList(PlayerProp.MyHand.ToString());
+        List<Card> myDeck = TurnManager.inst.GetCardList(PlayerProp.MyDeck.ToString());
+
         if (!Log.inst.forward)
         {
-            cardsDrawnThisTurn -= cardsToAdd.Count;
-            foreach (Card card in cardsToAdd)
+            for (int i = cardsToAdd.Count-1; i>= 0; i--)
+            {
+                Card card = cardsToAdd[i];
                 myHand.Remove(card);
+                myDeck.Insert(0, card);
+            }
         }
         else
         {
-            cardsDrawnThisTurn += cardsToAdd.Count;
-            foreach (Card card in cardsToAdd)
+            for (int i = 0; i < cardsToAdd.Count; i++)
             {
-                //Debug.Log($"drew {card.photonView.ViewID}");
+                Card card = cardsToAdd[i];
                 myHand.Add(card);
+                myDeck.RemoveAt(0);
             }
         }
-        WillChangePlayerProperty(PlayerProp.MyHand.ToString(), ConvertCardList(myHand));
+        TurnManager.inst.WillChangePlayerProperty(PlayerProp.MyHand, TurnManager.inst.ConvertCardList(myHand));
+        TurnManager.inst.WillChangePlayerProperty(PlayerProp.MyDeck, TurnManager.inst.ConvertCardList(myDeck));
     }
 
     void AskForCards(int amount)
@@ -112,15 +119,15 @@ public class Player : PhotonCompatible
         if (amount <= 0)
             return;
 
-        List<Card> myDeck = GetCardList(PlayerProp.MyDeck.ToString());
-        int needToGet = cardsDrawnThisTurn + amount - myDeck.Count;
-        List<Card> masterDeck = GetCardList(RoomProp.MasterDeck.ToString());
+        List<Card> myDeck = TurnManager.inst.GetCardList(PlayerProp.MyDeck.ToString());
+        int needToGet = amount - myDeck.Count;
+        List<Card> masterDeck = TurnManager.inst.GetCardList(RoomProp.MasterDeck.ToString());
 
         if (needToGet >= 1)
         {
             if (masterDeck.Count < needToGet)
             {
-                List<Card> masterDiscard = GetCardList(RoomProp.MasterDiscard.ToString());
+                List<Card> masterDiscard = TurnManager.inst.GetCardList(RoomProp.MasterDiscard.ToString());
                 masterDiscard = masterDiscard.Shuffle();
                 masterDeck.AddRange(masterDiscard);
                 ChangeRoomProperties(RoomProp.MasterDiscard, new int[0]);
@@ -132,84 +139,23 @@ public class Player : PhotonCompatible
                 myDeck.Add(card);
                 masterDeck.RemoveAt(0);
             }
-            ChangeRoomProperties(RoomProp.MasterDeck, ConvertCardList(masterDeck));
-            ChangePlayerProperties(this, PlayerProp.MyDeck, ConvertCardList(myDeck));
+            ChangeRoomProperties(RoomProp.MasterDeck, TurnManager.inst.ConvertCardList(masterDeck));
+            ChangePlayerProperties(this, PlayerProp.MyDeck, TurnManager.inst.ConvertCardList(myDeck));
         }
-    }
-
-    public int[] ConvertCardList(List<Card> listOfCards)
-    {
-        int[] arrayOfCards = new int[listOfCards.Count];
-        for (int i = 0; i < arrayOfCards.Length; i++)
-            arrayOfCards[i] = listOfCards[i].photonView.ViewID;
-        return arrayOfCards;
     }
 
     #endregion
 
-#region Properties
+#region Change Resources
 
-    public int GetInt(string property)
+    void ChangeInt(int num, string property, bool player)
     {
-        if (masterPropertyToChange.ContainsKey(property))
-            return (int)masterPropertyToChange[property];
-        else if (playerPropertyToChange.ContainsKey(property))
-            return (int)playerPropertyToChange[property];
-        else if (PhotonNetwork.CurrentRoom.CustomProperties.ContainsKey(property))
-            return (int)GetRoomProperty(property);
-        else if (this.photonView.Owner.CustomProperties.ContainsKey(property))
-            return (int)GetPlayerProperty(this.photonView.Owner, property);
+        int total = TurnManager.inst.GetInt(property);
+        total += (!Log.inst.forward) ? -num : num;
+        if (player)
+            TurnManager.inst.WillChangePlayerProperty(property, total);
         else
-            return 0;
-    }
-
-    public List<Card> GetCardList(string property)
-    {
-        if (masterPropertyToChange.ContainsKey(property))
-            return ConvertIntArray((int[])masterPropertyToChange[property]);
-        else if (playerPropertyToChange.ContainsKey(property))
-            return ConvertIntArray((int[])playerPropertyToChange[property]);
-        else if (PhotonNetwork.CurrentRoom.CustomProperties.ContainsKey(property))
-            return ConvertIntArray((int[])GetRoomProperty(property));
-        else if (this.photonView.Owner.CustomProperties.ContainsKey(property))
-            return ConvertIntArray((int[])GetPlayerProperty(this.photonView.Owner, property));
-        else
-            return new List<Card>();
-
-        List<Card> ConvertIntArray(int[] arrayOfPVs)
-        {
-            List<Card> listOfCards = new();
-            foreach (int nextPV in arrayOfPVs)
-                listOfCards.Add(PhotonView.Find(nextPV).GetComponent<Card>());
-            return listOfCards;
-        }
-    }
-
-    public void WillChangePlayerProperty(string playerProperty, object changeInto)
-    {
-        if (playerPropertyToChange.ContainsKey(playerProperty))
-            playerPropertyToChange[playerProperty] = changeInto;
-        else
-            playerPropertyToChange.Add(playerProperty, changeInto);
-    }
-
-    public void WillChangeMasterProperty(string masterProperty, object changeInto)
-    {
-        if (masterPropertyToChange.ContainsKey(masterProperty))
-            masterPropertyToChange[masterProperty] = changeInto;
-        else
-            masterPropertyToChange.Add(masterProperty, changeInto);
-    }
-
-    #endregion
-
-#region Resources
-
-    void ChangeInt(int num, string property)
-    {
-        int coinTotal = GetInt(property);
-        coinTotal += (!Log.inst.forward) ? -num : num;
-        WillChangePlayerProperty(property, coinTotal);
+            TurnManager.inst.WillChangeMasterProperty(property, total);
     }
 
     public void GreenCoinRPC(int num, int logged)
@@ -220,7 +166,7 @@ public class Player : PhotonCompatible
             Log.inst.AddMyText($"Add Green Coin-Player-{this.name}-Num-{num}", false, logged);
         else
             Log.inst.AddMyText($"Lose Green Coin-Player-{this.name}-Num-{Mathf.Abs(num)}", false, logged);
-        Log.inst.NewRollback(() => ChangeInt(num, PlayerProp.GreenCoin.ToString()));
+        Log.inst.NewRollback(() => ChangeInt(num, PlayerProp.GreenCoin.ToString(), true));
     }
 
     public void RedCoinRPC(int num, int logged)
@@ -231,7 +177,7 @@ public class Player : PhotonCompatible
             Log.inst.AddMyText($"Add Red Coin-Player-{this.name}-Num-{num}", false, logged);
         else
             Log.inst.AddMyText($"Lose Red Coin-Player-{this.name}-Num-{Mathf.Abs(num)}", false, logged);
-        Log.inst.NewRollback(() => ChangeInt(num, PlayerProp.RedCoin.ToString()));
+        Log.inst.NewRollback(() => ChangeInt(num, PlayerProp.RedCoin.ToString(), true));
     }
 
     public void ActionRPC(int num, int logged)
@@ -242,7 +188,7 @@ public class Player : PhotonCompatible
             Log.inst.AddMyText($"Add Action-Player-{this.name}-Num-{num}", false, logged);
         else
             Log.inst.AddMyText($"Lose Action-Player-{this.name}-Num-{Mathf.Abs(num)}", false, logged);
-        Log.inst.NewRollback(() => ChangeInt(num, PlayerProp.Action.ToString()));
+        Log.inst.NewRollback(() => ChangeInt(num, PlayerProp.Action.ToString(), true));
     }
 
     public void HealthRPC(int num, int logged)
@@ -253,7 +199,7 @@ public class Player : PhotonCompatible
             Log.inst.AddMyText($"Add Health Player-Player-{this.name}-Num-{num}", false, logged);
         else
             Log.inst.AddMyText($"Lose Health Player-Player-{this.name}-Num-{Mathf.Abs(num)}", false, logged);
-        Log.inst.NewRollback(() => ChangeInt(num, PlayerProp.MyHealth.ToString()));
+        Log.inst.NewRollback(() => ChangeInt(num, $"P{myPosition}_Health", false));
     }
 
     #endregion
@@ -276,7 +222,7 @@ public class Player : PhotonCompatible
         {
             Log.inst.SetUndoPoint(true);
             TextPopup popup = Instantiate(CarryVariables.inst.textPopup);
-            string header = TurnManager.inst.Instructions(this.photonView.ControllerActorNr, instructions);
+            string header = TurnManager.inst.Instructions(myPosition, instructions);
             popup.StatsSetup(true, header, position);
 
             for (int i = 0; i < possibleChoices.Count; i++)
@@ -303,7 +249,7 @@ public class Player : PhotonCompatible
         {
             Log.inst.SetUndoPoint(true);
             CardPopup popup = Instantiate(CarryVariables.inst.cardPopup);
-            string header = TurnManager.inst.Instructions(this.photonView.ControllerActorNr, instructions);
+            string header = TurnManager.inst.Instructions(myPosition, instructions);
             popup.StatsSetup(true, header, position);
 
             for (int i = 0; i < possibleCards.Count; i++)
@@ -369,11 +315,55 @@ public class Player : PhotonCompatible
         {
             Log.inst.SetUndoPoint(true);
             SliderChoice slider = Instantiate(CarryVariables.inst.sliderPopup);
-            string header = TurnManager.inst.Instructions(this.photonView.ControllerActorNr, instructions);
+            string header = TurnManager.inst.Instructions(myPosition, instructions);
             slider.StatsSetup(header, min, max, position, true, action);
 
             Log.inst.inReaction.Add(() => Destroy(slider.gameObject));
             return slider;
+        }
+    }
+
+    public void ChooseDisplayOnScreen(List<MiniCardDisplay> listOfDisplays, Action<Card> action = null, bool autoResolve = true)
+    {
+        if (listOfDisplays.Count == 0 && autoResolve)
+        {
+        }
+        else if (listOfDisplays.Count == 1 && autoResolve)
+        {
+            Log.inst.inReaction.Add(() => action?.Invoke(listOfDisplays[0].card));
+        }
+        else
+        {
+            Log.inst.SetUndoPoint(true);
+            Log.inst.inReaction.Add(Disable);
+
+            for (int j = 0; j < listOfDisplays.Count; j++)
+            {
+                MiniCardDisplay nextCard = listOfDisplays[j];
+                int number = j;
+                Button cardButton = nextCard.selectMe.button;
+
+                cardButton.onClick.RemoveAllListeners();
+                cardButton.interactable = true;
+                nextCard.selectMe.border.gameObject.SetActive(true);
+                cardButton.onClick.AddListener(ClickedThis);
+
+                void ClickedThis()
+                {
+                    Log.inst.inReaction.Add(() => action?.Invoke(nextCard.card));
+                    Log.inst.PopStack();
+                }
+            }
+
+            void Disable()
+            {
+                foreach (MiniCardDisplay nextCard in listOfDisplays)
+                {
+                    nextCard.selectMe.button.onClick.RemoveAllListeners();
+                    nextCard.selectMe.button.interactable = false;
+                    nextCard.selectMe.border.gameObject.SetActive(false);
+                }
+            }
         }
     }
 
@@ -396,11 +386,12 @@ public class Player : PhotonCompatible
     internal void StartTurn()
     {
         //this.DoFunction(() => this.ChangeButtonColor(false));
-        TurnManager.inst.Instructions(photonView.ControllerActorNr, "Blank");
+        TurnManager.inst.Instructions((int)GetPlayerProperty(this, PlayerProp.Position), "Blank");
         ChangePlayerProperties(this, PlayerProp.Waiting, false);
         endPause = true;
 
-        Log.inst.NewDecisionContainer(() => TurnManager.inst.GetTurnAction(this), 0);
+        Action action = TurnManager.inst.GetTurnAction(this);
+        Log.inst.NewDecisionContainer(() => action(), 0);
         Log.inst.NewDecisionContainer(() => EndTurn(), 0);
         Log.inst.PopStack();
     }
@@ -423,36 +414,13 @@ public class Player : PhotonCompatible
         }
     }
 
-    [PunRPC]
-    internal void SharePropertyChanges()
-    {
-        Debug.Log($"shared {this.name} changes");
-        Log.inst.ShareTexts();
-        PhotonNetwork.LocalPlayer.SetCustomProperties(playerPropertyToChange);
-        playerPropertyToChange.Clear();
-        PhotonNetwork.CurrentRoom.SetCustomProperties(masterPropertyToChange);
-        masterPropertyToChange.Clear();
+    #endregion
 
-        //change personal deck
-        List<Card> myDeck = GetCardList(PlayerProp.MyDeck.ToString());
-        for (int i = 0; i < cardsDrawnThisTurn; i++)
-            myDeck.RemoveAt(0);
-        cardsDrawnThisTurn = 0;
-        ChangePlayerProperties(this, PlayerProp.MyDeck, ConvertCardList(myDeck));
+#region UI
 
-        //send away discarded cards
-        List<Card> masterDiscard = GetCardList(RoomProp.MasterDiscard.ToString());
-        masterDiscard.AddRange(GetCardList(PlayerProp.MyDiscard.ToString()));
-        ChangePlayerProperties(this, PlayerProp.MyDiscard, new int[0]);
-        ChangeRoomProperties(RoomProp.MasterDiscard, ConvertCardList(masterDiscard));
-
-        DoFunction(() => UpdateUI(), RpcTarget.All);
-    }
-
-    [PunRPC]
     public void UpdateUI()
     {
-        List<Card> myHand = GetCardList(PlayerProp.MyHand.ToString());
+        List<Card> myHand = TurnManager.inst.GetCardList(PlayerProp.MyHand.ToString());
         float start = -1100;
         float end = 475;
         float gap = 225;
@@ -469,7 +437,7 @@ public class Player : PhotonCompatible
             float startingX = (myHand.Count <= maxFit) ? midPoint - (gap * (offByOne / 2f)) : (start);
             float difference = (myHand.Count <= maxFit) ? gap : gap * (maxFit / offByOne);
 
-            if (photonView.AmOwner || (bool)GetPlayerProperty(PhotonNetwork.LocalPlayer, PlayerProp.Spectator.ToString()))
+            if (photonView.AmOwner || (int)GetPlayerProperty(PhotonNetwork.LocalPlayer, PlayerProp.Position.ToString()) == -1)
             {
                 Vector2 newPosition = new(startingX + difference * i, -550);
                 nextCard.MoveCardRPC(newPosition, 0.25f, Vector3.one);
@@ -477,26 +445,39 @@ public class Player : PhotonCompatible
             }
         }
 
-        (PlayerDisplay myDisplay, List<MiniCardDisplay> myTroopDisplays) = PlayerCreator.inst.PlayerUI(photonView.Controller);
-        string descriptionText = $"{this.name}\n{myHand.Count} Card" +
-            $"\n{GetInt(PlayerProp.GreenCoin.ToString())} GreenCoin" +
-            $"\n{GetInt(PlayerProp.RedCoin.ToString())} RedCoin" +
-            $"\n{GetInt(PlayerProp.Action.ToString())} Action";
-        myDisplay.AssignInfo(this, GetInt(PlayerProp.MyHealth.ToString()), KeywordTooltip.instance.EditText(descriptionText));
+        string descriptionText = $"{this.name}" +
+            $"\n{myHand.Count} Card, " +
+            $"{TurnManager.inst.GetInt(PlayerProp.Action.ToString())} Action" +
+            $"\n{TurnManager.inst.GetInt(PlayerProp.GreenCoin.ToString())} GreenCoin, " +
+            $"{TurnManager.inst.GetInt(PlayerProp.RedCoin.ToString())} RedCoin";
+        myPlayerDisplay.AssignInfo(this, TurnManager.inst.GetInt($"P{myPosition}_Health"), KeywordTooltip.instance.EditText(descriptionText));
 
-        List<Card> myTroops = GetCardList(PlayerProp.MyTroops.ToString());
-        for (int i = 0; i < myTroopDisplays.Count; i++)
+        List<Card> myTroops = TurnManager.inst.GetCardList(PlayerProp.MyTroops.ToString());
+        for (int i = 0; i < allMyTroopDisplays.Count; i++)
         {
             if (i < myTroops.Count)
             {
-                myTroopDisplays[i].gameObject.SetActive(true);
-                myTroopDisplays[i].NewCard(this, myTroops[i]);
+                allMyTroopDisplays[i].gameObject.SetActive(true);
+                allMyTroopDisplays[i].NewCard(this, myTroops[i]);
             }
             else
             {
-                myTroopDisplays[i].gameObject.SetActive(false);
+                allMyTroopDisplays[i].gameObject.SetActive(false);
             }
         }
+    }
+
+    public List<MiniCardDisplay> AliveTroops()
+    {
+        List<MiniCardDisplay> toReturn = new();
+        List<Card> myTroops = TurnManager.inst.GetCardList(PlayerProp.MyTroops.ToString());
+        for (int i = 0; i<myTroops.Count; i++)
+        {
+            Card card = myTroops[i];
+            if (TurnManager.inst.GetInt(card.HealthString()) >= 1)
+                toReturn.Add(allMyTroopDisplays[i]);
+        }
+        return toReturn;
     }
 
     #endregion

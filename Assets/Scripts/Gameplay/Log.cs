@@ -126,6 +126,7 @@ public class Log : PhotonCompatible
         {
             ChangeScrolling();
         }
+        logTypeSlider.value = 1;
     }
 
     #endregion
@@ -156,7 +157,7 @@ public class Log : PhotonCompatible
 
     void AddToCurrent(string logText, int indent, bool important, bool isUndo)
     {
-        if (!Log.inst.forward)
+        if (!forward)
         {
             int count = currentLogTexts.Count-1;
             LogText nextText = currentLogTexts[count];
@@ -175,7 +176,8 @@ public class Log : PhotonCompatible
         else
         {
             LogText saveText = new(logText, indent, important);
-            string targetText = $"\n{Translator.inst.SplitAndTranslate(PhotonNetwork.LocalPlayer.ActorNumber, logText, indent)}";
+            int currentPosition = (int)GetPlayerProperty(PhotonNetwork.LocalPlayer, PlayerProp.Position.ToString());
+            string targetText = $"{Translator.inst.SplitAndTranslate(currentPosition, logText, indent)}\n";
             allCurrent.text += targetText;
             if (important)
                 importantCurrent.text += targetText;
@@ -200,8 +202,9 @@ public class Log : PhotonCompatible
 
     public void ShareTexts()
     {
+        int currentPosition = (int)GetPlayerProperty(PhotonNetwork.LocalPlayer, PlayerProp.Position.ToString());
         foreach (LogText nextLog in currentLogTexts)
-            DoFunction(() => AddToPast(PhotonNetwork.LocalPlayer.ActorNumber, nextLog.text, nextLog.indent, nextLog.important));
+            DoFunction(() => AddToPast(currentPosition, nextLog.text, nextLog.indent, nextLog.important));
 
         allCurrent.text = "";
         importantCurrent.text = "";
@@ -214,7 +217,7 @@ public class Log : PhotonCompatible
     [PunRPC]
     void AddToPast(int owner, string logText, int indent, bool important)
     {
-        string targetText = $"\n{Translator.inst.SplitAndTranslate(owner, logText, indent)}";
+        string targetText = $"{Translator.inst.SplitAndTranslate(owner, logText, indent)}\n";
         allPast.text += targetText;
         if (important)
             importantPast.text += targetText;
@@ -222,6 +225,11 @@ public class Log : PhotonCompatible
 
     void ChangeScrolling()
     {
+        allPast.gameObject.SetActive(logTypeSlider.value == 1);
+        allCurrent.gameObject.SetActive(logTypeSlider.value == 1);
+        importantPast.gameObject.SetActive(logTypeSlider.value == 0);
+        importantCurrent.gameObject.SetActive(logTypeSlider.value == 0);
+
         if (logTypeSlider.value == 1)
         {
             LayoutRebuilder.ForceRebuildLayoutImmediate(allPast.rectTransform);
@@ -405,71 +413,70 @@ public class Log : PhotonCompatible
             currentContainer.complete = true;
             //Debug.Log($"{currentContainer.actionName} is complete");
         }
-        StartCoroutine(WaitAndContinue());
+        StartCoroutine(WaitAndContinue(run));
+    }
 
-        IEnumerator WaitAndContinue()
+    IEnumerator WaitAndContinue(bool run)
+    {
+        float time = 0f;
+        int coroutines = groupToWait.ActiveCoroutinesAmount;
+        if (coroutines > 0)
         {
-            float time = 0f;
-            int coroutines = groupToWait.ActiveCoroutinesAmount;
-            if (coroutines > 0)
+            while (groupToWait.AnyProcessing)
             {
-                while (groupToWait.AnyProcessing)
-                {
-                    time += Time.deltaTime;
-                    yield return null;
-                }
-                Debug.Log($"did {coroutines} coroutines in {time:F2} sec");
+                time += Time.deltaTime;
+                yield return null;
             }
+            Debug.Log($"did {coroutines} coroutines in {time:F2} sec");
+        }
 
-            ChangeScrolling();
-            currentContainer = null;
-            storeUndoPoint = false;
+        ChangeScrolling();
+        currentContainer = null;
+        storeUndoPoint = false;
 
-            foreach (var KVP in PlayerCreator.inst.playerDictionary)
-                PlayerCreator.inst.playerDictionary[KVP.Key].UpdateUI();
+        foreach (Player player in PlayerCreator.inst.listOfPlayers)
+            player.UpdateUI();
 
-            foreach (DecisionContainer container in initialContainers)
-                Iterate(container);
+        foreach (DecisionContainer container in initialContainers)
+            Iterate(container);
 
-            void Iterate(DecisionContainer container)
+        void Iterate(DecisionContainer container)
+        {
+            if (!container.complete)
             {
-                if (!container.complete)
+                if (currentContainer == null)
                 {
-                    if (currentContainer == null)
-                    {
-                        //Debug.Log($"{container.actionName}{container.logged} first assigned");
+                    //Debug.Log($"{container.actionName}{container.logged} first assigned");
+                    currentContainer = container;
+                }
+                else
+                {
+                    //Debug.Log($"{container.actionName}({container.logged}) vs {currentContainer.actionName}({currentContainer.logged})");
+                    if (container.logged > currentContainer.logged)
                         currentContainer = container;
-                    }
-                    else
-                    {
-                        //Debug.Log($"{container.actionName}({container.logged}) vs {currentContainer.actionName}({currentContainer.logged})");
-                        if (container.logged > currentContainer.logged)
-                            currentContainer = container;
-                    }
-                }
-                else
-                {
-                    foreach (DecisionContainer nextContainer in container.listOfDCs)
-                    {
-                        Iterate(nextContainer);
-                    }
                 }
             }
-
-            //HandleUI();
-            if (currentContainer != null && run)
+            else
             {
-                if (currentContainer.action == null)
+                foreach (DecisionContainer nextContainer in container.listOfDCs)
                 {
+                    Iterate(nextContainer);
+                }
+            }
+        }
+
+        if (currentContainer != null && run)
+        {
+            if (currentContainer.action == null)
+            {
+                PopStack(run);
+            }
+            else
+            {
+                //Debug.Log($"forward: {currentContainer.actionName}");
+                currentContainer.action.Compile().Invoke();
+                if (storeUndoPoint == false)
                     PopStack(run);
-                }
-                else
-                {
-                    //Debug.Log($"forward: {currentContainer.actionName}");
-                    currentContainer.action.Compile().Invoke();
-                    if (storeUndoPoint == false)
-                        PopStack(run);
-                }
             }
         }
     }

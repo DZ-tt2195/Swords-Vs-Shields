@@ -123,6 +123,24 @@ public class Card : PhotonCompatible
         action();
     }
 
+    public void HealthRPC(Player player, int num, int logged)
+    {
+        if (num == 0)
+            return;
+        if (num > 0)
+            Log.inst.AddMyText($"Add Health Troop-Player-{player.name}-Num-{num}", false, logged);
+        else
+            Log.inst.AddMyText($"Lose Health Troop-Player-{player.name}-Num-{Mathf.Abs(num)}", false, logged);
+        Log.inst.NewRollback(() => ChangeInt(num, HealthString()));
+    }
+
+    void ChangeInt(int num, string property)
+    {
+        int total = TurnManager.inst.GetInt(property);
+        total += (!Log.inst.forward) ? -num : num;
+        TurnManager.inst.WillChangeMasterProperty(property, total);
+    }
+
     #endregion
 
 }
