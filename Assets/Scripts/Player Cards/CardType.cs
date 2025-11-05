@@ -14,7 +14,7 @@ public class CardType
 
     public virtual AbilityType CanUseAbiltyOne(Player player, Card thisCard)
     {
-        return AbilityType.None;
+        return dataFile.typeOne;
     }
 
     public virtual void DoAbilityOne(Player player, Card thisCard, int logged)
@@ -24,7 +24,7 @@ public class CardType
 
     public virtual AbilityType CanUseAbiltyTwo(Player player, Card thisCard)
     {
-        return AbilityType.None;
+        return dataFile.typeTwo;
     }
 
     public virtual void DoAbilityTwo(Player player, Card thisCard, int logged)

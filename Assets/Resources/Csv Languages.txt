@@ -200,6 +200,11 @@
       "\"\""
     ],
     [
+      "Done",
+      "Done",
+      "\"\""
+    ],
+    [
       "Card",
       "Card",
       "\"\""
@@ -212,6 +217,11 @@
     [
       "Draw Card Others",
       "$Player$ draws 1 Card.",
+      "\"\""
+    ],
+    [
+      "Play Troop",
+      "$Player$ plays $Card$.",
       "\"\""
     ],
     [
@@ -290,8 +300,18 @@
       "\"\""
     ],
     [
+      "Decline",
+      "Decline",
+      "\"\""
+    ],
+    [
       "Play Card",
       "Round $Num$ - Play Card",
+      "\"\""
+    ],
+    [
+      "Play Card Instruction",
+      "Use Action to play Card?",
       "\"\""
     ],
     [

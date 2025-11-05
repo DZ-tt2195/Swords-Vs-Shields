@@ -46,7 +46,9 @@ public class TextPopup : Popup
     {
         Button nextButton = Instantiate(CarryVariables.inst.textButton, this.storeThings);
         nextButton.name = info.text;
-        nextButton.transform.GetChild(0).GetComponent<TMP_Text>().text = KeywordTooltip.instance.EditText(info.text);
+
+        string translatedText = Translator.inst.SplitAndTranslate(-1, info.text);
+        nextButton.transform.GetChild(0).GetComponent<TMP_Text>().text = translatedText;
         nextButton.image.color = info.color;
 
         nextButton.interactable = true;

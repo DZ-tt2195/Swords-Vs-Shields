@@ -121,6 +121,7 @@ public class TurnManager : PhotonCompatible
                 Card card = myTroops[i];
                 if (GetInt(card.HealthString().ToString()) <= 0)
                 {
+                    ChangeRoomProperties(card.HealthString(), 0);
                     myTroops.RemoveAt(i);
                     masterDiscard.Add(card);
                 }
@@ -172,9 +173,19 @@ public class TurnManager : PhotonCompatible
         }
     }
 
+    public int GetInt(PlayerProp property, Player player)
+    {
+        return (int)FindProperty(property.ToString(), player.photonView.Owner);
+    }
+
     public int GetInt(string property, Photon.Realtime.Player player = null)
     {
         return (int)FindProperty(property, player);
+    }
+
+    public List<Card> GetCardList(PlayerProp property, Player player)
+    {
+        return ConvertIntArray((int[])FindProperty(property.ToString(), player.photonView.Owner));
     }
 
     public List<Card> GetCardList(string property, Photon.Realtime.Player player = null)
@@ -241,8 +252,8 @@ public class TurnManager : PhotonCompatible
         masterPropertyToChange.Clear();
 
         //send away discarded cards
-        List<Card> masterDiscard = GetCardList(RoomProp.MasterDiscard.ToString(), PhotonNetwork.LocalPlayer);
-        masterDiscard.AddRange(GetCardList(PlayerProp.MyDiscard.ToString(), PhotonNetwork.LocalPlayer));
+        List<Card> masterDiscard = GetCardList(RoomProp.MasterDiscard.ToString());
+        masterDiscard.AddRange(GetCardList(PlayerProp.MyDiscard.ToString()));
 
         ChangePlayerProperties(PhotonNetwork.LocalPlayer, PlayerProp.MyDiscard, new int[0]);
         ChangeRoomProperties(RoomProp.MasterDiscard, ConvertCardList(masterDiscard));

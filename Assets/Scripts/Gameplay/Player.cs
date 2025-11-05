@@ -69,10 +69,10 @@ public class Player : PhotonCompatible
 
         IEnumerator WaitToDraw()
         {
-            List<Card> myDeck = TurnManager.inst.GetCardList(PlayerProp.MyDeck.ToString());
+            List<Card> myDeck = TurnManager.inst.GetCardList(PlayerProp.MyDeck, this);
             while (myDeck.Count < amount)
             {
-                myDeck = TurnManager.inst.GetCardList(PlayerProp.MyDeck.ToString());
+                myDeck = TurnManager.inst.GetCardList(PlayerProp.MyDeck, this);
                 yield return null;
             }
 
@@ -89,8 +89,8 @@ public class Player : PhotonCompatible
 
     void AddToHand(List<Card> cardsToAdd)
     {
-        List<Card> myHand = TurnManager.inst.GetCardList(PlayerProp.MyHand.ToString());
-        List<Card> myDeck = TurnManager.inst.GetCardList(PlayerProp.MyDeck.ToString());
+        List<Card> myHand = TurnManager.inst.GetCardList(PlayerProp.MyHand, this);
+        List<Card> myDeck = TurnManager.inst.GetCardList(PlayerProp.MyDeck, this);
 
         if (!Log.inst.forward)
         {
@@ -119,7 +119,7 @@ public class Player : PhotonCompatible
         if (amount <= 0)
             return;
 
-        List<Card> myDeck = TurnManager.inst.GetCardList(PlayerProp.MyDeck.ToString());
+        List<Card> myDeck = TurnManager.inst.GetCardList(PlayerProp.MyDeck, this);
         int needToGet = amount - myDeck.Count;
         List<Card> masterDeck = TurnManager.inst.GetCardList(RoomProp.MasterDeck.ToString());
 
@@ -420,7 +420,7 @@ public class Player : PhotonCompatible
 
     public void UpdateUI()
     {
-        List<Card> myHand = TurnManager.inst.GetCardList(PlayerProp.MyHand.ToString());
+        List<Card> myHand = TurnManager.inst.GetCardList(PlayerProp.MyHand, this);
         float start = -1100;
         float end = 475;
         float gap = 225;
@@ -447,12 +447,12 @@ public class Player : PhotonCompatible
 
         string descriptionText = $"{this.name}" +
             $"\n{myHand.Count} Card, " +
-            $"{TurnManager.inst.GetInt(PlayerProp.Action.ToString())} Action" +
-            $"\n{TurnManager.inst.GetInt(PlayerProp.GreenCoin.ToString())} GreenCoin, " +
-            $"{TurnManager.inst.GetInt(PlayerProp.RedCoin.ToString())} RedCoin";
-        myPlayerDisplay.AssignInfo(this, TurnManager.inst.GetInt($"P{myPosition}_Health"), KeywordTooltip.instance.EditText(descriptionText));
+            $"{TurnManager.inst.GetInt(PlayerProp.Action, this)} Action" +
+            $"\n{TurnManager.inst.GetInt(PlayerProp.GreenCoin, this)} GreenCoin, " +
+            $"{TurnManager.inst.GetInt(PlayerProp.RedCoin, this)} RedCoin";
+        myPlayerDisplay.AssignInfo(this, TurnManager.inst.GetInt($"P{myPosition}_Health", this.photonView.Owner), KeywordTooltip.instance.EditText(descriptionText));
 
-        List<Card> myTroops = TurnManager.inst.GetCardList(PlayerProp.MyTroops.ToString());
+        List<Card> myTroops = TurnManager.inst.GetCardList(PlayerProp.MyTroops, this);
         for (int i = 0; i < allMyTroopDisplays.Count; i++)
         {
             if (i < myTroops.Count)

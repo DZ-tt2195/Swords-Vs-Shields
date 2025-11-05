@@ -201,12 +201,12 @@ public class PhotonCompatible : MonoBehaviourPunCallbacks
         return GetPlayerProperty(player.photonView.Owner, propertyName.ToString());
     }
 
-    public static void ChangeRoomProperties(RoomProp propertyName, object changeToThis, object expected = null)
+    public static void ChangeRoomProperties(string propertyName, object changeToThis, object expected = null)
     {
-        ExitGames.Client.Photon.Hashtable changeTable = new() { { propertyName.ToString(), changeToThis } };
+        ExitGames.Client.Photon.Hashtable changeTable = new() { { propertyName, changeToThis } };
         ExitGames.Client.Photon.Hashtable expectedTable = null;
-        if (expected != null && PhotonNetwork.CurrentRoom.CustomProperties.ContainsKey(propertyName.ToString()))
-            expectedTable = new() { { propertyName.ToString(), expected } };
+        if (expected != null && PhotonNetwork.CurrentRoom.CustomProperties.ContainsKey(propertyName))
+            expectedTable = new() { { propertyName, expected } };
 
         if (PhotonNetwork.CurrentRoom.SetCustomProperties(changeTable, expectedTable))
         {
@@ -215,6 +215,11 @@ public class PhotonCompatible : MonoBehaviourPunCallbacks
         {
             Debug.Log($"change to {propertyName} has been rejected");
         }
+    }
+
+    public static void ChangeRoomProperties(RoomProp propertyName, object changeToThis, object expected = null)
+    {
+        ChangeRoomProperties(propertyName.ToString(), changeToThis, expected);
     }
 
     public static object GetRoomProperty(string propertyName)
