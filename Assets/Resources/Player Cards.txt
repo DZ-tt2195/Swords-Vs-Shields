@@ -11,8 +11,8 @@
     ],
     [
       "Boat",
-      "1 RedCoin -\u003e Deal 2 damage.",
-      "PLAY: +1 RedCoin",
+      "1 Sword -\u003e Deal 2 damage.",
+      "PLAY: +1 Sword.",
       "3",
       "AffectOther",
       "PlayEffect",
@@ -21,8 +21,8 @@
     ],
     [
       "Cargo",
-      "1 RedCoin -\u003e Deal 2 damage.",
-      "PLAY: +1 RedCoin",
+      "1 Sword -\u003e Deal 2 damage.",
+      "PLAY: +1 Sword.",
       "3",
       "AffectOther",
       "PlayEffect",

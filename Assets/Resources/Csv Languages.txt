@@ -225,33 +225,33 @@
       "\"\""
     ],
     [
-      "GreenCoin",
-      "GreenCoin",
+      "Sword",
+      "Sword",
       "\"\""
     ],
     [
-      "Add Coin",
-      "$Player$ gets +$Num$ GreenCoin.",
+      "Add Sword",
+      "$Player$ gets +$Num$ Sword.",
       "\"\""
     ],
     [
-      "Lose Coin",
-      "$Player$ loses $Num$ GreenCoin.",
+      "Lose Sword",
+      "$Player$ loses $Num$ Sword.",
       "\"\""
     ],
     [
-      "RedCoin",
-      "RedCoin",
+      "Shield",
+      "Shield",
       "\"\""
     ],
     [
-      "Add Red Coin",
-      "$Player$ gets +$Num$ RedCoin.",
+      "Add Shield",
+      "$Player$ gets +$Num$ Shield.",
       "\"\""
     ],
     [
-      "Lose Red Coin",
-      "$Player$ loses $Num$ RedCoin.",
+      "Lose Shield",
+      "$Player$ loses $Num$ Shield.",
       "\"'"
     ],
     [
@@ -331,12 +331,12 @@
     ],
     [
       "Boat TextOne",
-      "1 RedCoin -\u003e Deal 2 damage.",
+      "1 Sword -\u003e Deal 2 damage.",
       "\"\""
     ],
     [
       "Boat TextTwo",
-      "PLAY: +1 RedCoin",
+      "PLAY: +1 Sword.",
       "\"\""
     ],
     [
@@ -346,12 +346,12 @@
     ],
     [
       "Cargo TextOne",
-      "1 RedCoin -\u003e Deal 2 damage.",
+      "1 Sword -\u003e Deal 2 damage.",
       "\"\""
     ],
     [
       "Cargo TextTwo",
-      "PLAY: +1 RedCoin",
+      "PLAY: +1 Sword.",
       "\"\""
     ]
   ]

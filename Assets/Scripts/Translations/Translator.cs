@@ -218,7 +218,7 @@ public class Translator : PhotonCompatible
 
 #region Helpers
 
-    bool TranslationExists(string key)
+    public bool TranslationExists(string key)
     {
         return keyTranslate["English"].ContainsKey(key);
     }

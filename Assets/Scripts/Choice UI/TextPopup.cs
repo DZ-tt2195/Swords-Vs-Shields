@@ -38,7 +38,7 @@ public class TextPopup : Popup
         else
         {
             this.name = header;
-            this.textbox.text = KeywordTooltip.instance.EditText(header);
+            this.textbox.text = header;
         }
     }
 

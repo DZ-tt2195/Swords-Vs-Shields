@@ -23,9 +23,7 @@ public class SliderChoice : MonoBehaviour
 
     internal void StatsSetup(string header, int min, int max, Vector3 position, bool beDestroyed, Action<int> action)
     {
-        string text = Translator.inst.SplitAndTranslate(-1, header);
-        this.textbox.text = KeywordTooltip.instance.EditText(text);
-
+        this.textbox.text = KeywordTooltip.instance.EditText(header);
         this.transform.SetParent(PlayerCreator.inst.canvas.transform);
         this.transform.localPosition = position;
         this.transform.localScale = new Vector3(1, 1, 1);

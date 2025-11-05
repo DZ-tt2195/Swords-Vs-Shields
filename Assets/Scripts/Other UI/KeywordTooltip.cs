@@ -46,11 +46,13 @@ public class KeywordTooltip : MonoBehaviour
         foreach (KeywordHover hover in linkedKeywords)
         {
             hover.translatedString = Translator.inst.Translate(hover.englishString);
-            hover.description = Translator.inst.Translate($"{hover.englishString} Text");
+            if (Translator.inst.TranslationExists($"{hover.englishString} Text"))
+                hover.description = Translator.inst.Translate($"{hover.englishString} Text");
         }
         foreach (KeywordHover hover in spriteKeywords)
         {
             hover.translatedString = Translator.inst.Translate(hover.englishString);
+            if (Translator.inst.TranslationExists($"{hover.englishString} Text"))
             hover.description = Translator.inst.Translate($"{hover.englishString} Text");
         }
 

@@ -247,11 +247,11 @@ MonoBehaviour:
   tooltipText: {fileID: 1828323579}
   linkedKeywords: []
   spriteKeywords:
-  - englishString: RedCoin
+  - englishString: Sword
     translatedString: 
     description: 
     color: {r: 0, g: 0, b: 0, a: 0}
-  - englishString: GreenCoin
+  - englishString: Shield
     translatedString: 
     description: 
     color: {r: 0, g: 0, b: 0, a: 0}
@@ -1082,8 +1082,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_text: <link="Card"><sprite="Card" name="Card"><link="Action"><sprite="Action"
-    name="Action"></link><link="Coin"><sprite="Coin" name="Coin"><link="Troop"><sprite="Health"
-    name="Health"><link="Health">
+    name="Action"></link><link="Shield"><sprite="Shield" name="Shield"><link="Sword"><sprite="Sword"
+    name="Sword"><link="Health"><sprite="Health" name="Health">
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1110,7 +1110,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 97.7
+  m_fontSize: 84.8
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1

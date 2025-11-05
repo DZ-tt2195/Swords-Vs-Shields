@@ -16,8 +16,8 @@ public class PlayCard : Turn
         int currentRound = (int)PhotonCompatible.GetRoomProperty(RoomProp.CurrentRound);
         player.DrawCardRPC(currentRound == 1 ? 4 : 2, 0);
         player.ActionRPC(2, -1);
-        player.GreenCoinRPC(currentRound - TurnManager.inst.GetInt(PlayerProp.GreenCoin, player), -1);
-        player.RedCoinRPC(currentRound - TurnManager.inst.GetInt(PlayerProp.RedCoin, player), -1);
+        player.ShieldRPC(currentRound - TurnManager.inst.GetInt(PlayerProp.Shield, player), -1);
+        player.SwordRPC(currentRound - TurnManager.inst.GetInt(PlayerProp.Sword, player), -1);
         Log.inst.NewDecisionContainer(() => PlayLoop(player), 0);
     }
 
@@ -61,6 +61,8 @@ public class PlayCard : Turn
         {
             myHand.Remove(cardToPlay);
             myTroops.Add(cardToPlay);
+            cardToPlay.transform.SetParent(null);
+            cardToPlay.MoveCardRPC(new(0, 10000), 0.25f, Vector3.one);
         }
         TurnManager.inst.WillChangePlayerProperty(PlayerProp.MyHand, TurnManager.inst.ConvertCardList(myHand));
         TurnManager.inst.WillChangePlayerProperty(PlayerProp.MyTroops, TurnManager.inst.ConvertCardList(myTroops));

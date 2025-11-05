@@ -7,7 +7,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine.UI;
 
-public enum PlayerProp { Position, Waiting, MyHand, MyDeck, MyDiscard, MyTroops, GreenCoin, RedCoin, Action }
+public enum PlayerProp { Position, Waiting, MyHand, MyDeck, MyDiscard, MyTroops, Shield, Sword, Action }
 
 public class Player : PhotonCompatible
 {
@@ -46,7 +46,12 @@ public class Player : PhotonCompatible
     void SendName(string username)
     {
         this.transform.SetParent(PlayerCreator.inst.canvas.transform);
-        this.transform.localPosition = new(-10000, -10000);
+
+        if (photonView.AmOwner)
+            this.transform.localPosition = Vector3.zero;
+        else
+            this.transform.localPosition = new(10000, 10000);
+
         initialized = true;
         this.name = username;
         myPosition = (int)GetPlayerProperty(this, PlayerProp.Position);
@@ -146,7 +151,7 @@ public class Player : PhotonCompatible
 
     #endregion
 
-#region Change Resources
+#region Resources
 
     void ChangeInt(int num, string property, bool player)
     {
@@ -158,26 +163,26 @@ public class Player : PhotonCompatible
             TurnManager.inst.WillChangeMasterProperty(property, total);
     }
 
-    public void GreenCoinRPC(int num, int logged)
+    public void ShieldRPC(int num, int logged)
     {
         if (num == 0)
             return;
         if (num > 0)
-            Log.inst.AddMyText($"Add Green Coin-Player-{this.name}-Num-{num}", false, logged);
+            Log.inst.AddMyText($"Add Shield-Player-{this.name}-Num-{num}", false, logged);
         else
-            Log.inst.AddMyText($"Lose Green Coin-Player-{this.name}-Num-{Mathf.Abs(num)}", false, logged);
-        Log.inst.NewRollback(() => ChangeInt(num, PlayerProp.GreenCoin.ToString(), true));
+            Log.inst.AddMyText($"Lose Shield-Player-{this.name}-Num-{Mathf.Abs(num)}", false, logged);
+        Log.inst.NewRollback(() => ChangeInt(num, PlayerProp.Shield.ToString(), true));
     }
 
-    public void RedCoinRPC(int num, int logged)
+    public void SwordRPC(int num, int logged)
     {
         if (num == 0)
             return;
         if (num > 0)
-            Log.inst.AddMyText($"Add Red Coin-Player-{this.name}-Num-{num}", false, logged);
+            Log.inst.AddMyText($"Add Sword-Player-{this.name}-Num-{num}", false, logged);
         else
-            Log.inst.AddMyText($"Lose Red Coin-Player-{this.name}-Num-{Mathf.Abs(num)}", false, logged);
-        Log.inst.NewRollback(() => ChangeInt(num, PlayerProp.RedCoin.ToString(), true));
+            Log.inst.AddMyText($"Lose Sword-Player-{this.name}-Num-{Mathf.Abs(num)}", false, logged);
+        Log.inst.NewRollback(() => ChangeInt(num, PlayerProp.Sword.ToString(), true));
     }
 
     public void ActionRPC(int num, int logged)
@@ -439,7 +444,7 @@ public class Player : PhotonCompatible
 
             if (photonView.AmOwner || (int)GetPlayerProperty(PhotonNetwork.LocalPlayer, PlayerProp.Position.ToString()) == -1)
             {
-                Vector2 newPosition = new(startingX + difference * i, -550);
+                Vector2 newPosition = new(startingX + difference * i, -525);
                 nextCard.MoveCardRPC(newPosition, 0.25f, Vector3.one);
                 myHand[i].FlipCardRPC(1, 0.25f, 0);
             }
@@ -447,9 +452,9 @@ public class Player : PhotonCompatible
 
         string descriptionText = $"{this.name}" +
             $"\n{myHand.Count} Card, " +
-            $"{TurnManager.inst.GetInt(PlayerProp.Action, this)} Action" +
-            $"\n{TurnManager.inst.GetInt(PlayerProp.GreenCoin, this)} GreenCoin, " +
-            $"{TurnManager.inst.GetInt(PlayerProp.RedCoin, this)} RedCoin";
+            $"{TurnManager.inst.GetInt(PlayerProp.Action, this)} {PlayerProp.Action}" +
+            $"\n{TurnManager.inst.GetInt(PlayerProp.Shield, this)} {PlayerProp.Shield}, " +
+            $"{TurnManager.inst.GetInt(PlayerProp.Sword, this)} {PlayerProp.Sword}";
         myPlayerDisplay.AssignInfo(this, TurnManager.inst.GetInt($"P{myPosition}_Health", this.photonView.Owner), KeywordTooltip.instance.EditText(descriptionText));
 
         List<Card> myTroops = TurnManager.inst.GetCardList(PlayerProp.MyTroops, this);

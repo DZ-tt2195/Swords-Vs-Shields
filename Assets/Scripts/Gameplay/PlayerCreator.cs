@@ -167,8 +167,8 @@ public class PlayerCreator : PhotonCompatible
             [PlayerProp.Waiting.ToString()] = false,
             [PlayerProp.Position.ToString()] = count,
 
-            [PlayerProp.GreenCoin.ToString()] = 0,
-            [PlayerProp.RedCoin.ToString()] = 0,
+            [PlayerProp.Shield.ToString()] = 0,
+            [PlayerProp.Sword.ToString()] = 0,
             [PlayerProp.Action.ToString()] = 0,
 
             [PlayerProp.MyHand.ToString()] = new int[0],
