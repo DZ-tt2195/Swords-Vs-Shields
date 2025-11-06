@@ -180,6 +180,14 @@ public class PlayerCreator : PhotonCompatible
         MakeObject(CarryVariables.inst.playerPrefab.gameObject);
     }
 
+    public Player OtherPlayer(int playerPosition)
+    {
+        if (playerPosition == 0)
+            return listOfPlayers[1];
+        else
+            return listOfPlayers[0];
+    }
+
     public (PlayerDisplay, List<MiniCardDisplay>) PlayerUI(int playerPosition)
     {
         if (playerPosition == 0)

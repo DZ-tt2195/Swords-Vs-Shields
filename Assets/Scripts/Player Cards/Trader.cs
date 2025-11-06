@@ -1,0 +1,31 @@
+using UnityEngine;
+
+public class Trader : CardType
+{
+    public Trader(CardData dataFile) : base(dataFile)
+    {
+    }
+
+    public override AbilityType CanUseAbiltyOne(Player player, Card thisCard)
+    {
+        if (TurnManager.inst.GetInt(PlayerProp.Action, player) >= 1)
+            return AbilityType.Defend;
+        else
+            return AbilityType.None;
+    }
+
+    public override void DoAbilityOne(Player player, Card thisCard, int logged)
+    {
+        player.ActionRPC(-1, logged);
+        player.ChooseButtonInPopup(new() { new("Sword", Sword), new("Shield", Shield) }, "Choose One", new(0, 325));
+
+        void Sword()
+        {
+            player.SwordRPC(1, logged);
+        }
+        void Shield()
+        {
+            player.ShieldRPC(1, logged);
+        }
+    }
+}

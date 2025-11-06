@@ -11,7 +11,7 @@
     ],
     [
       "Last Update",
-      "Last Updated: November 3rd, 2025",
+      "Last Updated: November 6th, 2025",
       "\"\""
     ],
     [
@@ -306,7 +306,7 @@
     ],
     [
       "Play Card",
-      "Round $Num$ - Play Card",
+      "Round $Num$ - Play",
       "\"\""
     ],
     [
@@ -316,12 +316,32 @@
     ],
     [
       "Use Green",
-      "Round $Num$ - Use Green Abilities",
+      "Round $Num$ - Defend",
+      "\"\""
+    ],
+    [
+      "Use Green Instruction",
+      "Use Defend abilities on your Card?",
       "\"\""
     ],
     [
       "Use Red",
-      "Round $Num$ - Use Red Abilities",
+      "Round $Num$ - Attack",
+      "\"\""
+    ],
+    [
+      "Use Red Instruction",
+      "Use Attack abilities on your Card?",
+      "\"\""
+    ],
+    [
+      "Resolve Card",
+      "$Player$ resolves $Card$.",
+      "\"\""
+    ],
+    [
+      "Choose One",
+      "Choose one.",
       "\"\""
     ],
     [
@@ -331,7 +351,7 @@
     ],
     [
       "Boat TextOne",
-      "1 Sword -\u003e Deal 2 damage.",
+      "ATTACK: Spend 1 Sword to deal 2 damage to the other player.",
       "\"\""
     ],
     [
@@ -340,18 +360,33 @@
       "\"\""
     ],
     [
-      "Cargo",
-      "Cargo",
+      "Trader",
+      "Trader",
       "\"\""
     ],
     [
-      "Cargo TextOne",
-      "1 Sword -\u003e Deal 2 damage.",
+      "Trader TextOne",
+      "DEFEND: Spend 1 Action for either +1 Sword or +1 Shield.",
       "\"\""
     ],
     [
-      "Cargo TextTwo",
-      "PLAY: +1 Sword.",
+      "Trader TextTwo",
+      "\"\"",
+      "\"\""
+    ],
+    [
+      "Archer",
+      "Archer",
+      "\"\""
+    ],
+    [
+      "Archer TextOne",
+      "DEFEND: Spend 1 Sword for +1 Card.",
+      "\"\""
+    ],
+    [
+      "Archer TextTwo",
+      "ATTACK: Spend 3 Sword to deal 1 damage to the other player per Card in your hand.",
       "\"\""
     ]
   ]

@@ -2,7 +2,7 @@ using System.Text.RegularExpressions;
 using UnityEngine;
 using System;
 
-public enum AbilityType { None, AffectYou, AffectOther, PlayEffect }
+public enum AbilityType { None, Play, Defend, Attack }
 public class CardType
 {
     public CardData dataFile { get; private set; }

@@ -20,7 +20,7 @@ public class Player : PhotonCompatible
 
     Button resignButton;
     [SerializeField] Transform keepHand;
-    PlayerDisplay myPlayerDisplay;
+    public PlayerDisplay myPlayerDisplay { get; private set; }
     List<MiniCardDisplay> allMyTroopDisplays;
 
     protected override void Awake()
@@ -475,7 +475,7 @@ public class Player : PhotonCompatible
     public List<MiniCardDisplay> AliveTroops()
     {
         List<MiniCardDisplay> toReturn = new();
-        List<Card> myTroops = TurnManager.inst.GetCardList(PlayerProp.MyTroops.ToString());
+        List<Card> myTroops = TurnManager.inst.GetCardList(PlayerProp.MyTroops, this);
         for (int i = 0; i<myTroops.Count; i++)
         {
             Card card = myTroops[i];

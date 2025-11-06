@@ -37,9 +37,9 @@ public class PlayCard : Turn
                 card.HealthRPC(player, card.thisCard.dataFile.startingHealth, -1);
                 Log.inst.NewRollback(() => HandToPlay(player, card));
 
-                if (card.thisCard.CanUseAbiltyOne(player, card) == AbilityType.PlayEffect)
+                if (card.thisCard.CanUseAbiltyOne(player, card) == AbilityType.Play)
                     Log.inst.NewDecisionContainer(() => card.thisCard.DoAbilityOne(player, card, 1), 1);
-                if (card.thisCard.CanUseAbiltyTwo(player, card) == AbilityType.PlayEffect)
+                if (card.thisCard.CanUseAbiltyTwo(player, card) == AbilityType.Play)
                     Log.inst.NewDecisionContainer(() => card.thisCard.DoAbilityTwo(player, card, 1), 1);
 
                 Log.inst.NewDecisionContainer(() => PlayLoop(player), 0);

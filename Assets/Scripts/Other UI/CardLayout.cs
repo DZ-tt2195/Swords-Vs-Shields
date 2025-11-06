@@ -72,13 +72,13 @@ public class CardLayout : MonoBehaviour, IPointerClickHandler
         pairing.textBox.text = KeywordTooltip.instance.EditText(text);
         switch (type)
         {
-            case AbilityType.AffectYou:
+            case AbilityType.Defend:
                 pairing.image.color = new Color(0, 0.66f, 0); //green
                 break;
-            case AbilityType.AffectOther:
+            case AbilityType.Attack:
                 pairing.image.color = new Color(1, 0.33f, 0.33f); //light red
                 break;
-            case AbilityType.PlayEffect:
+            case AbilityType.Play:
                 pairing.image.color = new Color(0.66f, 0.66f, 0.66f); //gray
                 break;
         }

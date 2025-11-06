@@ -253,7 +253,7 @@ public class TurnManager : PhotonCompatible
 
         //send away discarded cards
         List<Card> masterDiscard = GetCardList(RoomProp.MasterDiscard.ToString());
-        masterDiscard.AddRange(GetCardList(PlayerProp.MyDiscard.ToString()));
+        masterDiscard.AddRange(GetCardList(PlayerProp.MyDiscard.ToString(), PhotonNetwork.LocalPlayer));
 
         ChangePlayerProperties(PhotonNetwork.LocalPlayer, PlayerProp.MyDiscard, new int[0]);
         ChangeRoomProperties(RoomProp.MasterDiscard, ConvertCardList(masterDiscard));

@@ -7,27 +7,40 @@
       "typeOne",
       "typeTwo",
       "artCredit",
-      "effects"
+      "effectOne",
+      "effectTwo"
     ],
     [
       "Boat",
-      "1 Sword -\u003e Deal 2 damage.",
+      "ATTACK: Spend 1 Sword to deal 2 damage to the other player.",
       "PLAY: +1 Sword.",
       "3",
-      "AffectOther",
-      "PlayEffect",
+      "Attack",
+      "Play",
       "X",
-      "Coin, CareBox"
+      "LoseSword, AttackPlayer",
+      "AddSword"
     ],
     [
-      "Cargo",
-      "1 Sword -\u003e Deal 2 damage.",
-      "PLAY: +1 Sword.",
-      "3",
-      "AffectOther",
-      "PlayEffect",
+      "Trader",
+      "DEFEND: Spend 1 Action for either +1 Sword or +1 Shield.",
+      "\"\"",
+      "5",
+      "Defend",
+      "None",
       "X",
-      "Coin, CareBox"
+      "LoseAction, AddSword, AddShield"
+    ],
+    [
+      "Archer",
+      "DEFEND: Spend 1 Sword for +1 Card.",
+      "ATTACK: Spend 3 Sword to deal 1 damage to the other player per Card in your hand.",
+      "4",
+      "Defend",
+      "Attack",
+      "X",
+      "LoseSword, DrawCard",
+      "LoseSword, AttackPlayer"
     ]
   ]
 }
