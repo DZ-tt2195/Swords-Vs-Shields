@@ -235,6 +235,21 @@
       "\"\""
     ],
     [
+      "Stunned",
+      "Stunned",
+      "\"\""
+    ],
+    [
+      "Stunned Text",
+      "Abilities can't be used.",
+      "\"\""
+    ],
+    [
+      "Stun Troop",
+      "$Card$ is Stunned on Round $Num$.",
+      "\"\""
+    ],
+    [
       "Sword",
       "Sword",
       "\"\""
@@ -360,6 +375,11 @@
       "\"\""
     ],
     [
+      "Target Instruction",
+      "Choose one of $Player$'s Card.",
+      "\"\""
+    ],
+    [
       "Boat",
       "Boat",
       "\"\""
@@ -417,6 +437,21 @@
     [
       "Dragon TextTwo",
       "PLAY: -1 Card.",
+      "\"\""
+    ],
+    [
+      "Barbarian",
+      "Barbarian",
+      "\"\""
+    ],
+    [
+      "Barbarian TextOne",
+      "ATTACK: Spend 2 Sword to Stun a Card and deal 2 damage to it.",
+      "\"\""
+    ],
+    [
+      "Barbarian TextTwo",
+      "\"\"",
       "\"\""
     ]
   ]

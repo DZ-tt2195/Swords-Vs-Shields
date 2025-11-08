@@ -23,15 +23,19 @@ public class MiniCardDisplay : MonoBehaviour, IPointerClickHandler
             CarryVariables.inst.RightClickDisplay(card.thisCard.dataFile, 1, 0);
     }
 
-    public void NewCard(Player player, Card card)
+    public void NewCard(Card card)
     {
         this.card = card;
         image.sprite = card.thisCard.dataFile.sprite;
 
+        string text = "";
         int currentHealth = TurnManager.inst.GetInt(card.HealthString());
         drawX.gameObject.SetActive(currentHealth <= 0);
+        text += $"{currentHealth} Health";
 
-        string text = $"{currentHealth} Health";
+        if (!card.CanUseAbility())
+            text += $" Stunned";
+
         description.text = KeywordTooltip.instance.EditText(text);
     }
 }

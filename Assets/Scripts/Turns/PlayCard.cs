@@ -14,10 +14,19 @@ public class PlayCard : Turn
     public override void ForPlayer(Player player)
     {
         int currentRound = (int)PhotonCompatible.GetRoomProperty(RoomProp.CurrentRound);
-        player.DrawCardRPC(currentRound == 1 ? 4 : 2, 0);
-        player.ActionRPC(2, -1);
-        player.ShieldRPC(currentRound - TurnManager.inst.GetInt(PlayerProp.Shield, player), -1);
-        player.SwordRPC(currentRound - TurnManager.inst.GetInt(PlayerProp.Sword, player), -1);
+        player.DrawCardRPC(currentRound == 1 ? 4 : 2);
+        player.ActionRPC(2);
+
+        player.ShieldRPC(currentRound - TurnManager.inst.GetInt(PlayerProp.Shield, player));
+        int nextRoundShield = TurnManager.inst.GetInt(PlayerProp.NextRoundShield, player);
+        player.ShieldRPC(nextRoundShield, 1);
+        TurnManager.inst.WillChangePlayerProperty(player, PlayerProp.NextRoundShield, 0);
+
+        player.SwordRPC(currentRound - TurnManager.inst.GetInt(PlayerProp.Sword, player));
+        int nextRoundSword = TurnManager.inst.GetInt(PlayerProp.NextRoundSword, player);
+        player.SwordRPC(nextRoundSword, 1);
+        TurnManager.inst.WillChangePlayerProperty(player, PlayerProp.NextRoundSword, 0);
+
         Log.inst.NewDecisionContainer(() => PlayLoop(player), 0);
     }
 
@@ -64,7 +73,7 @@ public class PlayCard : Turn
             cardToPlay.transform.SetParent(null);
             cardToPlay.MoveCardRPC(new(0, 10000), 0.25f, Vector3.one);
         }
-        TurnManager.inst.WillChangePlayerProperty(PlayerProp.MyHand, TurnManager.inst.ConvertCardList(myHand));
-        TurnManager.inst.WillChangePlayerProperty(PlayerProp.MyTroops, TurnManager.inst.ConvertCardList(myTroops));
+        TurnManager.inst.WillChangePlayerProperty(player, PlayerProp.MyHand, TurnManager.inst.ConvertCardList(myHand));
+        TurnManager.inst.WillChangePlayerProperty(player, PlayerProp.MyTroops, TurnManager.inst.ConvertCardList(myTroops));
     }
 }

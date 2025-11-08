@@ -400,6 +400,8 @@ public class Log : PhotonCompatible
     public void PopStack(bool run = true)
     {
         forward = true;
+        TurnManager.inst.Instructions(-1, "Blank");
+
         List<Action> newActions = new();
         for (int i = 0; i < inReaction.Count; i++)
             newActions.Add(inReaction[i]);

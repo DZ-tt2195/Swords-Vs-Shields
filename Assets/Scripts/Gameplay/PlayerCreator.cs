@@ -7,7 +7,7 @@ using System.Collections;
 using MyBox;
 using TMPro;
 
-public enum RoomProp { Game, CanPlay, JoinAsSpec, MasterDeck, MasterDiscard, CurrentPhase, CurrentRound, P0_Health, P1_Health }
+public enum RoomProp { Game, CanPlay, JoinAsSpec, MasterDeck, MasterDiscard, CurrentPhase, CurrentRound }
 
 public class PlayerCreator : PhotonCompatible
 {
@@ -134,8 +134,6 @@ public class PlayerCreator : PhotonCompatible
             [RoomProp.MasterDiscard.ToString()] = new int[0],
             [RoomProp.CurrentPhase.ToString()] = 0,
             [RoomProp.CurrentRound.ToString()] = 0,
-            [RoomProp.P0_Health.ToString()] = 20,
-            [RoomProp.P1_Health.ToString()] = 20,
         };
         List<int> startingDeck = new();
         List<int> cardID = new();
@@ -166,10 +164,14 @@ public class PlayerCreator : PhotonCompatible
         {
             [PlayerProp.Waiting.ToString()] = false,
             [PlayerProp.Position.ToString()] = count,
+            [PlayerProp.MyHealth.ToString()] = 20,
 
             [PlayerProp.Shield.ToString()] = 0,
             [PlayerProp.Sword.ToString()] = 0,
             [PlayerProp.Action.ToString()] = 0,
+
+            [PlayerProp.NextRoundSword.ToString()] = 0,
+            [PlayerProp.NextRoundShield.ToString()] = 0,
 
             [PlayerProp.MyHand.ToString()] = new int[0],
             [PlayerProp.MyDeck.ToString()] = new int[0],

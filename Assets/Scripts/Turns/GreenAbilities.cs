@@ -23,7 +23,7 @@ public class GreenAbilities : Turn
 
         foreach (Card card in myTroops)
         {
-            if (alreadyDone.Contains(card))
+            if (alreadyDone.Contains(card) || !card.CanUseAbility())
                 continue;
             if (card.thisCard.CanUseAbiltyOne(player, card) == AbilityType.Defend)
                 canDo.Add(card);

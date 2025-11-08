@@ -13,7 +13,7 @@ public class TurnManager : PhotonCompatible
     public static TurnManager inst;
     [SerializeField] List<Turn> turnsInOrder = new();
     [SerializeField] TMP_Text instructions;
-    ExitGames.Client.Photon.Hashtable playerPropertyToChange;
+    Dictionary<Photon.Realtime.Player, ExitGames.Client.Photon.Hashtable> playerPropertyToChange;
     ExitGames.Client.Photon.Hashtable masterPropertyToChange;
 
     protected override void Awake()
@@ -144,53 +144,45 @@ public class TurnManager : PhotonCompatible
 
 #region Property Helpers
 
-    object FindProperty(string property, Photon.Realtime.Player thisPlayer)
+    object FindThisProperty(string property, Photon.Realtime.Player playerToFind)
     {
         if (masterPropertyToChange.ContainsKey(property))
         {
             return masterPropertyToChange[property];
         }
-        else if (playerPropertyToChange.ContainsKey(property))
-        {
-            return playerPropertyToChange[property];
-        }
         else if (PhotonNetwork.CurrentRoom.CustomProperties.ContainsKey(property))
         {
             return GetRoomProperty(property);
         }
-        else if (thisPlayer != null)
+        else if (playerPropertyToChange[playerToFind].ContainsKey(property))
         {
-            return GetPlayerProperty(thisPlayer, property);
+            return playerPropertyToChange[playerToFind][property];
         }
-        else
+        else if (playerToFind != null)
         {
-            foreach (Player player in PlayerCreator.inst.listOfPlayers)
-            {
-                if (player.photonView.Owner.CustomProperties.ContainsKey(property))
-                    return GetPlayerProperty(player.photonView.Owner, property);
-            }
-            return null;
+            return GetPlayerProperty(playerToFind, property);
         }
+        return null;
     }
 
     public int GetInt(PlayerProp property, Player player)
     {
-        return (int)FindProperty(property.ToString(), player.photonView.Owner);
+        return (int)FindThisProperty(property.ToString(), player.photonView.Owner);
     }
 
     public int GetInt(string property, Photon.Realtime.Player player = null)
     {
-        return (int)FindProperty(property, player);
+        return (int)FindThisProperty(property, player);
     }
 
     public List<Card> GetCardList(PlayerProp property, Player player)
     {
-        return ConvertIntArray((int[])FindProperty(property.ToString(), player.photonView.Owner));
+        return ConvertIntArray((int[])FindThisProperty(property.ToString(), player.photonView.Owner));
     }
 
     public List<Card> GetCardList(string property, Photon.Realtime.Player player = null)
     {
-        return ConvertIntArray((int[])FindProperty(property, player));
+        return ConvertIntArray((int[])FindThisProperty(property, player));
     }
 
     List<Card> ConvertIntArray(int[] arrayOfPVs)
@@ -216,17 +208,20 @@ public class TurnManager : PhotonCompatible
 
 #region Change Properties
 
-    public void WillChangePlayerProperty(PlayerProp playerProperty, object changeInto)
+    public void WillChangePlayerProperty(Player player, PlayerProp playerProperty, object changeInto)
     {
-        WillChangePlayerProperty(playerProperty.ToString(), changeInto);
+        WillChangePlayerProperty(player.photonView.Owner, playerProperty.ToString(), changeInto);
     }
 
-    public void WillChangePlayerProperty(string playerProperty, object changeInto)
+    public void WillChangePlayerProperty(Photon.Realtime.Player player, string playerProperty, object changeInto)
     {
-        if (playerPropertyToChange.ContainsKey(playerProperty))
-            playerPropertyToChange[playerProperty] = changeInto;
+        if (!playerPropertyToChange.ContainsKey(player))
+            playerPropertyToChange[player] = new();
+
+        if (playerPropertyToChange[player].ContainsKey(playerProperty))
+            playerPropertyToChange[player][playerProperty] = changeInto;
         else
-            playerPropertyToChange.Add(playerProperty, changeInto);
+            playerPropertyToChange[player].Add(playerProperty, changeInto);
     }
 
     public void WillChangeMasterProperty(RoomProp roomProperty, object changeInto)
@@ -246,8 +241,12 @@ public class TurnManager : PhotonCompatible
     void SharePropertyChanges()
     {
         Log.inst.ShareTexts();
-        PhotonNetwork.LocalPlayer.SetCustomProperties(playerPropertyToChange);
-        playerPropertyToChange.Clear();
+
+        foreach (var KVP in playerPropertyToChange)
+        {
+            KVP.Key.SetCustomProperties(KVP.Value);
+            KVP.Value.Clear();
+        }
         PhotonNetwork.CurrentRoom.SetCustomProperties(masterPropertyToChange);
         masterPropertyToChange.Clear();
 

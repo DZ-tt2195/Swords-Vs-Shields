@@ -245,7 +245,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tooltipText: {fileID: 1828323579}
-  linkedKeywords: []
+  linkedKeywords:
+  - englishString: Stunned
+    translatedString: 
+    description: 
+    color: {r: 1, g: 1, b: 1, a: 0}
   spriteKeywords:
   - englishString: Sword
     translatedString: 

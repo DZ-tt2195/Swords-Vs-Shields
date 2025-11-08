@@ -7,7 +7,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine.UI;
 
-public enum PlayerProp { Position, Waiting, MyHand, MyDeck, MyDiscard, MyTroops, Shield, Sword, Action }
+public enum PlayerProp { Position, Waiting, MyHealth, MyHand, MyDeck, MyDiscard, MyTroops, Shield, Sword, Action, NextRoundShield, NextRoundSword }
 
 public class Player : PhotonCompatible
 {
@@ -67,7 +67,7 @@ public class Player : PhotonCompatible
 
 #region Hand
 
-    public void DrawCardRPC(int amount, int logged)
+    public void DrawCardRPC(int amount, int logged = 0)
     {
         Log.inst.groupToWait.StartCoroutine(WaitToDraw());
         AskForCards(amount);
@@ -115,8 +115,8 @@ public class Player : PhotonCompatible
                 myDeck.RemoveAt(0);
             }
         }
-        TurnManager.inst.WillChangePlayerProperty(PlayerProp.MyHand, TurnManager.inst.ConvertCardList(myHand));
-        TurnManager.inst.WillChangePlayerProperty(PlayerProp.MyDeck, TurnManager.inst.ConvertCardList(myDeck));
+        TurnManager.inst.WillChangePlayerProperty(this, PlayerProp.MyHand, TurnManager.inst.ConvertCardList(myHand));
+        TurnManager.inst.WillChangePlayerProperty(this, PlayerProp.MyDeck, TurnManager.inst.ConvertCardList(myDeck));
     }
 
     void AskForCards(int amount)
@@ -171,25 +171,22 @@ public class Player : PhotonCompatible
             myDiscard.Add(card);
             card.MoveCardRPC(new(0, -10000), 0.25f, Vector3.one);
         }
-        TurnManager.inst.WillChangePlayerProperty(PlayerProp.MyHand, TurnManager.inst.ConvertCardList(myHand));
-        TurnManager.inst.WillChangePlayerProperty(PlayerProp.MyDiscard, TurnManager.inst.ConvertCardList(myDiscard));
+        TurnManager.inst.WillChangePlayerProperty(this, PlayerProp.MyHand, TurnManager.inst.ConvertCardList(myHand));
+        TurnManager.inst.WillChangePlayerProperty(this, PlayerProp.MyDiscard, TurnManager.inst.ConvertCardList(myDiscard));
     }
 
     #endregion
 
 #region Resources
 
-    void ChangeInt(int num, string property, bool player)
+    void ChangeInt(int num, string property)
     {
-        int total = TurnManager.inst.GetInt(property);
+        int total = TurnManager.inst.GetInt(property, this.photonView.Owner);
         total += (!Log.inst.forward) ? -num : num;
-        if (player)
-            TurnManager.inst.WillChangePlayerProperty(property, total);
-        else
-            TurnManager.inst.WillChangeMasterProperty(property, total);
+        TurnManager.inst.WillChangePlayerProperty(this.photonView.Owner, property, total);
     }
 
-    public void ShieldRPC(int num, int logged)
+    public void ShieldRPC(int num, int logged = 0)
     {
         if (num == 0)
             return;
@@ -197,10 +194,10 @@ public class Player : PhotonCompatible
             Log.inst.AddMyText($"Add Shield-Player-{this.name}-Num-{num}", false, logged);
         else
             Log.inst.AddMyText($"Lose Shield-Player-{this.name}-Num-{Mathf.Abs(num)}", false, logged);
-        Log.inst.NewRollback(() => ChangeInt(num, PlayerProp.Shield.ToString(), true));
+        Log.inst.NewRollback(() => ChangeInt(num, PlayerProp.Shield.ToString()));
     }
 
-    public void SwordRPC(int num, int logged)
+    public void SwordRPC(int num, int logged = 0)
     {
         if (num == 0)
             return;
@@ -208,10 +205,10 @@ public class Player : PhotonCompatible
             Log.inst.AddMyText($"Add Sword-Player-{this.name}-Num-{num}", false, logged);
         else
             Log.inst.AddMyText($"Lose Sword-Player-{this.name}-Num-{Mathf.Abs(num)}", false, logged);
-        Log.inst.NewRollback(() => ChangeInt(num, PlayerProp.Sword.ToString(), true));
+        Log.inst.NewRollback(() => ChangeInt(num, PlayerProp.Sword.ToString()));
     }
 
-    public void ActionRPC(int num, int logged)
+    public void ActionRPC(int num, int logged = 0)
     {
         if (num == 0)
             return;
@@ -219,10 +216,10 @@ public class Player : PhotonCompatible
             Log.inst.AddMyText($"Add Action-Player-{this.name}-Num-{num}", false, logged);
         else
             Log.inst.AddMyText($"Lose Action-Player-{this.name}-Num-{Mathf.Abs(num)}", false, logged);
-        Log.inst.NewRollback(() => ChangeInt(num, PlayerProp.Action.ToString(), true));
+        Log.inst.NewRollback(() => ChangeInt(num, PlayerProp.Action.ToString()));
     }
 
-    public void HealthRPC(int num, int logged)
+    public void HealthRPC(int num, int logged = 0)
     {
         if (num == 0)
             return;
@@ -230,8 +227,12 @@ public class Player : PhotonCompatible
             Log.inst.AddMyText($"Add Health Player-Player-{this.name}-Num-{num}", false, logged);
         else
             Log.inst.AddMyText($"Lose Health Player-Player-{this.name}-Num-{Mathf.Abs(num)}", false, logged);
-        Log.inst.NewRollback(() => ChangeInt(num, $"P{myPosition}_Health", false));
+        Log.inst.NewRollback(() => ChangeInt(num, PlayerProp.MyHealth.ToString()));
     }
+
+    public void NextRoundShield(int num) => Log.inst.NewRollback(() => ChangeInt(num, PlayerProp.NextRoundShield.ToString()));
+
+    public void NextRoundSword(int num) => Log.inst.NewRollback(() => ChangeInt(num, PlayerProp.NextRoundSword.ToString()));
 
     #endregion
 
@@ -481,7 +482,7 @@ public class Player : PhotonCompatible
             $"{TurnManager.inst.GetInt(PlayerProp.Action, this)} {PlayerProp.Action}" +
             $"\n{TurnManager.inst.GetInt(PlayerProp.Shield, this)} {PlayerProp.Shield}, " +
             $"{TurnManager.inst.GetInt(PlayerProp.Sword, this)} {PlayerProp.Sword}";
-        myPlayerDisplay.AssignInfo(this, TurnManager.inst.GetInt($"P{myPosition}_Health", this.photonView.Owner), KeywordTooltip.instance.EditText(descriptionText));
+        myPlayerDisplay.AssignInfo(this, TurnManager.inst.GetInt(PlayerProp.MyHealth, this), KeywordTooltip.instance.EditText(descriptionText));
 
         List<Card> myTroops = TurnManager.inst.GetCardList(PlayerProp.MyTroops, this);
         for (int i = 0; i < allMyTroopDisplays.Count; i++)
@@ -489,7 +490,7 @@ public class Player : PhotonCompatible
             if (i < myTroops.Count)
             {
                 allMyTroopDisplays[i].gameObject.SetActive(true);
-                allMyTroopDisplays[i].NewCard(this, myTroops[i]);
+                allMyTroopDisplays[i].NewCard(myTroops[i]);
             }
             else
             {

@@ -1,8 +1,10 @@
 using UnityEngine;
 using MyBox;
 using System.Collections;
+using System.Linq;
 using System;
 using Photon.Pun;
+using System.Collections.Generic;
 
 public class Card : PhotonCompatible
 {
@@ -29,15 +31,15 @@ public class Card : PhotonCompatible
             ExitGames.Client.Photon.Hashtable initialProps = new()
             {
                 [HealthString()] = 0,
+                [StunString()] = new int[0],
             };
             PhotonNetwork.CurrentRoom.SetCustomProperties(initialProps);
         }
     }
 
-    public string HealthString()
-    {
-        return $"{this.photonView.ViewID}_Health";
-    }
+    public string HealthString() => $"{this.photonView.ViewID}_Health";
+
+    public string StunString() => $"{this.photonView.ViewID}_Stun";
 
     public void AssignCard(CardData dataFile)
     {
@@ -118,12 +120,31 @@ public class Card : PhotonCompatible
 
 #region Properties
 
-    public void MakeDecision(Action action)
+    public bool CanUseAbility()
     {
-        action();
+        int currentRound = (int)GetRoomProperty(RoomProp.CurrentRound);
+        int[] stunArray = (int[])GetRoomProperty(StunString());
+        return !(stunArray.Contains(currentRound));
     }
 
-    public void HealthRPC(Player player, int num, int logged)
+    public void StunRPC(int increment, int logged = 0)
+    {
+        int roundNumber = (int)GetRoomProperty(RoomProp.CurrentRound) + increment;
+        Log.inst.AddMyText($"Stun Card-Card-{this.name}-Num-{roundNumber}", false, logged);
+        Log.inst.NewRollback(() => AddToArray(roundNumber));
+    }
+
+    void AddToArray(int round)
+    {
+        List<int> stunList = ((int[])GetRoomProperty(StunString())).ToList();
+        if (Log.inst.forward)
+            stunList.Add(round);
+        else
+            stunList.Remove(round);
+        TurnManager.inst.WillChangeMasterProperty(StunString(), stunList);
+    }
+
+    public void HealthRPC(Player player, int num, int logged = 0)
     {
         if (num == 0)
             return;

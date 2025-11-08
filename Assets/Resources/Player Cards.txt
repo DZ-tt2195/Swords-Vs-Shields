@@ -52,6 +52,16 @@
       "X",
       "LoseSword, AttackCard",
       "DiscardCard"
+    ],
+    [
+      "Barbarian",
+      "ATTACK: Spend 2 Sword to Stun a Card and deal 2 damage to it.",
+      "\"\"",
+      "5",
+      "Attack",
+      "None",
+      "X",
+      "LoseSword, StunCard, AttackCard"
     ]
   ]
 }
