@@ -19,7 +19,7 @@ public class RedAbilities : Turn
     void NextAbility(Player player, HashSet<Card> alreadyDone)
     {
         List<Card> myTroops = TurnManager.inst.GetCardList(PlayerProp.MyTroops, player);
-        List<Card> canDo = new();
+        HashSet<Card> canDo = new();
 
         foreach (Card card in myTroops)
         {
@@ -34,7 +34,13 @@ public class RedAbilities : Turn
         if (canDo.Count >= 1)
         {
             player.ChooseButtonInPopup(new() { new("Decline") }, "Use Red Instruction", new(0, 325), false);
-            player.ChooseCardOnScreen(canDo, ChooseToUse, false);
+            List<MiniCardDisplay> toChoose = new();
+            foreach (MiniCardDisplay display in player.AliveTroops())
+            {
+                if (canDo.Contains(display.card))
+                    toChoose.Add(display);
+            }
+            player.ChooseDisplayOnScreen(toChoose, ChooseToUse, false);
 
             void ChooseToUse(Card card)
             {

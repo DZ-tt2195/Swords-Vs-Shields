@@ -40,7 +40,18 @@
       "Attack",
       "X",
       "LoseSword, DrawCard",
-      "LoseSword, AttackPlayer"
+      "LoseSword, AttackPlayer, PerHand"
+    ],
+    [
+      "Dragon",
+      "ATTACK: Spend 4 Sword to deal 2 damage to all Card by the other player.",
+      "PLAY: -1 Card.",
+      "8",
+      "Attack",
+      "Play",
+      "X",
+      "LoseSword, AttackCard",
+      "DiscardCard"
     ]
   ]
 }

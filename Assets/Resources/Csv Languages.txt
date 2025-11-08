@@ -220,6 +220,16 @@
       "\"\""
     ],
     [
+      "Discard Card",
+      "$Player$ discards $Card$.",
+      "\"\""
+    ],
+    [
+      "Discard Card Others",
+      "$Player$ discards 1 Card.",
+      "\"\""
+    ],
+    [
       "Play Troop",
       "$Player$ plays $Card$.",
       "\"\""
@@ -340,8 +350,13 @@
       "\"\""
     ],
     [
-      "Choose One",
+      "Choose One Instruction",
       "Choose one.",
+      "\"\""
+    ],
+    [
+      "Discard Instruction",
+      "Discard 1 Card.",
       "\"\""
     ],
     [
@@ -387,6 +402,21 @@
     [
       "Archer TextTwo",
       "ATTACK: Spend 3 Sword to deal 1 damage to the other player per Card in your hand.",
+      "\"\""
+    ],
+    [
+      "Dragon",
+      "Dragon",
+      "\"\""
+    ],
+    [
+      "Dragon TextOne",
+      "ATTACK: Spend 4 Sword to deal 2 damage to all Card by the other player.",
+      "\"\""
+    ],
+    [
+      "Dragon TextTwo",
+      "PLAY: -1 Card.",
       "\"\""
     ]
   ]

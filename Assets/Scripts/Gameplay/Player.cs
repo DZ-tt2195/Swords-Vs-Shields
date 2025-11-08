@@ -65,7 +65,7 @@ public class Player : PhotonCompatible
 
     #endregion
 
-#region Draw cards
+#region Hand
 
     public void DrawCardRPC(int amount, int logged)
     {
@@ -147,6 +147,32 @@ public class Player : PhotonCompatible
             ChangeRoomProperties(RoomProp.MasterDeck, TurnManager.inst.ConvertCardList(masterDeck));
             ChangePlayerProperties(this, PlayerProp.MyDeck, TurnManager.inst.ConvertCardList(myDeck));
         }
+    }
+
+    public void DiscardRPC(Card card, int logged)
+    {
+        Log.inst.NewRollback(() => DiscardFromHand(card));
+        Log.inst.AddMyText($"Discard Card-Player-{this.name}-Card-{card.name}", false, logged);
+    }
+
+    void DiscardFromHand(Card card)
+    {
+        List<Card> myHand = TurnManager.inst.GetCardList(PlayerProp.MyHand, this);
+        List<Card> myDiscard = TurnManager.inst.GetCardList(PlayerProp.MyDiscard, this);
+
+        if (!Log.inst.forward)
+        {
+            myHand.Add(card);
+            myDiscard.Remove(card);
+        }
+        else
+        {
+            myHand.Remove(card);
+            myDiscard.Add(card);
+            card.MoveCardRPC(new(0, -10000), 0.25f, Vector3.one);
+        }
+        TurnManager.inst.WillChangePlayerProperty(PlayerProp.MyHand, TurnManager.inst.ConvertCardList(myHand));
+        TurnManager.inst.WillChangePlayerProperty(PlayerProp.MyDiscard, TurnManager.inst.ConvertCardList(myDiscard));
     }
 
     #endregion
