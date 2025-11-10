@@ -67,6 +67,8 @@ public class Player : PhotonCompatible
 
 #region Hand
 
+    public List<Card> GetHand() => TurnManager.inst.GetCardList(PlayerProp.MyHand, this);
+
     public void DrawCardRPC(int amount, int logged = 0)
     {
         Log.inst.groupToWait.StartCoroutine(WaitToDraw());
@@ -94,7 +96,7 @@ public class Player : PhotonCompatible
 
     void AddToHand(List<Card> cardsToAdd)
     {
-        List<Card> myHand = TurnManager.inst.GetCardList(PlayerProp.MyHand, this);
+        List<Card> myHand = GetHand();
         List<Card> myDeck = TurnManager.inst.GetCardList(PlayerProp.MyDeck, this);
 
         if (!Log.inst.forward)
@@ -157,7 +159,7 @@ public class Player : PhotonCompatible
 
     void DiscardFromHand(Card card)
     {
-        List<Card> myHand = TurnManager.inst.GetCardList(PlayerProp.MyHand, this);
+        List<Card> myHand = GetHand();
         List<Card> myDiscard = TurnManager.inst.GetCardList(PlayerProp.MyDiscard, this);
 
         if (!Log.inst.forward)
@@ -178,6 +180,14 @@ public class Player : PhotonCompatible
     #endregion
 
 #region Resources
+
+    public int GetSword() => TurnManager.inst.GetInt(PlayerProp.Sword, this);
+
+    public int GetShield() => TurnManager.inst.GetInt(PlayerProp.Shield, this);
+
+    public int GetAction() => TurnManager.inst.GetInt(PlayerProp.Action, this);
+
+    public int GetHealth() => TurnManager.inst.GetInt(PlayerProp.MyHealth, this);
 
     void ChangeInt(int num, string property)
     {
@@ -450,9 +460,11 @@ public class Player : PhotonCompatible
 
 #region UI
 
+    public List<Card> GetTroops() => TurnManager.inst.GetCardList(PlayerProp.MyTroops, this);
+
     public void UpdateUI()
     {
-        List<Card> myHand = TurnManager.inst.GetCardList(PlayerProp.MyHand, this);
+        List<Card> myHand = GetHand();
         float start = -1100;
         float end = 475;
         float gap = 225;
@@ -479,12 +491,12 @@ public class Player : PhotonCompatible
 
         string descriptionText = $"{this.name}" +
             $"\n{myHand.Count} Card, " +
-            $"{TurnManager.inst.GetInt(PlayerProp.Action, this)} {PlayerProp.Action}" +
-            $"\n{TurnManager.inst.GetInt(PlayerProp.Shield, this)} {PlayerProp.Shield}, " +
-            $"{TurnManager.inst.GetInt(PlayerProp.Sword, this)} {PlayerProp.Sword}";
-        myPlayerDisplay.AssignInfo(this, TurnManager.inst.GetInt(PlayerProp.MyHealth, this), KeywordTooltip.instance.EditText(descriptionText));
+            $"{GetAction()} {PlayerProp.Action}" +
+            $"\n{GetShield()} {PlayerProp.Shield}, " +
+            $"{GetSword()} {PlayerProp.Sword}";
+        myPlayerDisplay.AssignInfo(this, GetHealth(), KeywordTooltip.instance.EditText(descriptionText));
 
-        List<Card> myTroops = TurnManager.inst.GetCardList(PlayerProp.MyTroops, this);
+        List<Card> myTroops = GetTroops();
         for (int i = 0; i < allMyTroopDisplays.Count; i++)
         {
             if (i < myTroops.Count)
@@ -502,11 +514,11 @@ public class Player : PhotonCompatible
     public List<MiniCardDisplay> AliveTroops()
     {
         List<MiniCardDisplay> toReturn = new();
-        List<Card> myTroops = TurnManager.inst.GetCardList(PlayerProp.MyTroops, this);
+        List<Card> myTroops = GetTroops();
         for (int i = 0; i<myTroops.Count; i++)
         {
             Card card = myTroops[i];
-            if (TurnManager.inst.GetInt(card.HealthString()) >= 1)
+            if (card.GetHealth() >= 1)
                 toReturn.Add(allMyTroopDisplays[i]);
         }
         return toReturn;

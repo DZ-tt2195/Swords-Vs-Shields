@@ -131,31 +131,7 @@ public class PhotonCompatible : MonoBehaviourPunCallbacks
 
     #endregion
 
-#region Online Helpers
-
-    public static (List<Photon.Realtime.Player>, List<Photon.Realtime.Player>) GetPlayers(bool printLog)
-    {
-        List<Photon.Realtime.Player> players = new();
-        List<Photon.Realtime.Player> spectators = new();
-
-        foreach (Photon.Realtime.Player nextPlayer in PhotonNetwork.CurrentRoom.Players.Values.OrderBy(p => p.ActorNumber))
-        {
-            if ((int)GetPlayerProperty(nextPlayer, PlayerProp.Position.ToString()) == -1)
-            {
-                spectators.Add(nextPlayer);
-                if (printLog)
-                    Debug.Log($"spectating (inactive: {nextPlayer.IsInactive}, {nextPlayer.ActorNumber}): {nextPlayer.NickName}");
-            }
-            else
-            {
-                players.Add(nextPlayer);
-                if (printLog)
-                    Debug.Log($"playing (inactive: {nextPlayer.IsInactive}, {nextPlayer.ActorNumber}): {nextPlayer.NickName}");
-            }
-        }
-
-        return (players, spectators);
-    }
+#region Properties
 
     public static void ChangePlayerProperties(Photon.Realtime.Player player, PlayerProp propertyName, object changeToThis, object expected = null)
     {
@@ -230,6 +206,34 @@ public class PhotonCompatible : MonoBehaviourPunCallbacks
     public static object GetRoomProperty(RoomProp propertyName)
     {
         return GetRoomProperty(propertyName.ToString());
+    }
+
+    #endregion
+
+#region Misc
+
+    public static (List<Photon.Realtime.Player>, List<Photon.Realtime.Player>) GetPlayers(bool printLog)
+    {
+        List<Photon.Realtime.Player> players = new();
+        List<Photon.Realtime.Player> spectators = new();
+
+        foreach (Photon.Realtime.Player nextPlayer in PhotonNetwork.CurrentRoom.Players.Values.OrderBy(p => p.ActorNumber))
+        {
+            if ((int)GetPlayerProperty(nextPlayer, PlayerProp.Position.ToString()) == -1)
+            {
+                spectators.Add(nextPlayer);
+                if (printLog)
+                    Debug.Log($"spectating (inactive: {nextPlayer.IsInactive}, {nextPlayer.ActorNumber}): {nextPlayer.NickName}");
+            }
+            else
+            {
+                players.Add(nextPlayer);
+                if (printLog)
+                    Debug.Log($"playing (inactive: {nextPlayer.IsInactive}, {nextPlayer.ActorNumber}): {nextPlayer.NickName}");
+            }
+        }
+
+        return (players, spectators);
     }
 
     public GameObject MakeObject(GameObject prefab)

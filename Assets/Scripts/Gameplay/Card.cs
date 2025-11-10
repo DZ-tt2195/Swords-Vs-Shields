@@ -120,13 +120,6 @@ public class Card : PhotonCompatible
 
 #region Properties
 
-    public bool CanUseAbility()
-    {
-        int currentRound = (int)GetRoomProperty(RoomProp.CurrentRound);
-        int[] stunArray = (int[])GetRoomProperty(StunString());
-        return !(stunArray.Contains(currentRound));
-    }
-
     public void StunRPC(int increment, int logged = 0)
     {
         int roundNumber = (int)GetRoomProperty(RoomProp.CurrentRound) + increment;
@@ -144,6 +137,13 @@ public class Card : PhotonCompatible
         TurnManager.inst.WillChangeMasterProperty(StunString(), stunList);
     }
 
+    public bool CanUseAbility()
+    {
+        int currentRound = (int)GetRoomProperty(RoomProp.CurrentRound);
+        int[] stunArray = (int[])GetRoomProperty(StunString());
+        return !(stunArray.Contains(currentRound));
+    }
+
     public void HealthRPC(Player player, int num, int logged = 0)
     {
         if (num == 0)
@@ -154,6 +154,8 @@ public class Card : PhotonCompatible
             Log.inst.AddMyText($"Lose Health Troop-Player-{player.name}-Num-{Mathf.Abs(num)}", false, logged);
         Log.inst.NewRollback(() => ChangeInt(num, HealthString()));
     }
+
+    public int GetHealth() => TurnManager.inst.GetInt(this.HealthString());
 
     void ChangeInt(int num, string property)
     {

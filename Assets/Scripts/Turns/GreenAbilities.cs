@@ -18,7 +18,7 @@ public class GreenAbilities : Turn
 
     void NextAbility(Player player, HashSet<Card> alreadyDone)
     {
-        List<Card> myTroops = TurnManager.inst.GetCardList(PlayerProp.MyTroops, player);
+        List<Card> myTroops = player.GetTroops();
         HashSet<Card> canDo = new();
 
         foreach (Card card in myTroops)

@@ -54,7 +54,7 @@
       "DiscardCard"
     ],
     [
-      "Barbarian",
+      "Bee",
       "ATTACK: Spend 2 Sword to Stun a Card and deal 2 damage to it.",
       "\"\"",
       "5",
@@ -62,6 +62,16 @@
       "None",
       "X",
       "LoseSword, StunCard, AttackCard"
+    ],
+    [
+      "Ninja",
+      "ATTACK: Spend 1 Sword to deal 3 damage to a Card with 3 Health or less.",
+      "\"\"",
+      "4",
+      "Attack",
+      "None",
+      "X",
+      "LoseSword, AttackCard, HealthOrLess"
     ]
   ]
 }

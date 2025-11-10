@@ -17,12 +17,12 @@ public class PlayCard : Turn
         player.DrawCardRPC(currentRound == 1 ? 4 : 2);
         player.ActionRPC(2);
 
-        player.ShieldRPC(currentRound - TurnManager.inst.GetInt(PlayerProp.Shield, player));
+        player.ShieldRPC(currentRound - player.GetShield());
         int nextRoundShield = TurnManager.inst.GetInt(PlayerProp.NextRoundShield, player);
         player.ShieldRPC(nextRoundShield, 1);
         TurnManager.inst.WillChangePlayerProperty(player, PlayerProp.NextRoundShield, 0);
 
-        player.SwordRPC(currentRound - TurnManager.inst.GetInt(PlayerProp.Sword, player));
+        player.SwordRPC(currentRound - player.GetSword());
         int nextRoundSword = TurnManager.inst.GetInt(PlayerProp.NextRoundSword, player);
         player.SwordRPC(nextRoundSword, 1);
         TurnManager.inst.WillChangePlayerProperty(player, PlayerProp.NextRoundSword, 0);
@@ -32,10 +32,10 @@ public class PlayCard : Turn
 
     void PlayLoop(Player player)
     {
-        if (TurnManager.inst.GetInt(PlayerProp.Action, player) >= 1)
+        if (player.GetAction() >= 1)
         {
             player.ChooseButtonInPopup(new() { new("Decline") }, "Play Card Instruction", new(0, 325), false);
-            List<Card> myHand = TurnManager.inst.GetCardList(PlayerProp.MyHand, player);
+            List<Card> myHand = player.GetHand();
             player.ChooseCardOnScreen(myHand, ChooseToPlay, false);
 
             void ChooseToPlay(Card card)
@@ -58,8 +58,8 @@ public class PlayCard : Turn
 
     void HandToPlay(Player player, Card cardToPlay)
     {
-        List<Card> myHand = TurnManager.inst.GetCardList(PlayerProp.MyHand, player);
-        List<Card> myTroops = TurnManager.inst.GetCardList(PlayerProp.MyTroops, player);
+        List<Card> myHand = player.GetHand();
+        List<Card> myTroops = player.GetTroops();
 
         if (!Log.inst.forward)
         {

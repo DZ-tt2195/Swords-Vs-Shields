@@ -11,7 +11,7 @@
     ],
     [
       "Last Update",
-      "Last Updated: November 6th, 2025",
+      "Last Updated: November 9th, 2025",
       "\"\""
     ],
     [
@@ -440,17 +440,32 @@
       "\"\""
     ],
     [
-      "Barbarian",
-      "Barbarian",
+      "Bee",
+      "Bee",
       "\"\""
     ],
     [
-      "Barbarian TextOne",
+      "Bee TextOne",
       "ATTACK: Spend 2 Sword to Stun a Card and deal 2 damage to it.",
       "\"\""
     ],
     [
-      "Barbarian TextTwo",
+      "Bee TextTwo",
+      "\"\"",
+      "\"\""
+    ],
+    [
+      "Ninja",
+      "Ninja",
+      "\"\""
+    ],
+    [
+      "Ninja TextOne",
+      "ATTACK: Spend 1 Sword to deal 3 damage to a Card with 3 Health or less.",
+      "\"\""
+    ],
+    [
+      "Ninja TextTwo",
       "\"\"",
       "\"\""
     ]

@@ -8,7 +8,7 @@ public class Trader : CardType
 
     public override AbilityType CanUseAbiltyOne(Player player, Card thisCard)
     {
-        if (TurnManager.inst.GetInt(PlayerProp.Action, player) >= 1)
+        if (player.GetAction() >= 1)
             return AbilityType.Defend;
         else
             return AbilityType.None;

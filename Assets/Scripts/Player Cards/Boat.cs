@@ -9,7 +9,7 @@ public class Boat : CardType
 
     public override AbilityType CanUseAbiltyOne(Player player, Card thisCard)
     {
-        if (TurnManager.inst.GetInt(PlayerProp.Sword, player) >= 1)
+        if (player.GetSword() >= 1)
             return AbilityType.Attack;
         else
             return AbilityType.None;

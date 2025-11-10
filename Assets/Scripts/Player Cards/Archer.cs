@@ -8,7 +8,7 @@ public class Archer : CardType
 
     public override AbilityType CanUseAbiltyOne(Player player, Card thisCard)
     {
-        if (TurnManager.inst.GetInt(PlayerProp.Sword, player) >= 1)
+        if (player.GetSword() >= 1)
             return AbilityType.Defend;
         else
             return AbilityType.None;
@@ -22,7 +22,7 @@ public class Archer : CardType
 
     public override AbilityType CanUseAbiltyTwo(Player player, Card thisCard)
     {
-        if (TurnManager.inst.GetInt(PlayerProp.Sword, player) >= 3)
+        if (player.GetSword() >= 3)
             return AbilityType.Attack;
         else
             return AbilityType.None;
@@ -31,7 +31,7 @@ public class Archer : CardType
     public override void DoAbilityTwo(Player player, Card thisCard, int logged)
     {
         player.SwordRPC(-3, logged);
-        int playerHand = TurnManager.inst.GetCardList(PlayerProp.MyHand, player).Count;
+        int playerHand = player.GetHand().Count;
         PlayerCreator.inst.OtherPlayer(player.myPosition).HealthRPC(-1*playerHand, logged);
     }
 }

@@ -29,7 +29,7 @@ public class MiniCardDisplay : MonoBehaviour, IPointerClickHandler
         image.sprite = card.thisCard.dataFile.sprite;
 
         string text = "";
-        int currentHealth = TurnManager.inst.GetInt(card.HealthString());
+        int currentHealth = card.GetHealth();
         drawX.gameObject.SetActive(currentHealth <= 0);
         text += $"{currentHealth} Health";
 
