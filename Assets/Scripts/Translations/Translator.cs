@@ -167,7 +167,7 @@ public class Translator : PhotonCompatible
                     else if (field.FieldType == typeof(bool))
                         field.SetValue(nextData, StringToBool(sheetValue));
                     else if (field.FieldType == typeof(string))
-                        field.SetValue(nextData, sheetValue);
+                        field.SetValue(nextData, sheetValue.Replace("|", "\n"));
                     else if (field.FieldType == typeof(AbilityType))
                         field.SetValue(nextData, StringToAbilityType(sheetValue));
 

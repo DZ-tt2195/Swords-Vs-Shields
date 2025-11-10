@@ -8,7 +8,6 @@ public class GreenAbilities : Turn
     {
         int currentRound = (int)PhotonCompatible.GetRoomProperty(RoomProp.CurrentRound);
         Log.inst.MasterText($"Use Green-Num-{currentRound}");
-        Log.inst.MasterText("Blank");
     }
 
     public override void ForPlayer(Player player)

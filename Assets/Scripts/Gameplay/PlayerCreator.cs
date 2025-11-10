@@ -147,7 +147,6 @@ public class PlayerCreator : PhotonCompatible
 
                 startingDeck.Add(cardPV.ViewID);
                 cardID.Add(i);
-                initialProps.Add($"{cardPV.ViewID}_Box", 0);
             }
         }
         DoFunction(() => CreateCards(startingDeck.ToArray(), cardID.ToArray()));

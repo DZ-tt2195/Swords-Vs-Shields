@@ -8,7 +8,6 @@ public class RedAbilities : Turn
     {
         int currentRound = (int)PhotonCompatible.GetRoomProperty(RoomProp.CurrentRound);
         Log.inst.MasterText($"Use Red-Num-{currentRound}");
-        Log.inst.MasterText("Blank");
     }
 
     public override void ForPlayer(Player player)

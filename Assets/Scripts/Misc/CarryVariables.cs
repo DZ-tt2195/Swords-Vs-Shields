@@ -7,6 +7,7 @@ using System;
 using System.Collections;
 using System.Linq;
 using System.Reflection;
+using TMPro;
 using UnityEngine.Networking;
 
 public class CarryVariables : MonoBehaviour
@@ -29,6 +30,7 @@ public class CarryVariables : MonoBehaviour
     [Foldout("Right click", true)]
     [SerializeField] Transform rightClickBackground;
     [SerializeField] CardLayout rightClickCard;
+    [SerializeField] TMP_Text artistCredit;
 
     [Foldout("Misc", true)]
     [SerializeField] Transform permanentCanvas;
@@ -71,6 +73,7 @@ public class CarryVariables : MonoBehaviour
         rightClickBackground.gameObject.SetActive(true);
         rightClickCard.gameObject.SetActive(true);
         rightClickCard.FillInCards(dataFile, alpha, rotation);
+        artistCredit.text = dataFile.artCredit;
     }
 
     #endregion

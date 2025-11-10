@@ -85,7 +85,7 @@ public class Card : PhotonCompatible
 
     IEnumerator FlipCard(float newAlpha, float totalTime, float rotation)
     {
-        if (flipping)
+        if (flipping || this.layout.GetAlpha() == newAlpha)
             yield break;
 
         flipping = true;

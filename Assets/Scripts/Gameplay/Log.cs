@@ -107,11 +107,13 @@ public class Log : PhotonCompatible
     [Foldout("Decisions", true)]
     public List<DecisionContainer> completedDecisions = new();
     List<DecisionContainer> initialContainers = new();
-    public List<LogText> undosInLog = new();
-    [SerializeField] Button undoButton;
-    [SerializeField] Slider logTypeSlider;
+    [ReadOnly] public List<LogText> undosInLog = new();
     bool storeUndoPoint = false;
     public bool forward { get; private set; }
+
+    [Foldout("UI", true)]
+    [SerializeField] Slider logTypeSlider;
+    [SerializeField] Button undoButton;
 
     protected override void Awake()
     {
@@ -122,6 +124,7 @@ public class Log : PhotonCompatible
         undoButton.gameObject.SetActive(false);
         groupToWait = new(this);
         logTypeSlider.onValueChanged.AddListener(LogToggle);
+        forward = true;
         void LogToggle(float value)
         {
             ChangeScrolling();
@@ -176,8 +179,11 @@ public class Log : PhotonCompatible
         else
         {
             LogText saveText = new(logText, indent, important);
-            int currentPosition = (int)GetPlayerProperty(PhotonNetwork.LocalPlayer, PlayerProp.Position.ToString());
+            currentLogTexts.Add(saveText);
+
+            int currentPosition = (int)PhotonNetwork.LocalPlayer.CustomProperties[PlayerProp.Position.ToString()];
             string targetText = $"{Translator.inst.SplitAndTranslate(currentPosition, logText, indent)}\n";
+
             allCurrent.text += targetText;
             if (important)
                 importantCurrent.text += targetText;
@@ -200,18 +206,24 @@ public class Log : PhotonCompatible
             DoFunction(() => AddToPast(-1, logText, 0, true), RpcTarget.AllBuffered);
     }
 
-    public void ShareTexts()
+    public void DoneWithTurn()
     {
-        int currentPosition = (int)GetPlayerProperty(PhotonNetwork.LocalPlayer, PlayerProp.Position.ToString());
-        foreach (LogText nextLog in currentLogTexts)
-            DoFunction(() => AddToPast(currentPosition, nextLog.text, nextLog.indent, nextLog.important));
-
-        allCurrent.text = "";
-        importantCurrent.text = "";
-        currentLogTexts.Clear();
         initialContainers.Clear();
         completedDecisions.Clear();
         undosInLog.Clear();
+    }
+
+    public void ShareTexts()
+    {
+        Debug.Log($"sharing {currentLogTexts.Count} texts");
+        int currentPosition = (int)GetPlayerProperty(PhotonNetwork.LocalPlayer, PlayerProp.Position.ToString());
+        foreach (LogText nextLog in currentLogTexts)
+        {
+            DoFunction(() => AddToPast(currentPosition, nextLog.text, nextLog.indent, nextLog.important));
+        }
+        allCurrent.text = "";
+        importantCurrent.text = "";
+        currentLogTexts.Clear();
     }
 
     [PunRPC]

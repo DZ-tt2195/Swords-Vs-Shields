@@ -8,7 +8,6 @@ public class PlayCard : Turn
     {
         int currentRound = (int)PhotonCompatible.GetRoomProperty(RoomProp.CurrentRound);
         Log.inst.MasterText($"Play Card-Num-{currentRound}");
-        Log.inst.MasterText("Blank");
     }
 
     public override void ForPlayer(Player player)
@@ -71,7 +70,6 @@ public class PlayCard : Turn
             myHand.Remove(cardToPlay);
             myTroops.Add(cardToPlay);
             cardToPlay.transform.SetParent(null);
-            cardToPlay.MoveCardRPC(new(0, 10000), 0.25f, Vector3.one);
         }
         TurnManager.inst.WillChangePlayerProperty(player, PlayerProp.MyHand, TurnManager.inst.ConvertCardList(myHand));
         TurnManager.inst.WillChangePlayerProperty(player, PlayerProp.MyTroops, TurnManager.inst.ConvertCardList(myTroops));

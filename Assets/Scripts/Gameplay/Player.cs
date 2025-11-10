@@ -171,7 +171,7 @@ public class Player : PhotonCompatible
         {
             myHand.Remove(card);
             myDiscard.Add(card);
-            card.MoveCardRPC(new(0, -10000), 0.25f, Vector3.one);
+            card.transform.SetParent(null);
         }
         TurnManager.inst.WillChangePlayerProperty(this, PlayerProp.MyHand, TurnManager.inst.ConvertCardList(myHand));
         TurnManager.inst.WillChangePlayerProperty(this, PlayerProp.MyDiscard, TurnManager.inst.ConvertCardList(myDiscard));
@@ -189,11 +189,11 @@ public class Player : PhotonCompatible
 
     public int GetHealth() => TurnManager.inst.GetInt(PlayerProp.MyHealth, this);
 
-    void ChangeInt(int num, string property)
+    void ChangeInt(int num, PlayerProp property)
     {
-        int total = TurnManager.inst.GetInt(property, this.photonView.Owner);
+        int total = TurnManager.inst.GetInt(property, this);
         total += (!Log.inst.forward) ? -num : num;
-        TurnManager.inst.WillChangePlayerProperty(this.photonView.Owner, property, total);
+        TurnManager.inst.WillChangePlayerProperty(this, property, total);
     }
 
     public void ShieldRPC(int num, int logged = 0)
@@ -204,7 +204,7 @@ public class Player : PhotonCompatible
             Log.inst.AddMyText($"Add Shield-Player-{this.name}-Num-{num}", false, logged);
         else
             Log.inst.AddMyText($"Lose Shield-Player-{this.name}-Num-{Mathf.Abs(num)}", false, logged);
-        Log.inst.NewRollback(() => ChangeInt(num, PlayerProp.Shield.ToString()));
+        Log.inst.NewRollback(() => ChangeInt(num, PlayerProp.Shield));
     }
 
     public void SwordRPC(int num, int logged = 0)
@@ -215,7 +215,7 @@ public class Player : PhotonCompatible
             Log.inst.AddMyText($"Add Sword-Player-{this.name}-Num-{num}", false, logged);
         else
             Log.inst.AddMyText($"Lose Sword-Player-{this.name}-Num-{Mathf.Abs(num)}", false, logged);
-        Log.inst.NewRollback(() => ChangeInt(num, PlayerProp.Sword.ToString()));
+        Log.inst.NewRollback(() => ChangeInt(num, PlayerProp.Sword));
     }
 
     public void ActionRPC(int num, int logged = 0)
@@ -226,7 +226,7 @@ public class Player : PhotonCompatible
             Log.inst.AddMyText($"Add Action-Player-{this.name}-Num-{num}", false, logged);
         else
             Log.inst.AddMyText($"Lose Action-Player-{this.name}-Num-{Mathf.Abs(num)}", false, logged);
-        Log.inst.NewRollback(() => ChangeInt(num, PlayerProp.Action.ToString()));
+        Log.inst.NewRollback(() => ChangeInt(num, PlayerProp.Action));
     }
 
     public void HealthRPC(int num, int logged = 0)
@@ -237,12 +237,12 @@ public class Player : PhotonCompatible
             Log.inst.AddMyText($"Add Health Player-Player-{this.name}-Num-{num}", false, logged);
         else
             Log.inst.AddMyText($"Lose Health Player-Player-{this.name}-Num-{Mathf.Abs(num)}", false, logged);
-        Log.inst.NewRollback(() => ChangeInt(num, PlayerProp.MyHealth.ToString()));
+        Log.inst.NewRollback(() => ChangeInt(num, PlayerProp.MyHealth));
     }
 
-    public void NextRoundShield(int num) => Log.inst.NewRollback(() => ChangeInt(num, PlayerProp.NextRoundShield.ToString()));
+    public void NextRoundShield(int num) => Log.inst.NewRollback(() => ChangeInt(num, PlayerProp.NextRoundShield));
 
-    public void NextRoundSword(int num) => Log.inst.NewRollback(() => ChangeInt(num, PlayerProp.NextRoundSword.ToString()));
+    public void NextRoundSword(int num) => Log.inst.NewRollback(() => ChangeInt(num, PlayerProp.NextRoundSword));
 
     #endregion
 
@@ -429,6 +429,7 @@ public class Player : PhotonCompatible
     {
         //this.DoFunction(() => this.ChangeButtonColor(false));
         TurnManager.inst.Instructions((int)GetPlayerProperty(this, PlayerProp.Position), "Blank");
+        Log.inst.AddMyText("Blank", true);
         ChangePlayerProperties(this, PlayerProp.Waiting, false);
         endPause = true;
 
@@ -451,7 +452,8 @@ public class Player : PhotonCompatible
 
         void Done()
         {
-            Log.inst.undosInLog.Clear();
+            Log.inst.AddMyText("Blank", true);
+            Log.inst.DoneWithTurn();
             ChangePlayerProperties(this, PlayerProp.Waiting, true);
         }
     }
@@ -474,7 +476,12 @@ public class Player : PhotonCompatible
         for (int i = 0; i < myHand.Count; i++)
         {
             Card nextCard = myHand[i];
-            nextCard.transform.SetParent(keepHand);
+
+            if (nextCard.transform.parent != keepHand)
+            {
+                nextCard.transform.SetParent(keepHand);
+                nextCard.transform.localPosition = new(0, -1000);
+            }
             nextCard.transform.SetSiblingIndex(i);
 
             float offByOne = myHand.Count - 1;

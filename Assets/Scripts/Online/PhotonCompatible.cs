@@ -150,9 +150,7 @@ public class PhotonCompatible : MonoBehaviourPunCallbacks
     }
 
     public static void ChangePlayerProperties(Player playerObject, PlayerProp propertyName, object changeToThis, object expected = null)
-    {
-        ChangePlayerProperties(playerObject.photonView.Controller, propertyName, changeToThis, expected);
-    }
+        => ChangePlayerProperties(playerObject.photonView.Controller, propertyName, changeToThis, expected);
 
     public static object GetPlayerProperty(Photon.Realtime.Player player, string propertyName)
     {
@@ -172,10 +170,7 @@ public class PhotonCompatible : MonoBehaviourPunCallbacks
         }
     }
 
-    public static object GetPlayerProperty(Player player, PlayerProp propertyName)
-    {
-        return GetPlayerProperty(player.photonView.Owner, propertyName.ToString());
-    }
+    public static object GetPlayerProperty(Player player, PlayerProp propertyName) => GetPlayerProperty(player.photonView.Owner, propertyName.ToString());
 
     public static void ChangeRoomProperties(string propertyName, object changeToThis, object expected = null)
     {
@@ -194,19 +189,13 @@ public class PhotonCompatible : MonoBehaviourPunCallbacks
     }
 
     public static void ChangeRoomProperties(RoomProp propertyName, object changeToThis, object expected = null)
-    {
-        ChangeRoomProperties(propertyName.ToString(), changeToThis, expected);
-    }
+        => ChangeRoomProperties(propertyName.ToString(), changeToThis, expected);
 
     public static object GetRoomProperty(string propertyName)
-    {
-        return PhotonNetwork.CurrentRoom.CustomProperties[propertyName];
-    }
+        => PhotonNetwork.CurrentRoom.CustomProperties[propertyName];
 
     public static object GetRoomProperty(RoomProp propertyName)
-    {
-        return GetRoomProperty(propertyName.ToString());
-    }
+        => GetRoomProperty(propertyName.ToString());
 
     #endregion
 
