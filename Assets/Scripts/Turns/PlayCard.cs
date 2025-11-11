@@ -33,9 +33,11 @@ public class PlayCard : Turn
     {
         if (player.GetAction() >= 1)
         {
-            player.ChooseButtonInPopup(new() { new("Decline") }, "Play Card Instruction", new(0, 325), false);
+            DecisionManager.inst.Instructions("Play Card Instruction");
+            DecisionManager.inst.ChooseTextButton(new() { new("Decline") }, false);
+
             List<Card> myHand = player.GetHand();
-            player.ChooseCardOnScreen(myHand, ChooseToPlay, false);
+            DecisionManager.inst.ChooseCardOnScreen(myHand, ChooseToPlay, false);
 
             void ChooseToPlay(Card card)
             {

@@ -32,14 +32,16 @@ public class GreenAbilities : Turn
 
         if (canDo.Count >= 1)
         {
-            player.ChooseButtonInPopup(new() { new("Decline") }, "Use Green Instruction", new(0, 325), false);
+            DecisionManager.inst.Instructions("Use Green Instructions");
+            DecisionManager.inst.ChooseTextButton(new() { new("Decline") }, false);
+
             List<MiniCardDisplay> toChoose = new();
             foreach (MiniCardDisplay display in player.AliveTroops())
             {
                 if (canDo.Contains(display.card))
                     toChoose.Add(display);
             }
-            player.ChooseDisplayOnScreen(toChoose, ChooseToUse, false);
+            DecisionManager.inst.ChooseDisplayOnScreen(toChoose, ChooseToUse, false);
 
             void ChooseToUse(Card card)
             {

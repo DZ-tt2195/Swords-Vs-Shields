@@ -14,7 +14,6 @@ public enum RoomProp { Game, CanPlay, JoinAsSpec, MasterDeck, MasterDiscard, Cur
 public class PlayerUI
 {
     public TMP_Text infoText;
-    public TMP_Text instructionsText;
     public List<MiniCardDisplay> cardDisplays = new();
 }
 

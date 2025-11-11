@@ -248,33 +248,6 @@ public class Player : PhotonCompatible
 
 #region Decide
 
-    public Popup ChooseButtonInPopup(List<TextButtonInfo> possibleChoices, string instructions, Vector3 position, bool autoResolve = true)
-    {
-        if (possibleChoices.Count == 0 && autoResolve)
-        {
-            return null;
-        }
-        else if (possibleChoices.Count == 1 && autoResolve)
-        {
-            if (possibleChoices[0].action != null)
-                Log.inst.inReaction.Add(possibleChoices[0].action);
-            return null;
-        }
-        else
-        {
-            Log.inst.SetUndoPoint(true);
-            TextPopup popup = Instantiate(CarryVariables.inst.textPopup);
-            string header = Instructions(myPosition, instructions);
-            popup.StatsSetup(true, header, position);
-
-            for (int i = 0; i < possibleChoices.Count; i++)
-                popup.AddTextButton(possibleChoices[i]);
-
-            Log.inst.inReaction.Add(() => Destroy(popup.gameObject));
-            return popup;
-        }
-    }
-
     public Popup ChooseCardInPopup(List<CardButtonInfo> possibleCards, string instructions, Vector3 position, bool autoResolve = true)
     {
         if (possibleCards.Count == 0 && autoResolve)
@@ -291,121 +264,14 @@ public class Player : PhotonCompatible
         {
             Log.inst.SetUndoPoint(true);
             CardPopup popup = Instantiate(CarryVariables.inst.cardPopup);
-            string header = Instructions(myPosition, instructions);
-            popup.StatsSetup(true, header, position);
+            //string header = Instructions(myPosition, instructions);
+            //popup.StatsSetup(true, header, position);
 
             for (int i = 0; i < possibleCards.Count; i++)
                 popup.AddCardButton(possibleCards[i]);
 
             Log.inst.inReaction.Add(() => Destroy(popup.gameObject));
             return popup;
-        }
-    }
-
-    public void ChooseCardOnScreen(List<Card> listOfCards, Action<Card> action = null, bool autoResolve = true)
-    {
-        if (listOfCards.Count == 0 && autoResolve)
-        {
-        }
-        else if (listOfCards.Count == 1 && autoResolve)
-        {
-            Log.inst.inReaction.Add(() => action?.Invoke(listOfCards[0]));
-        }
-        else
-        {
-            Log.inst.SetUndoPoint(true);
-            Log.inst.inReaction.Add(Disable);
-
-            for (int j = 0; j < listOfCards.Count; j++)
-            {
-                Card nextCard = listOfCards[j];
-                int number = j;
-                Button cardButton = nextCard.selectMe.button;
-
-                cardButton.onClick.RemoveAllListeners();
-                cardButton.interactable = true;
-                nextCard.selectMe.border.gameObject.SetActive(true);
-                cardButton.onClick.AddListener(ClickedThis);
-
-                void ClickedThis()
-                {
-                    Log.inst.inReaction.Add(() => action?.Invoke(nextCard));
-                    Log.inst.PopStack();
-                }
-            }
-
-            void Disable()
-            {
-                foreach (Card nextCard in listOfCards)
-                {
-                    nextCard.selectMe.button.onClick.RemoveAllListeners();
-                    nextCard.selectMe.button.interactable = false;
-                    nextCard.selectMe.border.gameObject.SetActive(false);
-                }
-            }
-        }
-    }
-
-    public SliderChoice ChooseSlider(int min, int max, string instructions, Vector3 position, bool autoResolve = true, Action<int> action = null)
-    {
-        if (min == max && autoResolve)
-        {
-            Log.inst.inReaction.Add(() => action?.Invoke(min));
-            return null;
-        }
-        else
-        {
-            Log.inst.SetUndoPoint(true);
-            SliderChoice slider = Instantiate(CarryVariables.inst.sliderPopup);
-            string header = Instructions(myPosition, instructions);
-            slider.StatsSetup(header, min, max, position, true, action);
-
-            Log.inst.inReaction.Add(() => Destroy(slider.gameObject));
-            return slider;
-        }
-    }
-
-    public void ChooseDisplayOnScreen(List<MiniCardDisplay> listOfDisplays, Action<Card> action = null, bool autoResolve = true)
-    {
-        if (listOfDisplays.Count == 0 && autoResolve)
-        {
-        }
-        else if (listOfDisplays.Count == 1 && autoResolve)
-        {
-            Log.inst.inReaction.Add(() => action?.Invoke(listOfDisplays[0].card));
-        }
-        else
-        {
-            Log.inst.SetUndoPoint(true);
-            Log.inst.inReaction.Add(Disable);
-
-            for (int j = 0; j < listOfDisplays.Count; j++)
-            {
-                MiniCardDisplay nextCard = listOfDisplays[j];
-                int number = j;
-                Button cardButton = nextCard.selectMe.button;
-
-                cardButton.onClick.RemoveAllListeners();
-                cardButton.interactable = true;
-                nextCard.selectMe.border.gameObject.SetActive(true);
-                cardButton.onClick.AddListener(ClickedThis);
-
-                void ClickedThis()
-                {
-                    Log.inst.inReaction.Add(() => action?.Invoke(nextCard.card));
-                    Log.inst.PopStack();
-                }
-            }
-
-            void Disable()
-            {
-                foreach (MiniCardDisplay nextCard in listOfDisplays)
-                {
-                    nextCard.selectMe.button.onClick.RemoveAllListeners();
-                    nextCard.selectMe.button.interactable = false;
-                    nextCard.selectMe.border.gameObject.SetActive(false);
-                }
-            }
         }
     }
 
@@ -428,7 +294,6 @@ public class Player : PhotonCompatible
     internal void StartTurn()
     {
         //this.DoFunction(() => this.ChangeButtonColor(false));
-        Instructions((int)GetPlayerProperty(this, PlayerProp.Position), "Blank");
         Log.inst.AddMyText("Blank", true);
         ChangePlayerProperties(this, PlayerProp.Waiting, false);
         endPause = true;
@@ -444,10 +309,11 @@ public class Player : PhotonCompatible
         Log.inst.inReaction.Add(Done);
         if (endPause)
         {
+            DecisionManager.inst.ChooseTextButton(new() { new("Done", Color.white) }, false);
             if (Log.inst.undosInLog.Count >= 1)
-                ChooseButtonInPopup(new() { new("Done", Color.white) }, "Pause to Undo", new(0, 325), false);
+                DecisionManager.inst.Instructions("Pause to Undo");
             else
-                ChooseButtonInPopup(new() { new("Done", Color.white) }, "Pause to Read", new(0, 325), false);
+                DecisionManager.inst.Instructions("Pause to Read");
         }
 
         void Done()
@@ -463,13 +329,6 @@ public class Player : PhotonCompatible
 #region UI
 
     public List<Card> GetTroops() => TurnManager.inst.GetCardList(PlayerProp.MyTroops, this);
-
-    public string Instructions(int owner, string logText)
-    {
-        string answer = Translator.inst.SplitAndTranslate(owner, logText, 0);
-        myUI.instructionsText.text = answer;
-        return answer;
-    }
 
     public void UpdateUI()
     {

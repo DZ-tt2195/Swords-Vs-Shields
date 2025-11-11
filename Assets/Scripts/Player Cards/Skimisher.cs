@@ -1,9 +1,9 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-public class Boat : CardType
+public class Skirmisher : CardType
 {
-    public Boat(CardData dataFile) : base(dataFile)
+    public Skirmisher(CardData dataFile) : base(dataFile)
     {
     }
 

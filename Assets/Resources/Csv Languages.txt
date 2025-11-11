@@ -152,18 +152,6 @@
       "Waiting on $Num$ players..."
     ],
     [
-      "Pause to Read",
-      "A pause to let you read things."
-    ],
-    [
-      "Pause to Undo",
-      "Last chance to undo anything."
-    ],
-    [
-      "Done",
-      "Done"
-    ],
-    [
       "Card",
       "Card"
     ],
@@ -292,6 +280,10 @@
       "$Player$ resolves $Card$."
     ],
     [
+      "Confirm",
+      "Confirm"
+    ],
+    [
       "Choose One Instruction",
       "Choose one."
     ],
@@ -304,15 +296,27 @@
       "Choose one of $Player$'s Card."
     ],
     [
-      "Boat",
-      "Boat"
+      "Pause to Read",
+      "A pause to let you read things."
     ],
     [
-      "Boat TextOne",
+      "Pause to Undo",
+      "Last chance to undo anything."
+    ],
+    [
+      "Done",
+      "Done"
+    ],
+    [
+      "Skirmisher",
+      "Skirmisher"
+    ],
+    [
+      "Skirmisher TextOne",
       "ATTACK: Spend 2 Sword to deal 2 damage to the other player."
     ],
     [
-      "Boat TextTwo",
+      "Skirmisher TextTwo",
       "PLAY: +1 Sword."
     ],
     [

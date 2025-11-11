@@ -162,7 +162,7 @@ public class Log : PhotonCompatible
     {
         if (!forward)
         {
-            int count = currentLogTexts.Count-1;
+            int count = currentLogTexts.Count - 1;
             LogText nextText = currentLogTexts[count];
             currentLogTexts.RemoveAt(count);
 
@@ -289,34 +289,20 @@ public class Log : PhotonCompatible
         undoButton.gameObject.SetActive(undosInLog.Count > 0);
     }
 
-    void ClearCurrentDecision(bool clear)
+    void ClearCurrentDecision()
     {
         ChangeScrolling();
         scroll.value = 0;
         storeUndoPoint = false;
         inReaction.Clear();
+        DecisionManager.inst.ClearDecisions();
+    }
 
-        Popup[] allPopups = FindObjectsByType<Popup>(FindObjectsSortMode.None);
-        foreach (Popup popup in allPopups)
-        {
-            if (popup.beDestroyed)
-                Destroy(popup.gameObject);
-        }
-        SliderChoice[] allSliders = FindObjectsByType<SliderChoice>(FindObjectsSortMode.None);
-        foreach (SliderChoice slider in allSliders)
-        {
-            if (slider.beDestroyed)
-                Destroy(slider.gameObject);
-        }
-        ButtonSelect[] allSelectables = FindObjectsByType<ButtonSelect>(FindObjectsSortMode.None);
-        foreach (ButtonSelect select in allSelectables)
-        {
-            select.button.interactable = false;
-            select.button.onClick.RemoveAllListeners();
-            select.border.gameObject.SetActive(false);
-        }
-
-        if (currentContainer != null && currentContainer.parent != null && clear)
+    void InvokeUndo()
+    {
+        DecisionContainer toThisPoint = undosInLog[^1].undoToThis;
+        ClearCurrentDecision();
+        if (currentContainer != null && currentContainer.parent != null)
         {
             int index = currentContainer.parent.listOfDCs.IndexOf(currentContainer);
             if (index == 0)
@@ -326,12 +312,7 @@ public class Log : PhotonCompatible
             }
         }
         currentContainer = null;
-    }
 
-    void InvokeUndo()
-    {
-        DecisionContainer toThisPoint = undosInLog[^1].undoToThis;
-        ClearCurrentDecision(true);
         forward = false;
 
         for (int i = completedDecisions.Count - 1; i >= 0; i--)
@@ -348,8 +329,8 @@ public class Log : PhotonCompatible
                 container.listOfRBs.RemoveAt(j);
             }
 
-                completedDecisions.Remove(container);
-                container.parent.listOfDCs.Remove(container);
+            completedDecisions.Remove(container);
+            container.parent.listOfDCs.Remove(container);
 
             if (container == toThisPoint)
             {
@@ -444,15 +425,11 @@ public class Log : PhotonCompatible
             Debug.Log($"did {coroutines} coroutines in {time:F2} sec");
         }
 
-        ChangeScrolling();
+        ClearCurrentDecision();
         currentContainer = null;
-        storeUndoPoint = false;
 
         foreach (Player player in PlayerCreator.inst.listOfPlayers)
-        {
             player.UpdateUI();
-            player.Instructions(-1, "Blank");
-        }
 
         foreach (DecisionContainer container in initialContainers)
             Iterate(container);

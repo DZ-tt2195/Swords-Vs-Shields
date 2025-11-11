@@ -34,8 +34,8 @@ public class Ninja : CardType
 
     void ChooseAttack(Player player, int logged)
     {
-        player.Instructions(-1, $"Target Instruction-Player-{otherPlayer.name}");
-        player.ChooseDisplayOnScreen(otherCards, Damage);
+        DecisionManager.inst.Instructions($"Target Instruction-Player-{otherPlayer.name}");
+        DecisionManager.inst.ChooseDisplayOnScreen(otherCards, Damage);
 
         void Damage(Card card)
         {

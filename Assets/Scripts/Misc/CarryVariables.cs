@@ -1,14 +1,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using MyBox;
-using System.IO;
 using UnityEngine.UI;
-using System;
-using System.Collections;
-using System.Linq;
-using System.Reflection;
 using TMPro;
-using UnityEngine.Networking;
 
 public class CarryVariables : MonoBehaviour
 {
@@ -20,11 +14,8 @@ public class CarryVariables : MonoBehaviour
     [Foldout("Prefabs", true)]
     public Player playerPrefab;
     public CardLayout cardPrefab;
-    public TextPopup textPopup;
     public CardPopup cardPopup;
-    public Button textButton;
     public Button cardButton;
-    public SliderChoice sliderPopup;
     public Sprite faceDown;
 
     [Foldout("Right click", true)]

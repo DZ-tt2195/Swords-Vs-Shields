@@ -29,8 +29,8 @@ public class Bee : CardType
 
     void ChooseAttack(Player player, int logged)
     {
-        player.Instructions(-1, $"Target Instruction-Player-{otherPlayer.name}");
-        player.ChooseDisplayOnScreen(otherCards, DamageAndStun);
+        DecisionManager.inst.Instructions($"Target Instruction-Player-{otherPlayer.name}");
+        DecisionManager.inst.ChooseDisplayOnScreen(otherCards, DamageAndStun);
 
         void DamageAndStun(Card card)
         {

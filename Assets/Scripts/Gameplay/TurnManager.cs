@@ -78,9 +78,8 @@ public class TurnManager : PhotonCompatible
 
     void UpdateWaitingText(List<Photon.Realtime.Player> toSend, int playersWaiting)
     {
-        Player p1 = PlayerCreator.inst.listOfPlayers[0];
         foreach (Photon.Realtime.Player player in toSend)
-            p1.DoFunction(() => p1.Instructions(-1, $"Waiting on Players-Num-{playersWaiting}"), player);
+            DecisionManager.inst.DoFunction(() => DecisionManager.inst.Instructions($"Waiting on Players-Num-{playersWaiting}"), player);
     }
 
     void AllPlayersDone()

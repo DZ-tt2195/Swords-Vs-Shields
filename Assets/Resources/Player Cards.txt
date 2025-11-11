@@ -11,13 +11,13 @@
       "effectTwo"
     ],
     [
-      "Boat",
+      "Skirmisher",
       "ATTACK: Spend 2 Sword to deal 2 damage to the other player.",
       "PLAY: +1 Sword.",
       "4",
       "Attack",
       "Play",
-      "X",
+      "Claus Stephan|Dominion: Allies|(Skirmisher)",
       "LoseSword, AttackPlayer",
       "AddSword"
     ],
