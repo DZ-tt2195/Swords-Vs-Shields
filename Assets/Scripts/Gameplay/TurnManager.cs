@@ -12,7 +12,6 @@ public class TurnManager : PhotonCompatible
 
     public static TurnManager inst;
     [SerializeField] List<Turn> turnsInOrder = new();
-    [SerializeField] TMP_Text instructions;
     Dictionary<Player, ExitGames.Client.Photon.Hashtable> playerPropertyToChange;
     ExitGames.Client.Photon.Hashtable masterPropertyToChange;
 
@@ -46,14 +45,6 @@ public class TurnManager : PhotonCompatible
         return () => turnsInOrder[GetCurrentPhase()].ForPlayer(player);
     }
 
-    [PunRPC]
-    public string Instructions(int owner, string logText)
-    {
-        string answer = Translator.inst.SplitAndTranslate(owner, logText, 0);
-        instructions.text = answer;
-        return answer;
-    }
-
     int WaitingOnPlayers()
     {
         (List<Photon.Realtime.Player> players, List<Photon.Realtime.Player> spectators) = GetPlayers(false);
@@ -71,8 +62,7 @@ public class TurnManager : PhotonCompatible
             }
         }
 
-        foreach (Photon.Realtime.Player player in isWaiting)
-            DoFunction(() => Instructions(-1, $"Waiting on Players-Num-{playersWaiting}"), player);
+        UpdateWaitingText(isWaiting, playersWaiting);
         return playersWaiting;
     }
 
@@ -86,14 +76,20 @@ public class TurnManager : PhotonCompatible
         }
     }
 
+    void UpdateWaitingText(List<Photon.Realtime.Player> toSend, int playersWaiting)
+    {
+        Player p1 = PlayerCreator.inst.listOfPlayers[0];
+        foreach (Photon.Realtime.Player player in toSend)
+            p1.DoFunction(() => p1.Instructions(-1, $"Waiting on Players-Num-{playersWaiting}"), player);
+    }
+
     void AllPlayersDone()
     {
         (List<Photon.Realtime.Player> players, List<Photon.Realtime.Player> spectators) = GetPlayers(false);
 
         foreach (Photon.Realtime.Player nextPlayer in players)
             DoFunction(() => SharePropertyChanges(), nextPlayer);
-        foreach (Photon.Realtime.Player player in spectators)
-            DoFunction(() => Instructions(-1, $"Waiting on Players-Num-{players.Count}"), player);
+        UpdateWaitingText(spectators, players.Count);
 
         int phaseTracker = (int)GetRoomProperty(RoomProp.CurrentPhase);
         int roundTracker = (int)GetRoomProperty(RoomProp.CurrentRound);
@@ -114,7 +110,7 @@ public class TurnManager : PhotonCompatible
         List<Card> masterDiscard = GetCardList(RoomProp.MasterDiscard.ToString());
         foreach (Player player in PlayerCreator.inst.listOfPlayers)
         {
-            Photon.Realtime.Player photonPlayer = player.photonView.Controller;
+            Photon.Realtime.Player photonPlayer = player.photonView.Owner;
             List<Card> myTroops = ConvertIntArray((int[])photonPlayer.CustomProperties[PlayerProp.MyTroops.ToString()]);
             for (int i = myTroops.Count - 1; i >= 0; i--)
             {

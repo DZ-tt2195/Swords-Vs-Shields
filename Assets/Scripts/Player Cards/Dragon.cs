@@ -31,7 +31,7 @@ public class Dragon : CardType
     public override void DoAbilityTwo(Player player, Card thisCard, int logged)
     {
         List<Card> handCards = player.GetHand();
-        TurnManager.inst.Instructions(-1, "Discard Instruction");
+        player.Instructions(-1, "Discard Instruction");
         player.ChooseCardOnScreen(handCards, Discard);
 
         void Discard(Card card)

@@ -2,12 +2,21 @@ using UnityEngine;
 using Photon.Pun;
 using UnityEngine.SceneManagement;
 using System.Collections.Generic;
+using System;
 using Photon.Realtime;
 using System.Collections;
 using MyBox;
 using TMPro;
 
 public enum RoomProp { Game, CanPlay, JoinAsSpec, MasterDeck, MasterDiscard, CurrentPhase, CurrentRound }
+
+[Serializable]
+public class PlayerUI
+{
+    public TMP_Text infoText;
+    public TMP_Text instructionsText;
+    public List<MiniCardDisplay> cardDisplays = new();
+}
 
 public class PlayerCreator : PhotonCompatible
 {
@@ -22,9 +31,7 @@ public class PlayerCreator : PhotonCompatible
     public float opacity { get; private set; }
     bool decrease = true;
     public Canvas canvas { get; private set; }
-    [SerializeField] List<PlayerDisplay> playerDisplays = new();
-    [SerializeField] List<MiniCardDisplay> cardDisplayOne = new();
-    [SerializeField] List<MiniCardDisplay> cardDisplayTwo = new();
+    [SerializeField] List<PlayerUI> allUI = new();
 
     protected override void Awake()
     {
@@ -33,12 +40,11 @@ public class PlayerCreator : PhotonCompatible
         inst = this;
         PhotonNetwork.AutomaticallySyncScene = true;
         canvas = GameObject.Find("Canvas").GetComponent<Canvas>();
-
-        foreach (MiniCardDisplay display in cardDisplayOne)
-            display.gameObject.SetActive(false);
-        foreach (MiniCardDisplay display in cardDisplayTwo)
-            display.gameObject.SetActive(false);
-
+        foreach (PlayerUI ui in allUI)
+        {
+            foreach (MiniCardDisplay display in ui.cardDisplays)
+                display.gameObject.SetActive(false);
+        }
         Invoke(nameof(Setup), 0.25f);
     }
 
@@ -189,12 +195,15 @@ public class PlayerCreator : PhotonCompatible
             return listOfPlayers[0];
     }
 
-    public (PlayerDisplay, List<MiniCardDisplay>) PlayerUI(int playerPosition)
+    public PlayerUI GetUI(int playerPosition)
     {
-        if (playerPosition == 0)
-            return (playerDisplays[0], cardDisplayOne);
+        int myPosition = (int)PhotonNetwork.LocalPlayer.CustomProperties[PlayerProp.Position.ToString()];
+        if (myPosition == playerPosition)
+            return allUI[0];
+        else if (myPosition == -1)
+            return allUI[playerPosition];
         else
-            return (playerDisplays[1], cardDisplayTwo);
+            return allUI[1];
     }
 
     #endregion

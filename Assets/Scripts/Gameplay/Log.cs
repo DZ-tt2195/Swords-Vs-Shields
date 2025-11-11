@@ -412,7 +412,6 @@ public class Log : PhotonCompatible
     public void PopStack(bool run = true)
     {
         forward = true;
-        TurnManager.inst.Instructions(-1, "Blank");
 
         List<Action> newActions = new();
         for (int i = 0; i < inReaction.Count; i++)
@@ -450,7 +449,10 @@ public class Log : PhotonCompatible
         storeUndoPoint = false;
 
         foreach (Player player in PlayerCreator.inst.listOfPlayers)
+        {
             player.UpdateUI();
+            player.Instructions(-1, "Blank");
+        }
 
         foreach (DecisionContainer container in initialContainers)
             Iterate(container);

@@ -20,8 +20,7 @@ public class Player : PhotonCompatible
 
     Button resignButton;
     [SerializeField] Transform keepHand;
-    public PlayerDisplay myPlayerDisplay { get; private set; }
-    List<MiniCardDisplay> allMyTroopDisplays;
+    PlayerUI myUI;
 
     protected override void Awake()
     {
@@ -57,9 +56,7 @@ public class Player : PhotonCompatible
         myPosition = (int)GetPlayerProperty(this, PlayerProp.Position);
         PlayerCreator.inst.listOfPlayers.Insert(myPosition, this);
 
-        (PlayerDisplay myDisplay, List<MiniCardDisplay> myTroopDisplays) = PlayerCreator.inst.PlayerUI(myPosition);
-        myPlayerDisplay = myDisplay;
-        allMyTroopDisplays = myTroopDisplays;
+        myUI = PlayerCreator.inst.GetUI(myPosition);
         UpdateUI();
     }
 
@@ -267,7 +264,7 @@ public class Player : PhotonCompatible
         {
             Log.inst.SetUndoPoint(true);
             TextPopup popup = Instantiate(CarryVariables.inst.textPopup);
-            string header = TurnManager.inst.Instructions(myPosition, instructions);
+            string header = Instructions(myPosition, instructions);
             popup.StatsSetup(true, header, position);
 
             for (int i = 0; i < possibleChoices.Count; i++)
@@ -294,7 +291,7 @@ public class Player : PhotonCompatible
         {
             Log.inst.SetUndoPoint(true);
             CardPopup popup = Instantiate(CarryVariables.inst.cardPopup);
-            string header = TurnManager.inst.Instructions(myPosition, instructions);
+            string header = Instructions(myPosition, instructions);
             popup.StatsSetup(true, header, position);
 
             for (int i = 0; i < possibleCards.Count; i++)
@@ -360,7 +357,7 @@ public class Player : PhotonCompatible
         {
             Log.inst.SetUndoPoint(true);
             SliderChoice slider = Instantiate(CarryVariables.inst.sliderPopup);
-            string header = TurnManager.inst.Instructions(myPosition, instructions);
+            string header = Instructions(myPosition, instructions);
             slider.StatsSetup(header, min, max, position, true, action);
 
             Log.inst.inReaction.Add(() => Destroy(slider.gameObject));
@@ -431,7 +428,7 @@ public class Player : PhotonCompatible
     internal void StartTurn()
     {
         //this.DoFunction(() => this.ChangeButtonColor(false));
-        TurnManager.inst.Instructions((int)GetPlayerProperty(this, PlayerProp.Position), "Blank");
+        Instructions((int)GetPlayerProperty(this, PlayerProp.Position), "Blank");
         Log.inst.AddMyText("Blank", true);
         ChangePlayerProperties(this, PlayerProp.Waiting, false);
         endPause = true;
@@ -467,6 +464,13 @@ public class Player : PhotonCompatible
 
     public List<Card> GetTroops() => TurnManager.inst.GetCardList(PlayerProp.MyTroops, this);
 
+    public string Instructions(int owner, string logText)
+    {
+        string answer = Translator.inst.SplitAndTranslate(owner, logText, 0);
+        myUI.instructionsText.text = answer;
+        return answer;
+    }
+
     public void UpdateUI()
     {
         List<Card> myHand = GetHand();
@@ -499,24 +503,23 @@ public class Player : PhotonCompatible
             }
         }
 
-        string descriptionText = $"{this.name}" +
+        myUI.infoText.text = KeywordTooltip.instance.EditText($"{this.name}" +
             $"\n{myHand.Count} Card, " +
             $"{GetAction()} {PlayerProp.Action}" +
             $"\n{GetShield()} {PlayerProp.Shield}, " +
-            $"{GetSword()} {PlayerProp.Sword}";
-        myPlayerDisplay.AssignInfo(this, GetHealth(), KeywordTooltip.instance.EditText(descriptionText));
+            $"{GetSword()} {PlayerProp.Sword}");
 
         List<Card> myTroops = GetTroops();
-        for (int i = 0; i < allMyTroopDisplays.Count; i++)
+        for (int i = 0; i < myUI.cardDisplays.Count; i++)
         {
             if (i < myTroops.Count)
             {
-                allMyTroopDisplays[i].gameObject.SetActive(true);
-                allMyTroopDisplays[i].NewCard(myTroops[i]);
+                myUI.cardDisplays[i].gameObject.SetActive(true);
+                myUI.cardDisplays[i].NewCard(myTroops[i]);
             }
             else
             {
-                allMyTroopDisplays[i].gameObject.SetActive(false);
+                myUI.cardDisplays[i].gameObject.SetActive(false);
             }
         }
     }
@@ -529,7 +532,7 @@ public class Player : PhotonCompatible
         {
             Card card = myTroops[i];
             if (card.GetHealth() >= 1)
-                toReturn.Add(allMyTroopDisplays[i]);
+                toReturn.Add(myUI.cardDisplays[i]);
         }
         return toReturn;
     }
