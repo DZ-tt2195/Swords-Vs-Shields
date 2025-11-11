@@ -1,28 +1,27 @@
 using UnityEngine;
-using System.Collections.Generic;
 
-public class Boat : CardType
+public class Scout : CardType
 {
-    public Boat(CardData dataFile) : base(dataFile)
+    public Scout(CardData dataFile) : base(dataFile)
     {
     }
 
     public override AbilityType CanUseAbiltyOne(Player player, Card thisCard)
     {
-        if (player.GetSword() >= 2)
-            return AbilityType.Attack;
+        if (player.GetShield() >= 2)
+            return AbilityType.Defend;
         else
             return AbilityType.None;
     }
 
     public override void DoAbilityOne(Player player, Card thisCard, int logged)
     {
-        player.SwordRPC(-2, logged);
-        PlayerCreator.inst.OtherPlayer(player.myPosition).HealthRPC(-2, logged);
+        player.ShieldRPC(-2, logged);
+        player.NextRoundSword(2);
     }
 
     public override void DoAbilityTwo(Player player, Card thisCard, int logged)
     {
-        player.SwordRPC(1, logged);
+        player.DrawCardRPC(1, logged);
     }
 }

@@ -20,7 +20,7 @@ public class Ninja : CardType
                 otherCards.RemoveAt(i);
         }
 
-        if (otherCards.Count >= 1 && player.GetSword() >= 1)
+        if (otherCards.Count >= 1 && player.GetSword() >= 2)
             return AbilityType.Attack;
         else
             return AbilityType.None;

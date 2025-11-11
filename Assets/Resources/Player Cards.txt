@@ -12,9 +12,9 @@
     ],
     [
       "Boat",
-      "ATTACK: Spend 1 Sword to deal 2 damage to the other player.",
+      "ATTACK: Spend 2 Sword to deal 2 damage to the other player.",
       "PLAY: +1 Sword.",
-      "3",
+      "4",
       "Attack",
       "Play",
       "X",
@@ -23,7 +23,7 @@
     ],
     [
       "Trader",
-      "DEFEND: Spend 1 Action for either +1 Sword or +1 Shield.",
+      "DEFEND: Spend 1 Action for either +2 Sword or +2 Shield.",
       "\"\"",
       "5",
       "Defend",
@@ -33,9 +33,9 @@
     ],
     [
       "Archer",
-      "DEFEND: Spend 1 Sword for +1 Card.",
-      "ATTACK: Spend 3 Sword to deal 1 damage to the other player per Card in your hand.",
-      "4",
+      "DEFEND: Spend 2 Sword for +1 Card.",
+      "ATTACK: Spend 4 Sword to deal 1 damage to the other player per Card in your hand.",
+      "3",
       "Defend",
       "Attack",
       "Harald Lieske|Dominion: Allies|(Archer)",
@@ -44,7 +44,7 @@
     ],
     [
       "Dragon",
-      "ATTACK: Spend 4 Sword to deal 2 damage to all Card by the other player.",
+      "ATTACK: Spend 6 Sword to deal 2 damage to all Card by the other player.",
       "PLAY: -1 Card.",
       "8",
       "Attack",
@@ -55,7 +55,7 @@
     ],
     [
       "Bee",
-      "ATTACK: Spend 2 Sword to Stun a Card and deal 2 damage to it.",
+      "ATTACK: Spend 2 Sword to deal 2 damage to a card and Stun it for next round.",
       "\"\"",
       "5",
       "Attack",
@@ -65,13 +65,24 @@
     ],
     [
       "Ninja",
-      "ATTACK: Spend 1 Sword to deal 3 damage to a Card with 3 Health or less.",
+      "ATTACK: Spend 2 Sword to deal 3 damage to a Card with 3 Health or less.",
       "\"\"",
       "4",
       "Attack",
       "None",
       "Elisa Cella|Dominion: Rising Sun|(Ninja)",
       "LoseSword, AttackCard, HealthOrLess"
+    ],
+    [
+      "Scout",
+      "DEFEND: Spend 2 Shield for +2 Sword next round.",
+      "PLAY: +1 Card.",
+      "2",
+      "Defend",
+      "Play",
+      "X",
+      "LoseShield, NextAddSword",
+      "DrawCard"
     ]
   ]
 }

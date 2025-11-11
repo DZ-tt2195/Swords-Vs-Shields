@@ -140,7 +140,7 @@ public class PlayerCreator : PhotonCompatible
 
         for (int i = 0; i < Translator.inst.playerCardFiles.Count; i++)
         {
-            for (int j = 0; j < 2; j++)
+            for (int j = 0; j < 1; j++)
             {
                 GameObject nextCard = MakeObject(CarryVariables.inst.cardPrefab.gameObject);
                 PhotonView cardPV = nextCard.GetComponent<PhotonView>();

@@ -15,7 +15,7 @@ public class Dragon : CardType
         otherPlayer = PlayerCreator.inst.OtherPlayer(player.myPosition);
         otherCards = otherPlayer.AliveTroops();
 
-        if (otherCards.Count >= 1 && player.GetSword() >= 4)
+        if (otherCards.Count >= 1 && player.GetSword() >= 6)
             return AbilityType.Attack;
         else
             return AbilityType.None;
@@ -23,7 +23,7 @@ public class Dragon : CardType
 
     public override void DoAbilityOne(Player player, Card thisCard, int logged)
     {
-        player.SwordRPC(-4, logged);
+        player.SwordRPC(-6, logged);
         foreach (MiniCardDisplay display in otherCards)
             display.card.HealthRPC(otherPlayer, -2, logged);
     }

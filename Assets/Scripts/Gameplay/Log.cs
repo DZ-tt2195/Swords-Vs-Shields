@@ -436,6 +436,7 @@ public class Log : PhotonCompatible
         int coroutines = groupToWait.ActiveCoroutinesAmount;
         if (coroutines > 0)
         {
+            Debug.Log($"resolving {coroutines} coroutines");
             while (groupToWait.AnyProcessing)
             {
                 time += Time.deltaTime;
@@ -487,10 +488,13 @@ public class Log : PhotonCompatible
             }
             else
             {
-                //Debug.Log($"forward: {currentContainer.actionName}");
                 currentContainer.action.Compile().Invoke();
+                //Debug.Log($"forward: {currentContainer.action}, {storeUndoPoint}");
                 if (storeUndoPoint == false)
+                {
+                    Debug.Log($"auto pop stack");
                     PopStack(run);
+                }
             }
         }
     }

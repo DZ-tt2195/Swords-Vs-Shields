@@ -34,7 +34,7 @@ public class Bee : CardType
 
         void DamageAndStun(Card card)
         {
-            card.HealthRPC(otherPlayer, -2, logged);
+            card.HealthRPC(otherPlayer, -1, logged);
             card.StunRPC(1, logged);
         }
     }

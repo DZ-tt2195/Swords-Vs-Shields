@@ -137,7 +137,7 @@ public class KeywordTooltip : MonoBehaviour
 
         bool Display(KeywordHover keyword)
         {
-            if (keyword.translatedString.Equals(target))
+            if (keyword.translatedString.Equals(target) && !keyword.description.Equals(""))
             {
                 tooltipText.text = keyword.description;
                 tooltipText.transform.parent.position = CalculatePosition(mousePosition);

@@ -71,6 +71,9 @@ public class Player : PhotonCompatible
 
     public void DrawCardRPC(int amount, int logged = 0)
     {
+        if (amount <= 0)
+            return;
+
         Log.inst.groupToWait.StartCoroutine(WaitToDraw());
         AskForCards(amount);
 
@@ -147,7 +150,7 @@ public class Player : PhotonCompatible
                 masterDeck.RemoveAt(0);
             }
             ChangeRoomProperties(RoomProp.MasterDeck, TurnManager.inst.ConvertCardList(masterDeck));
-            ChangePlayerProperties(this, PlayerProp.MyDeck, TurnManager.inst.ConvertCardList(myDeck));
+            TurnManager.inst.WillChangePlayerProperty(this, PlayerProp.MyDeck, TurnManager.inst.ConvertCardList(myDeck));
         }
     }
 

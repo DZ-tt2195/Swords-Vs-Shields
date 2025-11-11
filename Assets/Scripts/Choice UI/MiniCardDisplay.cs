@@ -34,7 +34,7 @@ public class MiniCardDisplay : MonoBehaviour, IPointerClickHandler
         text += $"{currentHealth} Health";
 
         if (!card.CanUseAbility())
-            text += $" Stunned";
+            text += $" {Translator.inst.Translate("Stunned")}";
 
         description.text = KeywordTooltip.instance.EditText(text);
     }

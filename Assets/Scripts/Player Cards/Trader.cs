@@ -17,15 +17,15 @@ public class Trader : CardType
     public override void DoAbilityOne(Player player, Card thisCard, int logged)
     {
         player.ActionRPC(-1, logged);
-        player.ChooseButtonInPopup(new() { new("Sword", Sword), new("Shield", Shield) }, "Choose One Instruction", new(0, 325));
+        player.ChooseButtonInPopup(new() { new("2 Sword", Sword), new("2 Shield", Shield) }, "Choose One Instruction", new(0, 325));
 
         void Sword()
         {
-            player.SwordRPC(1, logged);
+            player.SwordRPC(2, logged);
         }
         void Shield()
         {
-            player.ShieldRPC(1, logged);
+            player.ShieldRPC(2, logged);
         }
     }
 }

@@ -230,6 +230,7 @@ public class Translator : PhotonCompatible
             targetText += "     ";
 
         string[] splitUp = logText.Split('-');
+        string main = splitUp[0];
         List<(string, string)> toTranslate = new();
 
         for (int i = 1; i < splitUp.Length; i += 2)
@@ -237,14 +238,14 @@ public class Translator : PhotonCompatible
             string first = splitUp[i];
             string second = splitUp[i + 1];
             if (first.Equals("Card") || first.Equals("Area"))
-                second = Translate(splitUp[i + 1]);
+                second = Translate(second);
             toTranslate.Add((first, second));
         }
 
-        if (TranslationExists($"{splitUp[0]} Others") && (int)PhotonNetwork.LocalPlayer.CustomProperties[PlayerProp.Position.ToString()] != owner)
-            targetText += Translate($"{splitUp[0]} Others", toTranslate);
+        if (TranslationExists($"{main} Others") && (int)PhotonNetwork.LocalPlayer.CustomProperties[PlayerProp.Position.ToString()] != owner)
+            targetText += Translate($"{main} Others", toTranslate);
         else
-            targetText += Translate($"{splitUp[0]}", toTranslate);
+            targetText += Translate($"{main}", toTranslate);
         return KeywordTooltip.instance.EditText(targetText);
     }
 
