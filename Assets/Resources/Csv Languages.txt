@@ -9,7 +9,7 @@
     ],
     [
       "Last Update",
-      "Last Updated: November 11th, 2025"
+      "Last Updated: November 12th, 2025"
     ],
     [
       "Translator Credit",
@@ -265,7 +265,7 @@
     ],
     [
       "Use Green Instruction",
-      "Use Defend abilities on your Card?"
+      "Use Defend abilities on your Card."
     ],
     [
       "Use Red",
@@ -273,7 +273,7 @@
     ],
     [
       "Use Red Instruction",
-      "Use Attack abilities on your Card?"
+      "Use Attack abilities on your Card."
     ],
     [
       "Resolve Card",
@@ -317,7 +317,7 @@
     ],
     [
       "Skirmisher TextOne",
-      "ATTACK: Spend 2 Sword to deal 2 damage to the other player."
+      "ATTACK: -2 Sword -\u003e Deal 2 damage to the other player."
     ],
     [
       "Skirmisher TextTwo",
@@ -329,7 +329,7 @@
     ],
     [
       "Trader TextOne",
-      "DEFEND: Spend 1 Action for either +2 Sword or +2 Shield."
+      "DEFEND: -1 Action -\u003e Choose one: +2 Sword or +2 Shield."
     ],
     [
       "Trader TextTwo",
@@ -341,11 +341,11 @@
     ],
     [
       "Archer TextOne",
-      "DEFEND: Spend 2 Sword for +1 Card."
+      "DEFEND: -2 Sword -\u003e +1 Card."
     ],
     [
       "Archer TextTwo",
-      "ATTACK: Spend 4 Sword to deal 1 damage to the other player per Card in your hand."
+      "ATTACK: -4 Sword -\u003e Deal 1 damage to the other player per Card you have in hand."
     ],
     [
       "Dragon",
@@ -353,7 +353,7 @@
     ],
     [
       "Dragon TextOne",
-      "ATTACK: Spend 6 Sword to deal 2 damage to all Card by the other player."
+      "ATTACK: -6 Sword -\u003e Deal 2 damage to all Card by the other player."
     ],
     [
       "Dragon TextTwo",
@@ -365,7 +365,7 @@
     ],
     [
       "Bee TextOne",
-      "ATTACK: Spend 2 Sword to deal 2 damage to a card and Stun it for next round."
+      "ATTACK: -2 Sword -\u003e Deal 2 damage to a Card and Stun it for next round."
     ],
     [
       "Bee TextTwo",
@@ -377,7 +377,7 @@
     ],
     [
       "Ninja TextOne",
-      "ATTACK: Spend 2 Sword to deal 3 damage to a Card with 3 Health or less."
+      "ATTACK: -2 Sword -\u003e Deal 3 damage to a Card with 3 Health or less."
     ],
     [
       "Ninja TextTwo",
@@ -389,7 +389,7 @@
     ],
     [
       "Squire TextOne",
-      "DEFEND: Spend 2 Shield for +2 Sword next round."
+      "DEFEND: -2 Shield -\u003e Next round, +2 Sword."
     ],
     [
       "Squire TextTwo",
@@ -401,11 +401,35 @@
     ],
     [
       "Cannon TextOne",
-      "ATTACK: Spend 4 Shield to deal 6 damage to the other player."
+      "ATTACK: -4 Shield -\u003e Deal 6 damage to the other player."
     ],
     [
       "Cannon TextTwo",
       "PLAY: Stun this for this round."
+    ],
+    [
+      "Angel",
+      "Angel"
+    ],
+    [
+      "Angel TextOne",
+      "DEFEND: -2 Shield -\u003e All your Card get +1 Health."
+    ],
+    [
+      "Angel TextTwo",
+      "\"\""
+    ],
+    [
+      "Guardian",
+      "\"\""
+    ],
+    [
+      "Guardian TextOne",
+      "DEFEND: -4 Shield -\u003e You get +1 Health per Card you have in play."
+    ],
+    [
+      "Guardian TextTwo",
+      "\"\""
     ]
   ]
 }

@@ -21,6 +21,7 @@ public class Player : PhotonCompatible
     Button resignButton;
     [SerializeField] Transform keepHand;
     PlayerUI myUI;
+    bool onBottom;
 
     protected override void Awake()
     {
@@ -45,11 +46,7 @@ public class Player : PhotonCompatible
     void SendName(string username)
     {
         this.transform.SetParent(CreateGame.inst.canvas.transform);
-
-        if (photonView.AmOwner)
-            this.transform.localPosition = Vector3.zero;
-        else
-            this.transform.localPosition = new(10000, 10000);
+        this.transform.localPosition = Vector3.zero;
 
         initialized = true;
         this.name = username;
@@ -57,6 +54,8 @@ public class Player : PhotonCompatible
         CreateGame.inst.listOfPlayers.Insert(myPosition, this);
 
         myUI = CreateGame.inst.GetUI(myPosition);
+        myUI.image.color = (myPosition == 0) ? Color.blue : Color.red;
+        onBottom = myUI.image.transform.parent.name.Equals("Bottom Player");
         UpdateUI();
     }
 
@@ -105,7 +104,6 @@ public class Player : PhotonCompatible
             {
                 Card card = cardsToAdd[i];
                 card.transform.SetParent(null);
-                card.transform.position = new(0, -1000);
                 myHand.Remove(card);
                 myDeck.Insert(0, card);
             }
@@ -252,7 +250,7 @@ public class Player : PhotonCompatible
 
     void Update()
     {
-        if (photonView.AmOwner)
+        if (photonView.AmOwner && Application.isEditor)
         {
             if (Input.GetKeyDown(KeyCode.Alpha1))
                 GetPlayers(true);
@@ -305,42 +303,34 @@ public class Player : PhotonCompatible
     public void UpdateUI()
     {
         List<Card> myHand = GetHand();
-        float start = -1100;
-        float end = 475;
-        float gap = 225;
-        float midPoint = (start + end) / 2;
-        int maxFit = (int)((Mathf.Abs(start) + Mathf.Abs(end)) / gap);
+        List<Vector2> handPositions = ObjectPositions(myHand.Count, -875, 475, 225, (onBottom ? -525 : 525), true);
 
+        int thisPlayerPosition = (int)GetPlayerProperty(PhotonNetwork.LocalPlayer, PlayerProp.Position.ToString());
         for (int i = 0; i < myHand.Count; i++)
         {
             Card nextCard = myHand[i];
-
             if (nextCard.transform.parent != keepHand)
             {
                 nextCard.transform.SetParent(keepHand);
-                nextCard.transform.localPosition = new(0, -1000);
+                nextCard.transform.localPosition = new(0, (onBottom ? -1000 : 1000));
             }
             nextCard.transform.SetSiblingIndex(i);
+            nextCard.MoveCardRPC(handPositions[i], 0.25f, Vector3.one);
 
-            float offByOne = myHand.Count - 1;
-            float startingX = (myHand.Count <= maxFit) ? midPoint - (gap * (offByOne / 2f)) : (start);
-            float difference = (myHand.Count <= maxFit) ? gap : gap * (maxFit / offByOne);
-
-            if (photonView.AmOwner || (int)GetPlayerProperty(PhotonNetwork.LocalPlayer, PlayerProp.Position.ToString()) == -1)
-            {
-                Vector2 newPosition = new(startingX + difference * i, -525);
-                nextCard.MoveCardRPC(newPosition, 0.25f, Vector3.one);
-                myHand[i].FlipCardRPC(1, 0.25f, 0);
-            }
+            if (thisPlayerPosition == -1 || thisPlayerPosition == myPosition)
+                nextCard.FlipCardRPC(1, 0.25f, 0);
         }
 
-        myUI.infoText.text = KeywordTooltip.instance.EditText($"{this.name}: " +
+        myUI.infoText.text = KeywordTooltip.instance.EditText
+            ($"{this.name}: {GetHealth()} Health\n\n" +
             $"{myHand.Count} Card, " +
-            $"{GetAction()} {PlayerProp.Action}, " +
+            $"{GetAction()} {PlayerProp.Action}\n" +
             $"{GetShield()} {PlayerProp.Shield}, " +
             $"{GetSword()} {PlayerProp.Sword}");
 
         List<Card> myTroops = GetTroops();
+        foreach (Card card in myTroops)
+            card.transform.SetParent(null);
         for (int i = 0; i < myUI.cardDisplays.Count; i++)
         {
             if (i < myTroops.Count)
@@ -353,6 +343,26 @@ public class Player : PhotonCompatible
                 myUI.cardDisplays[i].gameObject.SetActive(false);
             }
         }
+    }
+
+    List<Vector2> ObjectPositions(int objectAmount, float start, float end, float gap, float fixedPosition, bool useX)
+    {
+        float midPoint = (start + end) / 2f;
+        int maxFit = (int)((Mathf.Abs(start) + Mathf.Abs(end)) / gap);
+        int offByOne = objectAmount - 1;
+
+        List<Vector2> toReturn = new();
+        for (int i = 0; i<objectAmount; i++)
+        {
+            float starting = (objectAmount <= maxFit) ? midPoint - (gap * (offByOne / 2f)) : start;
+            float difference = (objectAmount <= maxFit) ? gap : gap * (maxFit / (float)offByOne);
+
+            if (useX)
+                toReturn.Add(new(starting + difference * i, fixedPosition));
+            else
+                toReturn.Add(new(fixedPosition, starting + difference * i));
+        }
+        return toReturn;
     }
 
     public List<MiniCardDisplay> AliveTroops()

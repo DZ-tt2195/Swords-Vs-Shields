@@ -81,7 +81,6 @@ public class PlayCard : Turn
         {
             myHand.Remove(cardToPlay);
             myTroops.Add(cardToPlay);
-            cardToPlay.transform.SetParent(null);
         }
         TurnManager.inst.WillChangePlayerProperty(player, PlayerProp.MyHand, TurnManager.inst.ConvertCardList(myHand));
         TurnManager.inst.WillChangePlayerProperty(player, PlayerProp.MyTroops, TurnManager.inst.ConvertCardList(myTroops));

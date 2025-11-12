@@ -38,8 +38,6 @@ public class GreenAbilities : Turn
         if (canDo.Count >= 1)
         {
             MakeDecision.inst.Instructions("Use Green Instructions");
-            MakeDecision.inst.ChooseTextButton(new() { new("Decline", Decline) }, false);
-
             List<MiniCardDisplay> toChoose = new();
             foreach (MiniCardDisplay display in player.AliveTroops())
             {

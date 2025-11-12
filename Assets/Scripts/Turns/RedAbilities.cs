@@ -38,8 +38,6 @@ public class RedAbilities : Turn
         if (canDo.Count >= 1)
         {
             MakeDecision.inst.Instructions("Use Red Instruction");
-            MakeDecision.inst.ChooseTextButton(new() { new("Decline", Decline) }, false);
-
             List<MiniCardDisplay> toChoose = new();
             foreach (MiniCardDisplay display in player.AliveTroops())
             {

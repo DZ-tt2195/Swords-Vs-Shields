@@ -12,7 +12,7 @@
     ],
     [
       "Skirmisher",
-      "ATTACK: Spend 2 Sword to deal 2 damage to the other player.",
+      "ATTACK: -2 Sword -\u003e Deal 2 damage to the other player.",
       "PLAY: +1 Sword.",
       "4",
       "Attack",
@@ -23,7 +23,7 @@
     ],
     [
       "Trader",
-      "DEFEND: Spend 1 Action for either +2 Sword or +2 Shield.",
+      "DEFEND: -1 Action -\u003e Choose one: +2 Sword or +2 Shield.",
       "\"\"",
       "5",
       "Defend",
@@ -33,8 +33,8 @@
     ],
     [
       "Archer",
-      "DEFEND: Spend 2 Sword for +1 Card.",
-      "ATTACK: Spend 4 Sword to deal 1 damage to the other player per Card in your hand.",
+      "DEFEND: -2 Sword -\u003e +1 Card.",
+      "ATTACK: -4 Sword -\u003e Deal 1 damage to the other player per Card you have in hand.",
       "3",
       "Defend",
       "Attack",
@@ -44,20 +44,20 @@
     ],
     [
       "Dragon",
-      "ATTACK: Spend 6 Sword to deal 2 damage to all Card by the other player.",
+      "ATTACK: -6 Sword -\u003e Deal 2 damage to all Card by the other player.",
       "PLAY: -1 Card.",
       "8",
       "Attack",
       "Play",
       "Josh Hass|Amonkhet: Invocations|(Omniscience)",
-      "LoseSword, AttackCard",
+      "LoseSword, AttackCard, MultipleCard",
       "DiscardCard"
     ],
     [
       "Bee",
-      "ATTACK: Spend 2 Sword to deal 2 damage to a card and Stun it for next round.",
+      "ATTACK: -2 Sword -\u003e Deal 2 damage to a Card and Stun it for next round.",
       "\"\"",
-      "5",
+      "3",
       "Attack",
       "None",
       "Tom Wanerstrand|Time Spiral|(Unyaro Bees)",
@@ -65,7 +65,7 @@
     ],
     [
       "Ninja",
-      "ATTACK: Spend 2 Sword to deal 3 damage to a Card with 3 Health or less.",
+      "ATTACK: -2 Sword -\u003e Deal 3 damage to a Card with 3 Health or less.",
       "\"\"",
       "4",
       "Attack",
@@ -75,7 +75,7 @@
     ],
     [
       "Squire",
-      "DEFEND: Spend 2 Shield for +2 Sword next round.",
+      "DEFEND: -2 Shield -\u003e Next round, +2 Sword.",
       "PLAY: +1 Card.",
       "2",
       "Defend",
@@ -86,7 +86,7 @@
     ],
     [
       "Cannon",
-      "ATTACK: Spend 4 Shield to deal 6 damage to the other player.",
+      "ATTACK: -4 Shield -\u003e Deal 6 damage to the other player.",
       "PLAY: Stun this for this round.",
       "5",
       "Attack",
@@ -94,6 +94,26 @@
       "Julian Kok Joon Wen|Dominaria United|(Artillery Blast)",
       "LoseShield, AttackPlayer",
       "StunCard"
+    ],
+    [
+      "Angel",
+      "DEFEND: -2 Shield -\u003e All your Card get +1 Health.",
+      "\"\"",
+      "3",
+      "Defend",
+      "None",
+      "Magali Villeneuve|Oath of the Gatewatch|(Linvala, the Preserver)",
+      "LoseShield, HealCard, Multiple"
+    ],
+    [
+      "Guardian",
+      "DEFEND: -4 Shield -\u003e You get +1 Health per Card you have in play.",
+      "\"\"",
+      "5",
+      "Defend",
+      "None",
+      "Martin Hoffmann|Dominion: Nocturne|(Guardian)",
+      "LoseShield, HealPlayer, PerTroop"
     ]
   ]
 }

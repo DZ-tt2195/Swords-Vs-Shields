@@ -93,44 +93,61 @@ public class TurnManager : PhotonCompatible
         turnsInOrder[GetCurrentPhase()].MasterEnd();
         UpdateWaitingText(spectators, players.Count);
 
-        int phaseTracker = (int)GetRoomProperty(RoomProp.CurrentPhase);
-        int roundTracker = (int)GetRoomProperty(RoomProp.CurrentRound);
-        if (phaseTracker == 3 || phaseTracker == 0)
+        NextPhase();
+
+        void NextPhase()
         {
-            ChangeRoomProperties(RoomProp.CurrentPhase, 1, phaseTracker);
-            ChangeRoomProperties(RoomProp.CurrentRound, roundTracker + 1, roundTracker);
+            int phaseTracker = (int)GetRoomProperty(RoomProp.CurrentPhase);
+            int roundTracker = (int)GetRoomProperty(RoomProp.CurrentRound);
+            if (phaseTracker == 3 || phaseTracker == 0)
+            {
+                ChangeRoomProperties(RoomProp.CurrentPhase, 1, phaseTracker);
+                ChangeRoomProperties(RoomProp.CurrentRound, roundTracker + 1, roundTracker);
+            }
+            else if (phaseTracker != 4)
+            {
+                ChangeRoomProperties(RoomProp.CurrentPhase, phaseTracker + 1, phaseTracker);
+            }
+            Invoke(nameof(NewPrompt), 0.25f);
         }
-        else if (phaseTracker != 4)
-        {
-            ChangeRoomProperties(RoomProp.CurrentPhase, phaseTracker + 1, phaseTracker);
-        }
-        Invoke(nameof(NewPrompt), 0.25f);
     }
 
     void NewPrompt()
     {
-        List<Card> masterDiscard = GetCardList(RoomProp.MasterDiscard.ToString());
-        foreach (Player player in CreateGame.inst.listOfPlayers)
+        PutInDiscard();
+        void PutInDiscard()
         {
-            Photon.Realtime.Player photonPlayer = player.photonView.Owner;
-            List<Card> myTroops = ConvertIntArray((int[])photonPlayer.CustomProperties[PlayerProp.MyTroops.ToString()]);
-            for (int i = myTroops.Count - 1; i >= 0; i--)
+            List<Card> masterDiscard = GetCardList(RoomProp.MasterDiscard.ToString());
+            foreach (Player player in CreateGame.inst.listOfPlayers)
             {
-                Card card = myTroops[i];
-                if (GetInt(card.HealthString().ToString()) <= 0)
+                List<Card> myTroops = player.GetTroops();
+                for (int i = myTroops.Count - 1; i >= 0; i--)
                 {
-                    ChangeRoomProperties(card.HealthString(), 0);
-                    myTroops.RemoveAt(i);
-                    masterDiscard.Add(card);
+                    Card card = myTroops[i];
+                    if (card.GetHealth() <= 0)
+                    {
+                        ChangeRoomProperties(card.HealthString(), 0);
+                        myTroops.RemoveAt(i);
+                        masterDiscard.Add(card);
+                    }
                 }
+                ChangePlayerProperties(player, PlayerProp.MyTroops, ConvertCardList(myTroops));
             }
-            ChangePlayerProperties(photonPlayer, PlayerProp.MyTroops, ConvertCardList(myTroops));
+            ChangeRoomProperties(RoomProp.MasterDiscard, ConvertCardList(masterDiscard));
+            DoFunction(() => DiscardToNull(), RpcTarget.All);
         }
-        ChangeRoomProperties(RoomProp.MasterDiscard, ConvertCardList(masterDiscard));
 
         turnsInOrder[GetCurrentPhase()].MasterStart();
         foreach (Player player in CreateGame.inst.listOfPlayers)
             player.DoFunction(() => player.StartTurn(), player.photonView.Owner);
+    }
+
+    [PunRPC]
+    void DiscardToNull()
+    {
+        List<Card> masterDiscard = GetCardList(RoomProp.MasterDiscard.ToString());
+        foreach (Card card in masterDiscard)
+            card.transform.SetParent(null);
     }
 
     bool HasPropertyAndValue(ExitGames.Client.Photon.Hashtable changedProps, string propertyName, object expected)

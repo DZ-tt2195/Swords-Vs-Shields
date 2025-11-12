@@ -6,6 +6,7 @@ using System;
 using Photon.Realtime;
 using System.Collections;
 using MyBox;
+using UnityEngine.UI;
 using TMPro;
 
 public enum RoomProp { Game, CanPlay, JoinAsSpec, MasterDeck, MasterDiscard, CurrentPhase, CurrentRound }
@@ -13,6 +14,7 @@ public enum RoomProp { Game, CanPlay, JoinAsSpec, MasterDeck, MasterDiscard, Cur
 [Serializable]
 public class PlayerUI
 {
+    public Image image;
     public TMP_Text infoText;
     public List<MiniCardDisplay> cardDisplays = new();
 }
@@ -199,7 +201,7 @@ public class CreateGame : PhotonCompatible
 
     public PlayerUI GetUI(int playerPosition)
     {
-        int myPosition = (int)PhotonNetwork.LocalPlayer.CustomProperties[PlayerProp.Position.ToString()];
+        int myPosition = (int)GetPlayerProperty(PhotonNetwork.LocalPlayer, PlayerProp.Position.ToString());
         if (myPosition == playerPosition)
             return allUI[0];
         else if (myPosition == -1)
