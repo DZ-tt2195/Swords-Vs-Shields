@@ -4,10 +4,15 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "PlayCard", menuName = "ScriptableObjects/PlayCard")]
 public class PlayCard : Turn
 {
-    public override void ForMaster()
+    public override void MasterStart()
     {
         int currentRound = (int)PhotonCompatible.GetRoomProperty(RoomProp.CurrentRound);
         Log.inst.MasterText($"Play Card-Num-{currentRound}");
+    }
+
+    public override void MasterEnd()
+    {
+        Log.inst.MasterText($"Blank");
     }
 
     public override void ForPlayer(Player player)
@@ -33,11 +38,11 @@ public class PlayCard : Turn
     {
         if (player.GetAction() >= 1)
         {
-            DecisionManager.inst.Instructions("Play Card Instruction");
-            DecisionManager.inst.ChooseTextButton(new() { new("Decline") }, false);
+            MakeDecision.inst.Instructions("Play Card Instruction");
+            MakeDecision.inst.ChooseTextButton(new() { new("Decline", Decline) }, false);
 
             List<Card> myHand = player.GetHand();
-            DecisionManager.inst.ChooseCardOnScreen(myHand, ChooseToPlay, false);
+            MakeDecision.inst.ChooseCardOnScreen(myHand, ChooseToPlay, false);
 
             void ChooseToPlay(Card card)
             {
@@ -53,6 +58,11 @@ public class PlayCard : Turn
                     Log.inst.NewDecisionContainer(() => card.thisCard.DoAbilityTwo(player, card, 1), 1);
 
                 Log.inst.NewDecisionContainer(() => PlayLoop(player), 0);
+            }
+
+            void Decline()
+            {
+                Log.inst.AddMyText($"End Turn-Player-{player.name}", false);
             }
         }
     }

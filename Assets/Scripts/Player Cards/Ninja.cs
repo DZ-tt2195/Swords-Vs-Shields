@@ -12,7 +12,7 @@ public class Ninja : CardType
 
     public override AbilityType CanUseAbiltyOne(Player player, Card thisCard)
     {
-        otherPlayer = PlayerCreator.inst.OtherPlayer(player.myPosition);
+        otherPlayer = CreateGame.inst.OtherPlayer(player.myPosition);
         otherCards = otherPlayer.AliveTroops();
         for (int i = otherCards.Count-1; i>= 0; i--)
         {
@@ -34,8 +34,8 @@ public class Ninja : CardType
 
     void ChooseAttack(Player player, int logged)
     {
-        DecisionManager.inst.Instructions($"Target Instruction-Player-{otherPlayer.name}");
-        DecisionManager.inst.ChooseDisplayOnScreen(otherCards, Damage);
+        MakeDecision.inst.Instructions($"Target Instruction-Player-{otherPlayer.name}");
+        MakeDecision.inst.ChooseDisplayOnScreen(otherCards, Damage);
 
         void Damage(Card card)
         {

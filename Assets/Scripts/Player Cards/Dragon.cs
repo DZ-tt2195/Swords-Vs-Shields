@@ -12,7 +12,7 @@ public class Dragon : CardType
 
     public override AbilityType CanUseAbiltyOne(Player player, Card thisCard)
     {
-        otherPlayer = PlayerCreator.inst.OtherPlayer(player.myPosition);
+        otherPlayer = CreateGame.inst.OtherPlayer(player.myPosition);
         otherCards = otherPlayer.AliveTroops();
 
         if (otherCards.Count >= 1 && player.GetSword() >= 6)
@@ -31,8 +31,8 @@ public class Dragon : CardType
     public override void DoAbilityTwo(Player player, Card thisCard, int logged)
     {
         List<Card> handCards = player.GetHand();
-        DecisionManager.inst.Instructions("Discard Instruction");
-        DecisionManager.inst.ChooseCardOnScreen(handCards, Discard);
+        MakeDecision.inst.Instructions("Discard Instruction");
+        MakeDecision.inst.ChooseCardOnScreen(handCards, Discard);
 
         void Discard(Card card)
         {

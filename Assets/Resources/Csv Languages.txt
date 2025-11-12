@@ -237,11 +237,11 @@
     ],
     [
       "Add Health Troop",
-      "$Player$'s $Troop$ gets +$Num$ Health."
+      "$Player$'s $Card$ gets +$Num$ Health."
     ],
     [
       "Lose Health Troop",
-      "$Player$'s $Troop$ loses $Num$ Health."
+      "$Player$'s $Card$ loses $Num$ Health."
     ],
     [
       "Blank",
@@ -278,6 +278,10 @@
     [
       "Resolve Card",
       "$Player$ resolves $Card$."
+    ],
+    [
+      "End Turn",
+      "$Player$ ends their turn."
     ],
     [
       "Confirm",
@@ -380,16 +384,28 @@
       "\"\""
     ],
     [
-      "Scout",
-      "Scout"
+      "Squire",
+      "Squire"
     ],
     [
-      "Scout TextOne",
+      "Squire TextOne",
       "DEFEND: Spend 2 Shield for +2 Sword next round."
     ],
     [
-      "Scout TextTwo",
+      "Squire TextTwo",
       "PLAY: +1 Card."
+    ],
+    [
+      "Cannon",
+      "Cannon"
+    ],
+    [
+      "Cannon TextOne",
+      "ATTACK: Spend 4 Shield to deal 6 damage to the other player."
+    ],
+    [
+      "Cannon TextTwo",
+      "PLAY: Stun this for this round."
     ]
   ]
 }

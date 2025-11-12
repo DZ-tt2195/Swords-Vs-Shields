@@ -4,10 +4,15 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "RedAbilities", menuName = "ScriptableObjects/RedAbilities")]
 public class RedAbilities : Turn
 {
-    public override void ForMaster()
+    public override void MasterStart()
     {
         int currentRound = (int)PhotonCompatible.GetRoomProperty(RoomProp.CurrentRound);
         Log.inst.MasterText($"Use Red-Num-{currentRound}");
+    }
+
+    public override void MasterEnd()
+    {
+        Log.inst.MasterText($"Blank");
     }
 
     public override void ForPlayer(Player player)
@@ -32,8 +37,8 @@ public class RedAbilities : Turn
 
         if (canDo.Count >= 1)
         {
-            DecisionManager.inst.Instructions("Use Red Instruction");
-            DecisionManager.inst.ChooseTextButton(new() { new("Decline") }, false);
+            MakeDecision.inst.Instructions("Use Red Instruction");
+            MakeDecision.inst.ChooseTextButton(new() { new("Decline", Decline) }, false);
 
             List<MiniCardDisplay> toChoose = new();
             foreach (MiniCardDisplay display in player.AliveTroops())
@@ -41,7 +46,7 @@ public class RedAbilities : Turn
                 if (canDo.Contains(display.card))
                     toChoose.Add(display);
             }
-            DecisionManager.inst.ChooseDisplayOnScreen(toChoose, ChooseToUse, false);
+            MakeDecision.inst.ChooseDisplayOnScreen(toChoose, ChooseToUse, false);
 
             void ChooseToUse(Card card)
             {
@@ -54,6 +59,11 @@ public class RedAbilities : Turn
                 HashSet<Card> newSet = new(alreadyDone);
                 newSet.Add(card);
                 Log.inst.NewDecisionContainer(() => NextAbility(player, newSet), 0);
+            }
+
+            void Decline()
+            {
+                Log.inst.AddMyText($"End Turn-Player-{player.name}", false);
             }
         }
     }

@@ -74,15 +74,26 @@
       "LoseSword, AttackCard, HealthOrLess"
     ],
     [
-      "Scout",
+      "Squire",
       "DEFEND: Spend 2 Shield for +2 Sword next round.",
       "PLAY: +1 Card.",
       "2",
       "Defend",
       "Play",
-      "X",
+      "Anthony Plumbo|Ixalan|(Seekers' Squire)",
       "LoseShield, NextAddSword",
       "DrawCard"
+    ],
+    [
+      "Cannon",
+      "ATTACK: Spend 4 Shield to deal 6 damage to the other player.",
+      "PLAY: Stun this for this round.",
+      "5",
+      "Attack",
+      "Play",
+      "Julian Kok Joon Wen|Dominaria United|(Artillery Blast)",
+      "LoseShield, AttackPlayer",
+      "StunCard"
     ]
   ]
 }

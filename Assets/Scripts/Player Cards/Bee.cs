@@ -12,7 +12,7 @@ public class Bee : CardType
 
     public override AbilityType CanUseAbiltyOne(Player player, Card thisCard)
     {
-        otherPlayer = PlayerCreator.inst.OtherPlayer(player.myPosition);
+        otherPlayer = CreateGame.inst.OtherPlayer(player.myPosition);
         otherCards = otherPlayer.AliveTroops();
 
         if (otherCards.Count >= 1 && player.GetSword() >= 2)
@@ -29,8 +29,8 @@ public class Bee : CardType
 
     void ChooseAttack(Player player, int logged)
     {
-        DecisionManager.inst.Instructions($"Target Instruction-Player-{otherPlayer.name}");
-        DecisionManager.inst.ChooseDisplayOnScreen(otherCards, DamageAndStun);
+        MakeDecision.inst.Instructions($"Target Instruction-Player-{otherPlayer.name}");
+        MakeDecision.inst.ChooseDisplayOnScreen(otherCards, DamageAndStun);
 
         void DamageAndStun(Card card)
         {

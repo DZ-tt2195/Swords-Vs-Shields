@@ -4,10 +4,15 @@ using System.Collections.Generic;
 [CreateAssetMenu(fileName = "GreenAbilities", menuName = "ScriptableObjects/GreenAbilities")]
 public class GreenAbilities : Turn
 {
-    public override void ForMaster()
+    public override void MasterStart()
     {
         int currentRound = (int)PhotonCompatible.GetRoomProperty(RoomProp.CurrentRound);
         Log.inst.MasterText($"Use Green-Num-{currentRound}");
+    }
+
+    public override void MasterEnd()
+    {
+        Log.inst.MasterText($"Blank");
     }
 
     public override void ForPlayer(Player player)
@@ -32,8 +37,8 @@ public class GreenAbilities : Turn
 
         if (canDo.Count >= 1)
         {
-            DecisionManager.inst.Instructions("Use Green Instructions");
-            DecisionManager.inst.ChooseTextButton(new() { new("Decline") }, false);
+            MakeDecision.inst.Instructions("Use Green Instructions");
+            MakeDecision.inst.ChooseTextButton(new() { new("Decline", Decline) }, false);
 
             List<MiniCardDisplay> toChoose = new();
             foreach (MiniCardDisplay display in player.AliveTroops())
@@ -41,7 +46,7 @@ public class GreenAbilities : Turn
                 if (canDo.Contains(display.card))
                     toChoose.Add(display);
             }
-            DecisionManager.inst.ChooseDisplayOnScreen(toChoose, ChooseToUse, false);
+            MakeDecision.inst.ChooseDisplayOnScreen(toChoose, ChooseToUse, false);
 
             void ChooseToUse(Card card)
             {
@@ -54,6 +59,11 @@ public class GreenAbilities : Turn
                 HashSet<Card> newSet = new(alreadyDone);
                 newSet.Add(card);
                 Log.inst.NewDecisionContainer(() => NextAbility(player, newSet), 0);
+            }
+
+            void Decline()
+            {
+                Log.inst.AddMyText($"End Turn-Player-{player.name}", false);
             }
         }
     }

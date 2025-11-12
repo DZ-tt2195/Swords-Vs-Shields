@@ -18,7 +18,7 @@ public class Skirmisher : CardType
     public override void DoAbilityOne(Player player, Card thisCard, int logged)
     {
         player.SwordRPC(-2, logged);
-        PlayerCreator.inst.OtherPlayer(player.myPosition).HealthRPC(-2, logged);
+        CreateGame.inst.OtherPlayer(player.myPosition).HealthRPC(-2, logged);
     }
 
     public override void DoAbilityTwo(Player player, Card thisCard, int logged)

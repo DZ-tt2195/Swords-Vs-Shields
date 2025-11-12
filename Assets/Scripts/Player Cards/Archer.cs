@@ -32,6 +32,6 @@ public class Archer : CardType
     {
         player.SwordRPC(-4, logged);
         int playerHand = player.GetHand().Count;
-        PlayerCreator.inst.OtherPlayer(player.myPosition).HealthRPC(-1*playerHand, logged);
+        CreateGame.inst.OtherPlayer(player.myPosition).HealthRPC(-1*playerHand, logged);
     }
 }
