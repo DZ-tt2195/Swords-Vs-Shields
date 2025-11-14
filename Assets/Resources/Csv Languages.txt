@@ -317,7 +317,7 @@
     ],
     [
       "Skirmisher TextOne",
-      "ATTACK: -2 Sword -\u003e Deal 2 damage to the other player."
+      "ATTACK: -2 Sword -\u003e Opoonent loses 2 Health."
     ],
     [
       "Skirmisher TextTwo",
@@ -345,7 +345,7 @@
     ],
     [
       "Archer TextTwo",
-      "ATTACK: -4 Sword -\u003e Deal 1 damage to the other player per Card you have in hand."
+      "ATTACK: -4 Sword -\u003e Opponent loses 1 Health per Card you have in hand."
     ],
     [
       "Dragon",
@@ -353,7 +353,7 @@
     ],
     [
       "Dragon TextOne",
-      "ATTACK: -6 Sword -\u003e Deal 2 damage to all Card by the other player."
+      "ATTACK: -6 Sword -\u003e All Foes lose 2 Health."
     ],
     [
       "Dragon TextTwo",
@@ -365,7 +365,7 @@
     ],
     [
       "Bee TextOne",
-      "ATTACK: -2 Sword -\u003e Deal 2 damage to a Card and Stun it for next round."
+      "ATTACK: -2 Sword -\u003e One Foe loses 2 Health and is Stunned next round."
     ],
     [
       "Bee TextTwo",
@@ -377,7 +377,7 @@
     ],
     [
       "Ninja TextOne",
-      "ATTACK: -2 Sword -\u003e Deal 3 damage to a Card with 3 Health or less."
+      "ATTACK: -2 Sword -\u003e One Foe with 3 Health or less loses 3 Health."
     ],
     [
       "Ninja TextTwo",
@@ -401,11 +401,11 @@
     ],
     [
       "Cannon TextOne",
-      "ATTACK: -4 Shield -\u003e Deal 6 damage to the other player."
+      "ATTACK: -4 Shield -\u003e Opponent loses 6 Health."
     ],
     [
       "Cannon TextTwo",
-      "PLAY: Stun this for this round."
+      "PLAY: This card is Stunned this round."
     ],
     [
       "Angel",
@@ -413,7 +413,7 @@
     ],
     [
       "Angel TextOne",
-      "DEFEND: -2 Shield -\u003e All your Card get +1 Health."
+      "DEFEND: -2 Shield -\u003e All Allies get +1 Health."
     ],
     [
       "Angel TextTwo",
@@ -430,6 +430,42 @@
     [
       "Guardian TextTwo",
       "\"\""
+    ],
+    [
+      "Trickster",
+      "Trickster"
+    ],
+    [
+      "Trickster TextOne",
+      "ATTACK: -2 Sword -\u003e Opponent loses 4 Health and gets +1 Sword next round."
+    ],
+    [
+      "Trickster TextTwo",
+      "\"\""
+    ],
+    [
+      "Game Over",
+      "Game Over"
+    ],
+    [
+      "Played Card Info",
+      "$Card$ ($Num$)"
+    ],
+    [
+      "Leave",
+      "Leave"
+    ],
+    [
+      "Player Resigned",
+      "$Player$ has resigned."
+    ],
+    [
+      "Player Lost",
+      "$Player$ has lost."
+    ],
+    [
+      "Resigned",
+      "(Resigned)"
     ]
   ]
 }

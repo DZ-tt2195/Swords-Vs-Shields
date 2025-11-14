@@ -9,7 +9,7 @@ using MyBox;
 using UnityEngine.UI;
 using TMPro;
 
-public enum RoomProp { Game, CanPlay, JoinAsSpec, MasterDeck, MasterDiscard, CurrentPhase, CurrentRound }
+public enum RoomProp { Game, CanPlay, GameOver, JoinAsSpec, MasterDeck, MasterDiscard, CurrentPhase, CurrentRound }
 
 [Serializable]
 public class PlayerUI
@@ -82,13 +82,13 @@ public class CreateGame : PhotonCompatible
 
                 PlayerPrefs.SetString("LastRoom", PhotonNetwork.CurrentRoom.Name);
                 if (PhotonNetwork.CurrentRoom.Players.Count == (int)PhotonNetwork.CurrentRoom.CustomProperties[RoomProp.CanPlay.ToString()])
-                    ChangeRoomProperties(RoomProp.JoinAsSpec, true, false);
+                    InstantChangeRoomProp(RoomProp.JoinAsSpec, true, false);
             }
         }
         else
         {
             PlayerPrefs.DeleteKey("LastRoom");
-            ChangeRoomProperties(RoomProp.CanPlay, 1);
+            InstantChangeRoomProp(RoomProp.CanPlay, 1);
             CreatePlayer();
         }
     }
@@ -181,11 +181,13 @@ public class CreateGame : PhotonCompatible
 
             [PlayerProp.NextRoundSword.ToString()] = 0,
             [PlayerProp.NextRoundShield.ToString()] = 0,
+            [PlayerProp.NextRoundAction.ToString()] = 0,
 
             [PlayerProp.MyHand.ToString()] = new int[0],
             [PlayerProp.MyDeck.ToString()] = new int[0],
             [PlayerProp.MyDiscard.ToString()] = new int[0],
             [PlayerProp.MyTroops.ToString()] = new int[0],
+            [PlayerProp.AllCardsPlayed.ToString()] = new string[0],
         };
         PhotonNetwork.LocalPlayer.SetCustomProperties(playerProps);
         MakeObject(playerPrefab.gameObject);

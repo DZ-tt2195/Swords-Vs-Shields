@@ -133,7 +133,7 @@ public class PhotonCompatible : MonoBehaviourPunCallbacks
 
 #region Properties
 
-    public static void ChangePlayerProperties(Photon.Realtime.Player player, PlayerProp propertyName, object changeToThis, object expected = null)
+    public static void InstantChangePlayerProp(Photon.Realtime.Player player, PlayerProp propertyName, object changeToThis, object expected = null)
     {
         ExitGames.Client.Photon.Hashtable changeTable = new() { { propertyName.ToString(), changeToThis } };
         ExitGames.Client.Photon.Hashtable expectedTable = null;
@@ -149,8 +149,8 @@ public class PhotonCompatible : MonoBehaviourPunCallbacks
         }
     }
 
-    public static void ChangePlayerProperties(Player playerObject, PlayerProp propertyName, object changeToThis, object expected = null)
-        => ChangePlayerProperties(playerObject.photonView.Controller, propertyName, changeToThis, expected);
+    public static void InstantChangePlayerProp(Player playerObject, PlayerProp propertyName, object changeToThis, object expected = null)
+        => InstantChangePlayerProp(playerObject.photonView.Controller, propertyName, changeToThis, expected);
 
     public static object GetPlayerProperty(Photon.Realtime.Player player, string propertyName)
     {
@@ -172,7 +172,7 @@ public class PhotonCompatible : MonoBehaviourPunCallbacks
 
     public static object GetPlayerProperty(Player player, PlayerProp propertyName) => GetPlayerProperty(player.photonView.Owner, propertyName.ToString());
 
-    public static void ChangeRoomProperties(string propertyName, object changeToThis, object expected = null)
+    public static void InstantChangeRoomProp(string propertyName, object changeToThis, object expected = null)
     {
         ExitGames.Client.Photon.Hashtable changeTable = new() { { propertyName, changeToThis } };
         ExitGames.Client.Photon.Hashtable expectedTable = null;
@@ -188,8 +188,8 @@ public class PhotonCompatible : MonoBehaviourPunCallbacks
         }
     }
 
-    public static void ChangeRoomProperties(RoomProp propertyName, object changeToThis, object expected = null)
-        => ChangeRoomProperties(propertyName.ToString(), changeToThis, expected);
+    public static void InstantChangeRoomProp(RoomProp propertyName, object changeToThis, object expected = null)
+        => InstantChangeRoomProp(propertyName.ToString(), changeToThis, expected);
 
     public static object GetRoomProperty(string propertyName)
         => PhotonNetwork.CurrentRoom.CustomProperties[propertyName];

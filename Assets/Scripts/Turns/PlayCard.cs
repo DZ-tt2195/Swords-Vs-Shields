@@ -20,6 +20,9 @@ public class PlayCard : Turn
         int currentRound = (int)PhotonCompatible.GetRoomProperty(RoomProp.CurrentRound);
         player.DrawCardRPC(currentRound == 1 ? 4 : 2);
         player.ActionRPC(2);
+        int nextRoundAction = TurnManager.inst.GetInt(PlayerProp.NextRoundAction, player);
+        player.ActionRPC(nextRoundAction, 1);
+        TurnManager.inst.WillChangePlayerProperty(player, PlayerProp.NextRoundAction, 0);
 
         player.ShieldRPC(currentRound - player.GetShield());
         int nextRoundShield = TurnManager.inst.GetInt(PlayerProp.NextRoundShield, player);
@@ -71,18 +74,23 @@ public class PlayCard : Turn
     {
         List<Card> myHand = player.GetHand();
         List<Card> myTroops = player.GetTroops();
+        List<string> myCardsPlayed = TurnManager.inst.GetStringList(PlayerProp.AllCardsPlayed, player);
 
         if (!Log.inst.forward)
         {
             myHand.Add(cardToPlay);
             myTroops.Remove(cardToPlay);
+            myCardsPlayed.RemoveAt(myCardsPlayed.Count - 1);
         }
         else
         {
             myHand.Remove(cardToPlay);
             myTroops.Add(cardToPlay);
+            int currentRound = (int)PhotonCompatible.GetRoomProperty(RoomProp.CurrentRound);
+            myCardsPlayed.Add($"Played Card Info-Card-{cardToPlay.name}-Num-{currentRound}");
         }
         TurnManager.inst.WillChangePlayerProperty(player, PlayerProp.MyHand, TurnManager.inst.ConvertCardList(myHand));
         TurnManager.inst.WillChangePlayerProperty(player, PlayerProp.MyTroops, TurnManager.inst.ConvertCardList(myTroops));
+        TurnManager.inst.WillChangePlayerProperty(player, PlayerProp.AllCardsPlayed, myCardsPlayed.ToArray());
     }
 }

@@ -12,7 +12,7 @@
     ],
     [
       "Skirmisher",
-      "ATTACK: -2 Sword -\u003e Deal 2 damage to the other player.",
+      "ATTACK: -2 Sword -\u003e Opoonent loses 2 Health.",
       "PLAY: +1 Sword.",
       "4",
       "Attack",
@@ -34,7 +34,7 @@
     [
       "Archer",
       "DEFEND: -2 Sword -\u003e +1 Card.",
-      "ATTACK: -4 Sword -\u003e Deal 1 damage to the other player per Card you have in hand.",
+      "ATTACK: -4 Sword -\u003e Opponent loses 1 Health per Card you have in hand.",
       "3",
       "Defend",
       "Attack",
@@ -44,34 +44,34 @@
     ],
     [
       "Dragon",
-      "ATTACK: -6 Sword -\u003e Deal 2 damage to all Card by the other player.",
+      "ATTACK: -6 Sword -\u003e All Foes lose 2 Health.",
       "PLAY: -1 Card.",
       "8",
       "Attack",
       "Play",
       "Josh Hass|Amonkhet: Invocations|(Omniscience)",
-      "LoseSword, AttackCard, MultipleCard",
+      "LoseSword, AttackFoe, MultipleCard",
       "DiscardCard"
     ],
     [
       "Bee",
-      "ATTACK: -2 Sword -\u003e Deal 2 damage to a Card and Stun it for next round.",
+      "ATTACK: -2 Sword -\u003e One Foe loses 2 Health and is Stunned next round.",
       "\"\"",
       "3",
       "Attack",
       "None",
       "Tom Wanerstrand|Time Spiral|(Unyaro Bees)",
-      "LoseSword, StunCard, AttackCard"
+      "LoseSword, StunCard, AttackFoe"
     ],
     [
       "Ninja",
-      "ATTACK: -2 Sword -\u003e Deal 3 damage to a Card with 3 Health or less.",
+      "ATTACK: -2 Sword -\u003e One Foe with 3 Health or less loses 3 Health.",
       "\"\"",
       "4",
       "Attack",
       "None",
       "Elisa Cella|Dominion: Rising Sun|(Ninja)",
-      "LoseSword, AttackCard, HealthOrLess"
+      "LoseSword, AttackFoe, HealthOrLess"
     ],
     [
       "Squire",
@@ -86,8 +86,8 @@
     ],
     [
       "Cannon",
-      "ATTACK: -4 Shield -\u003e Deal 6 damage to the other player.",
-      "PLAY: Stun this for this round.",
+      "ATTACK: -4 Shield -\u003e Opponent loses 6 Health.",
+      "PLAY: This card is Stunned this round.",
       "5",
       "Attack",
       "Play",
@@ -97,13 +97,13 @@
     ],
     [
       "Angel",
-      "DEFEND: -2 Shield -\u003e All your Card get +1 Health.",
+      "DEFEND: -2 Shield -\u003e All Allies get +1 Health.",
       "\"\"",
       "3",
       "Defend",
       "None",
       "Magali Villeneuve|Oath of the Gatewatch|(Linvala, the Preserver)",
-      "LoseShield, HealCard, Multiple"
+      "LoseShield, HealAlly, Multiple"
     ],
     [
       "Guardian",
@@ -114,6 +114,16 @@
       "None",
       "Martin Hoffmann|Dominion: Nocturne|(Guardian)",
       "LoseShield, HealPlayer, PerTroop"
+    ],
+    [
+      "Trickster",
+      "ATTACK: -2 Sword -\u003e Opponent loses 4 Health and gets +1 Sword next round.",
+      "\"\"",
+      "4",
+      "Attack",
+      "None",
+      "Mila Pesic|Throne of Eldraine|(Bog Naughty)",
+      "LoseSword, AttackPlayer, NextAddSword"
     ]
   ]
 }

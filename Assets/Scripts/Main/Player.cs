@@ -7,7 +7,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine.UI;
 
-public enum PlayerProp { Position, Waiting, MyHealth, MyHand, MyDeck, MyDiscard, MyTroops, Shield, Sword, Action, NextRoundShield, NextRoundSword }
+public enum PlayerProp { Position, Waiting, MyHealth, MyHand, MyDeck, MyDiscard, MyTroops, Shield, Sword, Action, NextRoundShield, NextRoundSword, NextRoundAction, AllCardsPlayed }
 
 public class Player : PhotonCompatible
 {
@@ -47,6 +47,7 @@ public class Player : PhotonCompatible
     {
         this.transform.SetParent(CreateGame.inst.canvas.transform);
         this.transform.localPosition = Vector3.zero;
+        this.transform.SetAsFirstSibling();
 
         initialized = true;
         this.name = username;
@@ -57,6 +58,10 @@ public class Player : PhotonCompatible
         myUI.image.color = (myPosition == 0) ? Color.blue : Color.red;
         onBottom = myUI.image.transform.parent.name.Equals("Bottom Player");
         UpdateUI();
+
+        resignButton = GameObject.Find("Resign Button").GetComponent<Button>();
+        if (photonView.AmOwner)
+            resignButton.onClick.AddListener(() => TurnManager.inst.TextForEnding($"Player Resigned-Player-{this.name}", myPosition));
     }
 
     #endregion
@@ -137,7 +142,7 @@ public class Player : PhotonCompatible
                 List<Card> masterDiscard = TurnManager.inst.GetCardList(RoomProp.MasterDiscard.ToString());
                 masterDiscard = masterDiscard.Shuffle();
                 masterDeck.AddRange(masterDiscard);
-                ChangeRoomProperties(RoomProp.MasterDiscard, new int[0]);
+                InstantChangeRoomProp(RoomProp.MasterDiscard, new int[0]);
             }
 
             for (int i = 0; i<needToGet; i++)
@@ -146,7 +151,7 @@ public class Player : PhotonCompatible
                 myDeck.Add(card);
                 masterDeck.RemoveAt(0);
             }
-            ChangeRoomProperties(RoomProp.MasterDeck, TurnManager.inst.ConvertCardList(masterDeck));
+            InstantChangeRoomProp(RoomProp.MasterDeck, TurnManager.inst.ConvertCardList(masterDeck));
             TurnManager.inst.WillChangePlayerProperty(this, PlayerProp.MyDeck, TurnManager.inst.ConvertCardList(myDeck));
         }
     }
@@ -242,6 +247,8 @@ public class Player : PhotonCompatible
 
     public void NextRoundShield(int num) => Log.inst.NewRollback(() => ChangeInt(num, PlayerProp.NextRoundShield));
 
+    public void NextRoundAction(int num) => Log.inst.NewRollback(() => ChangeInt(num, PlayerProp.NextRoundAction));
+
     public void NextRoundSword(int num) => Log.inst.NewRollback(() => ChangeInt(num, PlayerProp.NextRoundSword));
 
     #endregion
@@ -259,11 +266,10 @@ public class Player : PhotonCompatible
         }
     }
 
-    [PunRPC]
-    internal void StartTurn()
+    public void StartTurn()
     {
         //this.DoFunction(() => this.ChangeButtonColor(false));
-        ChangePlayerProperties(this, PlayerProp.Waiting, false);
+        InstantChangePlayerProp(this, PlayerProp.Waiting, false);
         endPause = true;
 
         (int phase, Action action) = TurnManager.inst.GetTurnAction(this);
@@ -290,7 +296,7 @@ public class Player : PhotonCompatible
         void Done()
         {
             Log.inst.DoneWithTurn();
-            ChangePlayerProperties(this, PlayerProp.Waiting, true);
+            InstantChangePlayerProp(this, PlayerProp.Waiting, true);
         }
     }
 

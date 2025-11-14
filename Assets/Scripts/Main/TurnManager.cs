@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System;
 using System.Collections;
 using TMPro;
+using System.Linq;
 
 public class TurnManager : PhotonCompatible
 {
@@ -15,11 +16,15 @@ public class TurnManager : PhotonCompatible
     Dictionary<Player, ExitGames.Client.Photon.Hashtable> playerPropertyToChange;
     ExitGames.Client.Photon.Hashtable masterPropertyToChange;
 
+    [SerializeField] Transform endScreen;
+    [SerializeField] TMP_Text summaryText;
+
     protected override void Awake()
     {
         base.Awake();
         inst = this;
         this.bottomType = this.GetType();
+        endScreen.gameObject.SetActive(false);
         playerPropertyToChange = new();
         masterPropertyToChange = new();
     }
@@ -46,33 +51,34 @@ public class TurnManager : PhotonCompatible
         return (phase, () => turnsInOrder[phase].ForPlayer(player));
     }
 
-    int WaitingOnPlayers()
-    {
-        (List<Photon.Realtime.Player> players, List<Photon.Realtime.Player> spectators) = GetPlayers(false);
-        int playersWaiting = (int)GetRoomProperty(RoomProp.CanPlay);
-
-        List<Photon.Realtime.Player> isWaiting = new();
-        isWaiting.AddRange(spectators);
-
-        foreach (Photon.Realtime.Player player in players)
-        {
-            if ((bool)GetPlayerProperty(player, PlayerProp.Waiting.ToString()))
-            {
-                isWaiting.Add(player);
-                playersWaiting--;
-            }
-        }
-
-        UpdateWaitingText(isWaiting, playersWaiting);
-        return playersWaiting;
-    }
-
     public override void OnPlayerPropertiesUpdate(Photon.Realtime.Player targetPlayer, ExitGames.Client.Photon.Hashtable changedProps)
     {
         if (HasPropertyAndValue(changedProps, PlayerProp.Waiting.ToString(), true))
         {
             int waiting = WaitingOnPlayers();
-            if (PhotonNetwork.IsMasterClient && waiting == 0)
+
+            int WaitingOnPlayers()
+            {
+                (List<Photon.Realtime.Player> players, List<Photon.Realtime.Player> spectators) = GetPlayers(false);
+                int playersWaiting = (int)GetRoomProperty(RoomProp.CanPlay);
+
+                List<Photon.Realtime.Player> isWaiting = new();
+                isWaiting.AddRange(spectators);
+
+                foreach (Photon.Realtime.Player player in players)
+                {
+                    if ((bool)GetPlayerProperty(player, PlayerProp.Waiting.ToString()))
+                    {
+                        isWaiting.Add(player);
+                        playersWaiting--;
+                    }
+                }
+
+                UpdateWaitingText(isWaiting, playersWaiting);
+                return playersWaiting;
+            }
+
+            if (PhotonNetwork.IsMasterClient && waiting == 0 && !(bool)GetRoomProperty(RoomProp.GameOver))
                 AllPlayersDone();
         }
     }
@@ -86,33 +92,18 @@ public class TurnManager : PhotonCompatible
     void AllPlayersDone()
     {
         (List<Photon.Realtime.Player> players, List<Photon.Realtime.Player> spectators) = GetPlayers(false);
-
         foreach (Photon.Realtime.Player nextPlayer in players)
+        {
             DoFunction(() => SharePropertyChanges(), nextPlayer);
+        }
 
         turnsInOrder[GetCurrentPhase()].MasterEnd();
         UpdateWaitingText(spectators, players.Count);
 
-        NextPhase();
-
-        void NextPhase()
-        {
-            int phaseTracker = (int)GetRoomProperty(RoomProp.CurrentPhase);
-            int roundTracker = (int)GetRoomProperty(RoomProp.CurrentRound);
-            if (phaseTracker == 3 || phaseTracker == 0)
-            {
-                ChangeRoomProperties(RoomProp.CurrentPhase, 1, phaseTracker);
-                ChangeRoomProperties(RoomProp.CurrentRound, roundTracker + 1, roundTracker);
-            }
-            else if (phaseTracker != 4)
-            {
-                ChangeRoomProperties(RoomProp.CurrentPhase, phaseTracker + 1, phaseTracker);
-            }
-            Invoke(nameof(NewPrompt), 0.25f);
-        }
+        Invoke(nameof(NextPhase), 0.5f);
     }
 
-    void NewPrompt()
+    void NextPhase()
     {
         PutInDiscard();
         void PutInDiscard()
@@ -126,20 +117,63 @@ public class TurnManager : PhotonCompatible
                     Card card = myTroops[i];
                     if (card.GetHealth() <= 0)
                     {
-                        ChangeRoomProperties(card.HealthString(), 0);
+                        InstantChangeRoomProp(card.HealthString(), 0);
                         myTroops.RemoveAt(i);
                         masterDiscard.Add(card);
                     }
                 }
-                ChangePlayerProperties(player, PlayerProp.MyTroops, ConvertCardList(myTroops));
+                InstantChangePlayerProp(player, PlayerProp.MyTroops, ConvertCardList(myTroops));
             }
-            ChangeRoomProperties(RoomProp.MasterDiscard, ConvertCardList(masterDiscard));
+            InstantChangeRoomProp(RoomProp.MasterDiscard, ConvertCardList(masterDiscard));
             DoFunction(() => DiscardToNull(), RpcTarget.All);
         }
 
-        turnsInOrder[GetCurrentPhase()].MasterStart();
+        (Player, int) leastHealth = (null, 1000);
         foreach (Player player in CreateGame.inst.listOfPlayers)
-            player.DoFunction(() => player.StartTurn(), player.photonView.Owner);
+        {
+            int health = player.GetHealth();
+            if (health < leastHealth.Item2)
+                leastHealth = (player, health);
+            else if (health == leastHealth.Item2)
+                leastHealth = (null, health);
+        }
+
+        if (leastHealth.Item1 != null && leastHealth.Item2 <= 0)
+        {
+            TextForEnding($"Player Lost-Player-{leastHealth.Item1.name}", -1);
+            InstantChangeRoomProp(RoomProp.CurrentPhase, turnsInOrder.Count - 1);
+        }
+        else
+        {
+            int phaseTracker = (int)GetRoomProperty(RoomProp.CurrentPhase);
+            int roundTracker = (int)GetRoomProperty(RoomProp.CurrentRound);
+
+            if (phaseTracker == turnsInOrder.Count - 2 || phaseTracker == 0)
+            {
+                InstantChangeRoomProp(RoomProp.CurrentRound, roundTracker + 1, roundTracker);
+                InstantChangeRoomProp(RoomProp.CurrentPhase, 1, phaseTracker);
+            }
+            else
+            {
+                InstantChangeRoomProp(RoomProp.CurrentPhase, phaseTracker + 1, phaseTracker);
+            }
+        }
+    }
+
+    public override void OnRoomPropertiesUpdate(ExitGames.Client.Photon.Hashtable propertiesThatChanged)
+    {
+        if (propertiesThatChanged.ContainsKey(RoomProp.CurrentPhase.ToString()))
+        {
+            if (PhotonNetwork.IsMasterClient)
+            {
+                turnsInOrder[GetCurrentPhase()].MasterStart();
+            }
+            foreach (Player player in CreateGame.inst.listOfPlayers)
+            {
+                if (player.photonView.AmOwner)
+                    player.StartTurn();
+            }
+        }
     }
 
     [PunRPC]
@@ -178,6 +212,12 @@ public class TurnManager : PhotonCompatible
     public int GetInt(PlayerProp property, Player player) => (int)FindThisProperty(property.ToString(), player);
 
     public int GetInt(string property) => (int)FindThisProperty(property, null);
+
+    public List<string> GetStringList(PlayerProp property, Player player)
+    {
+        string[] stringArray = (string[])FindThisProperty(property.ToString(), player);
+        return stringArray.ToList();
+    }
 
     public List<Card> GetCardList(PlayerProp property, Player player) => ConvertIntArray((int[])FindThisProperty(property.ToString(), player));
 
@@ -245,10 +285,45 @@ public class TurnManager : PhotonCompatible
         List<Card> masterDiscard = GetCardList(RoomProp.MasterDiscard.ToString());
         masterDiscard.AddRange(GetCardList(PlayerProp.MyDiscard, CreateGame.inst.listOfPlayers[currentPosition]));
 
-        ChangePlayerProperties(PhotonNetwork.LocalPlayer, PlayerProp.MyDiscard, new int[0]);
-        ChangeRoomProperties(RoomProp.MasterDiscard, ConvertCardList(masterDiscard));
+        InstantChangePlayerProp(PhotonNetwork.LocalPlayer, PlayerProp.MyDiscard, new int[0]);
+        InstantChangeRoomProp(RoomProp.MasterDiscard, ConvertCardList(masterDiscard));
     }
 
     #endregion
+
+#region Ending
+
+    public void TextForEnding(string logText, int resignPosition)
+    {
+        Log.inst.MasterText(logText);
+        InstantChangeRoomProp(RoomProp.GameOver, true);
+        DoFunction(() => ShowEnding(resignPosition), RpcTarget.All);
+    }
+
+    [PunRPC]
+    void ShowEnding(int resignPosition)
+    {
+        endScreen.gameObject.SetActive(true);
+        string text = "";
+
+        foreach (Player player in CreateGame.inst.listOfPlayers)
+        {
+            text += $"{player.name} - {player.GetHealth()} Health ";
+            if (player.myPosition == resignPosition)
+                text += Translator.inst.Translate("Resigned");
+            text += "\n";
+
+            List<string> cardsPlayed = GetStringList(PlayerProp.AllCardsPlayed, player);
+            for (int i = 0; i<cardsPlayed.Count; i++)
+            {
+                text += Translator.inst.SplitAndTranslate(-1, cardsPlayed[i]);
+                text += ",";
+            }
+            text += "\n\n";
+        }
+        summaryText.text = KeywordTooltip.instance.EditText(text);
+    }
+
+#endregion
 
 }

@@ -163,9 +163,14 @@ public class ConnectToLobby : MonoBehaviourPunCallbacks
         int counter = 0;
         foreach (RoomInfo room in roomList)
         {
-            if (room.CustomProperties.ContainsKey(RoomProp.Game.ToString()) && room.CustomProperties.ContainsKey(RoomProp.CanPlay.ToString()) && room.CustomProperties.ContainsKey(RoomProp.JoinAsSpec.ToString()))
+            if (room.CustomProperties.ContainsKey(RoomProp.Game.ToString())
+                && room.CustomProperties.ContainsKey(RoomProp.CanPlay.ToString())
+                && room.CustomProperties.ContainsKey(RoomProp.JoinAsSpec.ToString())
+                && room.CustomProperties.ContainsKey(RoomProp.GameOver.ToString()))
             {
-                if (room.CustomProperties[RoomProp.Game.ToString()].Equals(Application.productName) && room.PlayerCount < room.MaxPlayers && room.MaxPlayers >= 2 && room.IsVisible && counter < listOfJoinButtons.Count)
+                if (room.CustomProperties[RoomProp.Game.ToString()].Equals(Application.productName)
+                    && room.PlayerCount < room.MaxPlayers && room.MaxPlayers >= 2 && room.IsVisible
+                    && counter < listOfJoinButtons.Count && !(bool)room.CustomProperties[RoomProp.GameOver.ToString()])
                 {
                     JoinRoomButton nextJoin = listOfJoinButtons[counter];
                     nextJoin.transform.SetParent(keepJoinButtons);
@@ -187,6 +192,7 @@ public class ConnectToLobby : MonoBehaviourPunCallbacks
             { RoomProp.Game.ToString(), Application.productName },
             { RoomProp.CanPlay.ToString(), 2 },
             { RoomProp.JoinAsSpec.ToString(), false },
+            { RoomProp.GameOver.ToString(), false },
         };
 
         RoomOptions options = new()
@@ -195,7 +201,7 @@ public class ConnectToLobby : MonoBehaviourPunCallbacks
             PlayerTtl = Application.isEditor ? 15000 : 120000,
             EmptyRoomTtl = 10000,
             CustomRoomProperties = customProps,
-            CustomRoomPropertiesForLobby = new string[] { RoomProp.Game.ToString(), RoomProp.CanPlay.ToString(), RoomProp.JoinAsSpec.ToString() }
+            CustomRoomPropertiesForLobby = new string[] { RoomProp.Game.ToString(), RoomProp.CanPlay.ToString(), RoomProp.JoinAsSpec.ToString(), RoomProp.GameOver.ToString() }
         };
 
         PhotonNetwork.CreateRoom(PlayerPrefs.GetString("Online Username"), options);
