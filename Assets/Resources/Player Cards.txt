@@ -124,6 +124,17 @@
       "None",
       "Mila Pesic|Throne of Eldraine|(Bog Naughty)",
       "LoseSword, AttackPlayer, NextAddSword"
+    ],
+    [
+      "Minstrel",
+      "DEFEND: -1 Card -\u003e Next round, +1 Action.",
+      "PLAY: +1 Action.",
+      "4",
+      "Defend",
+      "Play",
+      "Guillaume Ducos|Dominion: Dark Ages|(Wandering Minstrel)",
+      "DiscardCard, NextAddAction",
+      "AddAction"
     ]
   ]
 }

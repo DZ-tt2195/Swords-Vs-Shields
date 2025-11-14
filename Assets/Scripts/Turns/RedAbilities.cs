@@ -48,7 +48,7 @@ public class RedAbilities : Turn
 
             void ChooseToUse(Card card)
             {
-                Log.inst.AddMyText($"Resolve Card-Player-{player.name}-Card-{card.name}", true);
+                Log.inst.AddMyText($"Resolve Card-Player-{player.name}-Card-{card.name}", false);
                 if (card.thisCard.CanUseAbiltyOne(player, card) == AbilityType.Attack)
                     Log.inst.NewDecisionContainer(() => card.thisCard.DoAbilityOne(player, card, 1), 1);
                 if (card.thisCard.CanUseAbiltyTwo(player, card) == AbilityType.Attack)
@@ -57,11 +57,6 @@ public class RedAbilities : Turn
                 HashSet<Card> newSet = new(alreadyDone);
                 newSet.Add(card);
                 Log.inst.NewDecisionContainer(() => NextAbility(player, newSet), 0);
-            }
-
-            void Decline()
-            {
-                Log.inst.AddMyText($"End Turn-Player-{player.name}", false);
             }
         }
     }

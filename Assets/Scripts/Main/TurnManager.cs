@@ -295,6 +295,7 @@ public class TurnManager : PhotonCompatible
 
     public void TextForEnding(string logText, int resignPosition)
     {
+        Log.inst.MasterText("Blank");
         Log.inst.MasterText(logText);
         InstantChangeRoomProp(RoomProp.GameOver, true);
         DoFunction(() => ShowEnding(resignPosition), RpcTarget.All);

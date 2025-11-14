@@ -213,6 +213,7 @@ public class MakeDecision : PhotonCompatible
         }
     }
 
+    /*
     public void ChooseCardInPopup(List<CardButtonInfo> possibleCards, bool autoResolve = true)
     {
         if (possibleCards.Count == 1 && autoResolve)
@@ -247,7 +248,7 @@ public class MakeDecision : PhotonCompatible
             }
         }
     }
-
+    */
     #endregion
 
 #region Misc
