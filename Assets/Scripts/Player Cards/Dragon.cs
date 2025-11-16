@@ -3,19 +3,13 @@ using System.Collections.Generic;
 
 public class Dragon : CardType
 {
-    Player otherPlayer;
-    List<MiniCardDisplay> otherCards = new();
-
     public Dragon(CardData dataFile) : base(dataFile)
     {
     }
 
     public override AbilityType CanUseAbiltyOne(Player player, Card thisCard)
     {
-        otherPlayer = CreateGame.inst.OtherPlayer(player.myPosition);
-        otherCards = otherPlayer.AliveTroops();
-
-        if (otherCards.Count >= 1 && player.GetSword() >= 6)
+        if (player.GetSword() >= 6)
             return AbilityType.Attack;
         else
             return AbilityType.None;
@@ -24,7 +18,8 @@ public class Dragon : CardType
     public override void DoAbilityOne(Player player, Card thisCard, int logged)
     {
         player.SwordRPC(-6, logged);
-        foreach (MiniCardDisplay display in otherCards)
+        Player otherPlayer = CreateGame.inst.OtherPlayer(player.myPosition);
+        foreach (MiniCardDisplay display in otherPlayer.AliveTroops())
             display.card.HealthRPC(otherPlayer, -2, logged);
     }
 

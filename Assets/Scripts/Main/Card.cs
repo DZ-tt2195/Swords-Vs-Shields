@@ -32,6 +32,7 @@ public class Card : PhotonCompatible
             {
                 [HealthString()] = 0,
                 [StunString()] = new int[0],
+                [ProtectString()] = new int[0],
             };
             PhotonNetwork.CurrentRoom.SetCustomProperties(initialProps);
         }
@@ -40,6 +41,8 @@ public class Card : PhotonCompatible
     public string HealthString() => $"{this.photonView.ViewID}_Health";
 
     public string StunString() => $"{this.photonView.ViewID}_Stun";
+
+    public string ProtectString() => $"{this.photonView.ViewID}_Protect";
 
     public void AssignCard(CardData dataFile)
     {
@@ -124,17 +127,7 @@ public class Card : PhotonCompatible
     {
         int roundNumber = (int)GetRoomProperty(RoomProp.CurrentRound) + increment;
         Log.inst.AddMyText($"Stun Card-Card-{this.name}-Num-{roundNumber}", false, logged);
-        Log.inst.NewRollback(() => AddToArray(roundNumber));
-    }
-
-    void AddToArray(int round)
-    {
-        List<int> stunList = ((int[])GetRoomProperty(StunString())).ToList();
-        if (Log.inst.forward)
-            stunList.Add(round);
-        else
-            stunList.Remove(round);
-        TurnManager.inst.WillChangeMasterProperty(StunString(), stunList);
+        Log.inst.NewRollback(() => AddToArray(roundNumber, StunString()));
     }
 
     public bool CanUseAbility()
@@ -144,14 +137,38 @@ public class Card : PhotonCompatible
         return !(stunArray.Contains(currentRound));
     }
 
+    public void ProtectRPC(int increment, int logged = 0)
+    {
+        int roundNumber = (int)GetRoomProperty(RoomProp.CurrentRound) + increment;
+        Log.inst.AddMyText($"Protect Card-Card-{this.name}-Num-{roundNumber}", false, logged);
+        Log.inst.NewRollback(() => AddToArray(roundNumber, ProtectString()));
+    }
+
+    public bool CanTakeDamage()
+    {
+        int currentRound = (int)GetRoomProperty(RoomProp.CurrentRound);
+        int[] protectArray = (int[])GetRoomProperty(ProtectString());
+        return !(protectArray.Contains(currentRound));
+    }
+
+    void AddToArray(int round, string list)
+    {
+        List<int> convertedList = ((int[])GetRoomProperty(list)).ToList();
+        if (Log.inst.forward)
+            convertedList.Add(round);
+        else
+            convertedList.Remove(round);
+        TurnManager.inst.WillChangeMasterProperty(list, convertedList.ToArray());
+    }
+
     public void HealthRPC(Player player, int num, int logged = 0)
     {
-        if (num == 0)
+        if (num == 0 || !CanTakeDamage())
             return;
         if (num > 0)
-            Log.inst.AddMyText($"Add Health Troop-Player-{player.name}-Card-{this.name}-Num-{num}", false, logged);
+            Log.inst.AddMyText($"Add Health Card-Player-{player.name}-Card-{this.name}-Num-{num}", false, logged);
         else
-            Log.inst.AddMyText($"Lose Health Troop-Player-{player.name}-Card-{this.name}-Num-{Mathf.Abs(num)}", false, logged);
+            Log.inst.AddMyText($"Lose Health Card-Player-{player.name}-Card-{this.name}-Num-{Mathf.Abs(num)}", false, logged);
         Log.inst.NewRollback(() => ChangeInt(num, HealthString()));
     }
 

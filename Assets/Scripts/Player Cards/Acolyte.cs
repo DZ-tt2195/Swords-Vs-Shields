@@ -1,8 +1,8 @@
 using UnityEngine;
 
-public class Angel : CardType
+public class Acolyte : CardType
 {
-    public Angel(CardData dataFile) : base(dataFile)
+    public Acolyte(CardData dataFile) : base(dataFile)
     {
     }
 
@@ -17,7 +17,11 @@ public class Angel : CardType
     public override void DoAbilityOne(Player player, Card thisCard, int logged)
     {
         player.ShieldRPC(-2, logged);
-        foreach (MiniCardDisplay display in player.AliveTroops())
-            display.card.HealthRPC(player, 1, logged);
+        player.HealthRPC(2, logged);
+    }
+
+    public override void DoAbilityTwo(Player player, Card thisCard, int logged)
+    {
+        player.ShieldRPC(1, logged);
     }
 }

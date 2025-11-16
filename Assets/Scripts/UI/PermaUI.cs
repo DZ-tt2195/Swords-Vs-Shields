@@ -49,11 +49,11 @@ public class PermaUI : MonoBehaviour
             rightClickBackground.gameObject.SetActive(false);
     }
 
-    public void RightClickDisplay(CardData dataFile, float alpha, float rotation)
+    public void RightClickDisplay(CardData dataFile, bool visible, float rotation)
     {
         rightClickBackground.gameObject.SetActive(true);
         rightClickCard.gameObject.SetActive(true);
-        rightClickCard.FillInCards(dataFile, alpha, rotation);
+        rightClickCard.FillInCards(dataFile, visible ? 1f : 0f, rotation);
         artistCredit.text = dataFile.artCredit;
     }
 

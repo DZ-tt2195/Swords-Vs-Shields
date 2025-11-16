@@ -3,24 +3,13 @@ using UnityEngine;
 
 public class Ninja : CardType
 {
-    Player otherPlayer;
-    List<MiniCardDisplay> otherCards = new();
-
     public Ninja(CardData dataFile) : base(dataFile)
     {
     }
 
     public override AbilityType CanUseAbiltyOne(Player player, Card thisCard)
     {
-        otherPlayer = CreateGame.inst.OtherPlayer(player.myPosition);
-        otherCards = otherPlayer.AliveTroops();
-        for (int i = otherCards.Count-1; i>= 0; i--)
-        {
-            if (!(otherCards[i].card.GetHealth() <= 3))
-                otherCards.RemoveAt(i);
-        }
-
-        if (otherCards.Count >= 1 && player.GetSword() >= 2)
+        if (player.GetSword() >= 2)
             return AbilityType.Attack;
         else
             return AbilityType.None;
@@ -29,15 +18,24 @@ public class Ninja : CardType
     public override void DoAbilityOne(Player player, Card thisCard, int logged)
     {
         player.SwordRPC(-2, logged);
-        Log.inst.NewDecisionContainer(() => ChooseAttack(player, logged), logged);
+        Log.inst.NewDecisionContainer(() => ChooseAttack(player, thisCard, logged), logged);
     }
 
-    void ChooseAttack(Player player, int logged)
+    void ChooseAttack(Player player, Card thisCard, int logged)
     {
-        MakeDecision.inst.Instructions($"Target Instruction-Player-{otherPlayer.name}");
-        MakeDecision.inst.ChooseDisplayOnScreen(otherCards, Damage);
+        Player otherPlayer = CreateGame.inst.OtherPlayer(player.myPosition);
+        List<MiniCardDisplay> availableTroops = otherPlayer.AliveTroops();
+        if (availableTroops.Count == 0)
+        {
+            Log.inst.AddMyText($"Card Failed-Card-{thisCard.name}", false, logged);
+        }
+        else
+        {
+            MakeDecision.inst.Instructions($"Target Instruction-Player-{player.name}");
+            MakeDecision.inst.ChooseDisplayOnScreen(availableTroops, Attack, true);
+        }
 
-        void Damage(Card card)
+        void Attack(Card card)
         {
             card.HealthRPC(otherPlayer, -3, logged);
         }

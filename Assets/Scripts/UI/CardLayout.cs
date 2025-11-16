@@ -32,8 +32,7 @@ public class CardLayout : MonoBehaviour, IPointerClickHandler
 
     public void RightClickedMe(float alpha)
     {
-        //Debug.Log(artBox.sprite.name);
-        PermaUI.inst.RightClickDisplay(storedData, alpha, rotation);
+        PermaUI.inst.RightClickDisplay(storedData, alpha == 1f, rotation);
     }
 
     public float GetAlpha()

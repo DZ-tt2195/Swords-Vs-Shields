@@ -3,19 +3,13 @@ using UnityEngine;
 
 public class Bee : CardType
 {
-    Player otherPlayer;
-    List<MiniCardDisplay> otherCards = new();
-
     public Bee(CardData dataFile) : base(dataFile)
     {
     }
 
     public override AbilityType CanUseAbiltyOne(Player player, Card thisCard)
     {
-        otherPlayer = CreateGame.inst.OtherPlayer(player.myPosition);
-        otherCards = otherPlayer.AliveTroops();
-
-        if (otherCards.Count >= 1 && player.GetSword() >= 2)
+        if (player.GetSword() >= 2)
             return AbilityType.Attack;
         else
             return AbilityType.None;
@@ -24,17 +18,26 @@ public class Bee : CardType
     public override void DoAbilityOne(Player player, Card thisCard, int logged)
     {
         player.SwordRPC(-2, logged);
-        Log.inst.NewDecisionContainer(() => ChooseAttack(player, logged), logged);
+        Log.inst.NewDecisionContainer(() => ChooseAttack(player, thisCard, logged), logged);
     }
 
-    void ChooseAttack(Player player, int logged)
+    void ChooseAttack(Player player, Card thisCard, int logged)
     {
-        MakeDecision.inst.Instructions($"Target Instruction-Player-{otherPlayer.name}");
-        MakeDecision.inst.ChooseDisplayOnScreen(otherCards, DamageAndStun);
-
-        void DamageAndStun(Card card)
+        Player otherPlayer = CreateGame.inst.OtherPlayer(player.myPosition);
+        List<MiniCardDisplay> availableTroops = otherPlayer.AliveTroops();
+        if (availableTroops.Count == 0)
         {
-            card.HealthRPC(otherPlayer, -1, logged);
+            Log.inst.AddMyText($"Card Failed-Card-{thisCard.name}", false, logged);
+        }
+        else
+        {
+            MakeDecision.inst.Instructions($"Target Instruction-Player-{player.name}");
+            MakeDecision.inst.ChooseDisplayOnScreen(availableTroops, Attack, true);
+        }
+
+        void Attack(Card card)
+        {
+            card.HealthRPC(otherPlayer, -2, logged);
             card.StunRPC(1, logged);
         }
     }

@@ -138,9 +138,12 @@ public class TurnManager : PhotonCompatible
                 leastHealth = (null, health);
         }
 
-        if (leastHealth.Item1 != null && leastHealth.Item2 <= 0)
+        if (leastHealth.Item2 <= 0)
         {
-            TextForEnding($"Player Lost-Player-{leastHealth.Item1.name}", -1);
+            if (leastHealth.Item1 != null)
+                TextForEnding($"Player Lost-Player-{leastHealth.Item1.name}", -1);
+            else
+                TextForEnding($"Tie Game", -1);
             InstantChangeRoomProp(RoomProp.CurrentPhase, turnsInOrder.Count - 1);
         }
         else

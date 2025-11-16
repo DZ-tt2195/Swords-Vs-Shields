@@ -88,7 +88,7 @@ public class GreenAbilities : Turn
 
             void ChooseToPlay(Card card)
             {
-                Log.inst.AddMyText($"Play Troop-Player-{player.name}-Card-{card.name}", true);
+                Log.inst.AddMyText($"Play Card-Player-{player.name}-Card-{card.name}", true);
                 player.ActionRPC(-1, -1);
 
                 card.HealthRPC(player, card.thisCard.dataFile.startingHealth, -1);

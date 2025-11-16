@@ -20,7 +20,7 @@ public class MiniCardDisplay : MonoBehaviour, IPointerClickHandler
     public void OnPointerClick(PointerEventData eventData)
     {
         if (eventData.button == PointerEventData.InputButton.Right)
-            PermaUI.inst.RightClickDisplay(card.thisCard.dataFile, 1, 0);
+            PermaUI.inst.RightClickDisplay(card.thisCard.dataFile, true, 0);
     }
 
     public void NewCard(Card card)
@@ -28,13 +28,14 @@ public class MiniCardDisplay : MonoBehaviour, IPointerClickHandler
         this.card = card;
         image.sprite = card.thisCard.dataFile.sprite;
 
-        string text = "";
         int currentHealth = card.GetHealth();
         drawX.gameObject.SetActive(currentHealth <= 0);
-        text += $"{currentHealth} Health";
 
+        string text = $"{currentHealth} Health";
         if (!card.CanUseAbility())
             text += $" {Translator.inst.Translate("Stunned")}";
+        if (!card.CanTakeDamage())
+            text += $" {Translator.inst.Translate("Protected")}";
 
         description.text = KeywordTooltip.instance.EditText(text);
     }

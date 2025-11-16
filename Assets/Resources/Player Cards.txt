@@ -11,25 +11,26 @@
       "effectTwo"
     ],
     [
-      "Skirmisher",
-      "ATTACK: -2 Sword -\u003e Opoonent loses 2 Health.",
-      "PLAY: +1 Sword.",
+      "Acolyte",
+      "DEFEND: -2 Shield -\u003e You get +2 Health.",
+      "PLAY: +1 Shield.",
       "4",
-      "Attack",
+      "Defend",
       "Play",
-      "Claus Stephan|Dominion: Allies|(Skirmisher)",
-      "LoseSword, AttackPlayer",
-      "AddSword"
+      "Hans Krill|Dominion: Allies|(Acolyte)",
+      "LoseShield, HealPlayer",
+      "AddShield"
     ],
     [
-      "Trader",
-      "DEFEND: -1 Action -\u003e Choose one: +2 Sword or +2 Shield.",
+      "Angel",
+      "DEFEND: -2 Shield -\u003e All Allies get +1 Health.",
       "\"\"",
-      "5",
+      "3",
       "Defend",
       "None",
-      "Elisa Cella|Dominion: Renaissance|(Silk Merchant)",
-      "LoseAction, AddSword, AddShield"
+      "Magali Villeneuve|Oath of the Gatewatch|(Linvala, the Preserver)",
+      "LoseShield, HealAlly, Multiple",
+      "\"\""
     ],
     [
       "Archer",
@@ -43,6 +44,28 @@
       "LoseSword, AttackPlayer, PerHand"
     ],
     [
+      "Bee",
+      "ATTACK: -2 Sword -\u003e One Foe loses 2 Health and becomes Stunned next round.",
+      "\"\"",
+      "3",
+      "Attack",
+      "None",
+      "Tom Wanerstrand|Time Spiral|(Unyaro Bees)",
+      "LoseSword, StunCard, AttackFoe",
+      "\"\""
+    ],
+    [
+      "Cannon",
+      "ATTACK: -4 Shield -\u003e Opponent loses 6 Health.",
+      "PLAY: This card becomes Stunned this round.",
+      "5",
+      "Attack",
+      "Play",
+      "Julian Kok Joon Wen|Dominaria United|(Artillery Blast)",
+      "LoseShield, AttackPlayer",
+      "StunCard"
+    ],
+    [
       "Dragon",
       "ATTACK: -6 Sword -\u003e All Foes lose 2 Health.",
       "PLAY: -1 Card.",
@@ -54,14 +77,26 @@
       "DiscardCard"
     ],
     [
-      "Bee",
-      "ATTACK: -2 Sword -\u003e One Foe loses 2 Health and is Stunned next round.",
+      "Guardian",
+      "DEFEND: -4 Shield -\u003e You get +1 Health per Ally you have.",
       "\"\"",
-      "3",
-      "Attack",
+      "5",
+      "Defend",
       "None",
-      "Tom Wanerstrand|Time Spiral|(Unyaro Bees)",
-      "LoseSword, StunCard, AttackFoe"
+      "Martin Hoffmann|Dominion: Nocturne|(Guardian)",
+      "LoseShield, HealPlayer, PerTroop",
+      "\"\""
+    ],
+    [
+      "Minstrel",
+      "DEFEND: -1 Card -\u003e Next round, +1 Action.",
+      "PLAY: +1 Action.",
+      "4",
+      "Defend",
+      "Play",
+      "Guillaume Ducos|Dominion: Dark Ages|(Wandering Minstrel)",
+      "DiscardCard, NextAddAction",
+      "AddAction"
     ],
     [
       "Ninja",
@@ -71,7 +106,19 @@
       "Attack",
       "None",
       "Elisa Cella|Dominion: Rising Sun|(Ninja)",
-      "LoseSword, AttackFoe, HealthOrLess"
+      "LoseSword, AttackFoe, HealthOrLess",
+      "\"\""
+    ],
+    [
+      "Skirmisher",
+      "ATTACK: -2 Sword -\u003e Opoonent loses 2 Health.",
+      "PLAY: +1 Sword.",
+      "4",
+      "Attack",
+      "Play",
+      "Claus Stephan|Dominion: Allies|(Skirmisher)",
+      "LoseSword, AttackPlayer",
+      "AddSword"
     ],
     [
       "Squire",
@@ -85,35 +132,15 @@
       "DrawCard"
     ],
     [
-      "Cannon",
-      "ATTACK: -4 Shield -\u003e Opponent loses 6 Health.",
-      "PLAY: This card is Stunned this round.",
-      "5",
-      "Attack",
-      "Play",
-      "Julian Kok Joon Wen|Dominaria United|(Artillery Blast)",
-      "LoseShield, AttackPlayer",
-      "StunCard"
-    ],
-    [
-      "Angel",
-      "DEFEND: -2 Shield -\u003e All Allies get +1 Health.",
-      "\"\"",
-      "3",
-      "Defend",
-      "None",
-      "Magali Villeneuve|Oath of the Gatewatch|(Linvala, the Preserver)",
-      "LoseShield, HealAlly, Multiple"
-    ],
-    [
-      "Guardian",
-      "DEFEND: -4 Shield -\u003e You get +1 Health per Card you have in play.",
+      "Trader",
+      "DEFEND: -1 Action -\u003e Choose one: +2 Sword or +2 Shield.",
       "\"\"",
       "5",
       "Defend",
       "None",
-      "Martin Hoffmann|Dominion: Nocturne|(Guardian)",
-      "LoseShield, HealPlayer, PerTroop"
+      "Elisa Cella|Dominion: Renaissance|(Silk Merchant)",
+      "LoseAction, AddSword, AddShield",
+      "\"\""
     ],
     [
       "Trickster",
@@ -123,18 +150,18 @@
       "Attack",
       "None",
       "Mila Pesic|Throne of Eldraine|(Bog Naughty)",
-      "LoseSword, AttackPlayer, NextAddSword"
+      "LoseSword, AttackPlayer, NextAddSword",
+      "\"\""
     ],
     [
-      "Minstrel",
-      "DEFEND: -1 Card -\u003e Next round, +1 Action.",
-      "PLAY: +1 Action.",
-      "4",
+      "Wolf",
+      "DEFEND: -3 Shield -\u003e An Ally with less Health than this becomes Protected this round.",
+      "ATTACK: -3 Sword -\u003e A Foe loses 3 Health.",
+      "5",
       "Defend",
-      "Play",
-      "Guillaume Ducos|Dominion: Dark Ages|(Wandering Minstrel)",
-      "DiscardCard, NextAddAction",
-      "AddAction"
+      "Attack",
+      "Slawomir Maniak|Eldritch Moon|(Kessig Prowler)",
+      "LoseShield, ProtectCard"
     ]
   ]
 }

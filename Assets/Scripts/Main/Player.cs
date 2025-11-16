@@ -329,9 +329,9 @@ public class Player : PhotonCompatible
 
         myUI.infoText.text = KeywordTooltip.instance.EditText
             ($"{this.name}: {GetHealth()} Health\n\n" +
-            $"{myHand.Count} Card, " +
+            $"{myHand.Count} Card " +
             $"{GetAction()} {PlayerProp.Action}\n" +
-            $"{GetShield()} {PlayerProp.Shield}, " +
+            $"{GetShield()} {PlayerProp.Shield} " +
             $"{GetSword()} {PlayerProp.Sword}");
 
         List<Card> myTroops = GetTroops();

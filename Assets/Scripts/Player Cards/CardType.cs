@@ -30,6 +30,5 @@ public class CardType
 
     public virtual void DoAbilityTwo(Player player, Card thisCard, int logged)
     {
-
     }
 }
