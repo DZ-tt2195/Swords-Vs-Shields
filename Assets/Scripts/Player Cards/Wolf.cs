@@ -31,8 +31,7 @@ public class Wolf : CardType
         }
         else
         {
-            MakeDecision.inst.Instructions($"Target Instruction-Player-{player.name}");
-            MakeDecision.inst.ChooseDisplayOnScreen(availableTroops, Protect, true);
+            MakeDecision.inst.ChooseDisplayOnScreen(availableTroops, $"Target Instruction-Player-{player.name}", Protect, true);
         }
         void Protect(Card card)
         {
@@ -64,8 +63,7 @@ public class Wolf : CardType
         }
         else
         {
-            MakeDecision.inst.Instructions($"Target Instruction-Player-{player.name}");
-            MakeDecision.inst.ChooseDisplayOnScreen(availableTroops, Attack, true);
+            MakeDecision.inst.ChooseDisplayOnScreen(availableTroops, $"Target Instruction-Player-{otherPlayer.name}", Attack, true);
         }
 
         void Attack(Card card)

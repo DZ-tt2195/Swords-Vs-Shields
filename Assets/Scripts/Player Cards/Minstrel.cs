@@ -18,8 +18,7 @@ public class Minstrel : CardType
     public override void DoAbilityOne(Player player, Card thisCard, int logged)
     {
         List<Card> handCards = player.GetHand();
-        MakeDecision.inst.Instructions("Discard Instruction");
-        MakeDecision.inst.ChooseCardOnScreen(handCards, Discard);
+        MakeDecision.inst.ChooseCardOnScreen(handCards, "Discard Instruction", Discard);
 
         void Discard(Card card)
         {

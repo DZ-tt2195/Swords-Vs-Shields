@@ -40,29 +40,22 @@ public class GreenAbilities : Turn
 
     void NextAbility(Player player, HashSet<Card> alreadyDone)
     {
-        List<Card> myTroops = player.GetTroops();
-        HashSet<Card> canDo = new();
-        MakeDecision.inst.Instructions("Use Green Instruction");
+        List<MiniCardDisplay> greenCards = new();
 
-        foreach (Card card in myTroops)
+        foreach (MiniCardDisplay display in player.AliveTroops())
         {
+            Card card = display.card;
             if (alreadyDone.Contains(card) || !card.CanUseAbility())
                 continue;
             if (card.thisCard.CanUseAbiltyOne(player, card) == AbilityType.Defend)
-                canDo.Add(card);
+                greenCards.Add(display);
             if (card.thisCard.CanUseAbiltyTwo(player, card) == AbilityType.Defend)
-                canDo.Add(card);
+                greenCards.Add(display);
         }
 
-        if (canDo.Count >= 1)
+        if (greenCards.Count >= 1)
         {
-            List<MiniCardDisplay> toChoose = new();
-            foreach (MiniCardDisplay display in player.AliveTroops())
-            {
-                if (canDo.Contains(display.card))
-                    toChoose.Add(display);
-            }
-            MakeDecision.inst.ChooseDisplayOnScreen(toChoose, ChooseToUse, false);
+            MakeDecision.inst.ChooseDisplayOnScreen(greenCards, "Use Green Instruction", ChooseToUse, false);
 
             void ChooseToUse(Card card)
             {
@@ -80,11 +73,11 @@ public class GreenAbilities : Turn
 
         if (player.GetAction() >= 1)
         {
-            if (canDo.Count == 0)
-                MakeDecision.inst.ChooseTextButton(new() { new("Done", Decline) }, false);
+            if (greenCards.Count == 0)
+                MakeDecision.inst.ChooseTextButton(new() { new("Done", Decline) }, "Use Green Instruction", false);
 
             List<Card> myHand = player.GetHand();
-            MakeDecision.inst.ChooseCardOnScreen(myHand, ChooseToPlay, false);
+            MakeDecision.inst.ChooseCardOnScreen(myHand, "Use Green Instruction", ChooseToPlay, false);
 
             void ChooseToPlay(Card card)
             {

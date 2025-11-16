@@ -413,7 +413,7 @@
     ],
     [
       "Ninja TextOne",
-      "ATTACK: -2 Sword -\u003e One Foe with 3 Health or less loses 3 Health."
+      "ATTACK: -1 Sword -\u003e One Foe with 3 Health or less loses 3 Health."
     ],
     [
       "Ninja TextTwo",
@@ -514,6 +514,30 @@
     [
       "Wolf TextTwo",
       "ATTACK: -3 Sword -\u003e A Foe loses 3 Health."
+    ],
+    [
+      "Student",
+      "Student"
+    ],
+    [
+      "Student TextOne",
+      "DEFEND: Repeat another Ally's Defend ability (if you can pay its cost)."
+    ],
+    [
+      "Student TextTwo",
+      "ATTACK: Repeat another Ally's Attack ability (if you can pay its cost)."
+    ],
+    [
+      "Coven",
+      "Coven"
+    ],
+    [
+      "Coven TextOne",
+      "DEFEND: -3 Sword -\u003e 3 different Allies each get +1 Health."
+    ],
+    [
+      "Coven TextTwo",
+      "ATTACK: -3 Shield -\u003e 3 different Foes each lose 1 Health."
     ]
   ]
 }

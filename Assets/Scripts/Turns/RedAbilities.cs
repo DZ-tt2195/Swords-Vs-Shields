@@ -22,29 +22,22 @@ public class RedAbilities : Turn
 
     void NextAbility(Player player, HashSet<Card> alreadyDone)
     {
-        List<Card> myTroops = player.GetTroops();
-        HashSet<Card> canDo = new();
+        List<MiniCardDisplay> redCards = new();
 
-        foreach (Card card in myTroops)
+        foreach (MiniCardDisplay display in player.AliveTroops())
         {
+            Card card = display.card;
             if (alreadyDone.Contains(card) || !card.CanUseAbility())
                 continue;
             if (card.thisCard.CanUseAbiltyOne(player, card) == AbilityType.Attack)
-                canDo.Add(card);
+                redCards.Add(display);
             if (card.thisCard.CanUseAbiltyTwo(player, card) == AbilityType.Attack)
-                canDo.Add(card);
+                redCards.Add(display);
         }
 
-        if (canDo.Count >= 1)
+        if (redCards.Count >= 1)
         {
-            MakeDecision.inst.Instructions("Use Red Instruction");
-            List<MiniCardDisplay> toChoose = new();
-            foreach (MiniCardDisplay display in player.AliveTroops())
-            {
-                if (canDo.Contains(display.card))
-                    toChoose.Add(display);
-            }
-            MakeDecision.inst.ChooseDisplayOnScreen(toChoose, ChooseToUse, false);
+            MakeDecision.inst.ChooseDisplayOnScreen(redCards, "Red Instruction", ChooseToUse, false);
 
             void ChooseToUse(Card card)
             {

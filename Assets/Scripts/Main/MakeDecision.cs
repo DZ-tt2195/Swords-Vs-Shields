@@ -90,7 +90,7 @@ public class MakeDecision : PhotonCompatible
 
 #region Decisions
 
-    public void ChooseTextButton(List<TextButtonInfo> possibleChoices, bool autoResolve = true)
+    public void ChooseTextButton(List<TextButtonInfo> possibleChoices, string instructions, bool autoResolve = true)
     {
         if (possibleChoices.Count == 1 && autoResolve)
         {
@@ -99,6 +99,7 @@ public class MakeDecision : PhotonCompatible
         else if (possibleChoices.Count >= 1 || !autoResolve)
         {
             Log.inst.SetUndoPoint(true);
+            Instructions(instructions);
 
             for (int i = 0; i<textButtons.Count; i++)
             {
@@ -128,7 +129,7 @@ public class MakeDecision : PhotonCompatible
         }
     }
 
-    public void ChooseCardOnScreen(List<Card> listOfCards, Action<Card> action = null, bool autoResolve = true)
+    public void ChooseCardOnScreen(List<Card> listOfCards, string instructions, Action<Card> action = null, bool autoResolve = true)
     {
         if (listOfCards.Count == 1 && autoResolve)
         {
@@ -137,6 +138,7 @@ public class MakeDecision : PhotonCompatible
         else if (listOfCards.Count >= 1 || !autoResolve)
         {
             Log.inst.SetUndoPoint(true);
+            Instructions(instructions);
 
             for (int j = 0; j < listOfCards.Count; j++)
             {
@@ -157,7 +159,7 @@ public class MakeDecision : PhotonCompatible
         }
     }
 
-    public void ChooseDisplayOnScreen(List<MiniCardDisplay> listOfDisplays, Action<Card> action = null, bool autoResolve = true)
+    public void ChooseDisplayOnScreen(List<MiniCardDisplay> listOfDisplays, string instructions, Action<Card> action = null, bool autoResolve = true)
     {
         if (listOfDisplays.Count == 1 && autoResolve)
         {
@@ -166,6 +168,7 @@ public class MakeDecision : PhotonCompatible
         else if (listOfDisplays.Count >= 1 || !autoResolve)
         {
             Log.inst.SetUndoPoint(true);
+            Instructions(instructions);
 
             for (int j = 0; j < listOfDisplays.Count; j++)
             {
@@ -187,7 +190,7 @@ public class MakeDecision : PhotonCompatible
 
     }
 
-    public void ChooseFromSlider(int min, int max, Action<int> action = null, bool autoResolve = true)
+    public void ChooseFromSlider(int min, int max, string instructions, Action<int> action = null, bool autoResolve = true)
     {
         if (min == max && autoResolve)
         {
@@ -196,6 +199,8 @@ public class MakeDecision : PhotonCompatible
         else
         {
             Log.inst.SetUndoPoint(true);
+            Instructions(instructions);
+
             slider.gameObject.SetActive(true);
             sliderConfirm.onClick.AddListener(DecisionMade);
 
@@ -214,7 +219,7 @@ public class MakeDecision : PhotonCompatible
     }
 
     /*
-    public void ChooseCardInPopup(List<CardButtonInfo> possibleCards, bool autoResolve = true)
+    public void ChooseCardInPopup(List<CardButtonInfo> possibleCards, string instructions, bool autoResolve = true)
     {
         if (possibleCards.Count == 1 && autoResolve)
         {
@@ -224,7 +229,8 @@ public class MakeDecision : PhotonCompatible
         else if (possibleCards.Count >= 1 || !autoResolve)
         {
             Log.inst.SetUndoPoint(true);
-            for (int i = 0; i < textButtons.Count; i++)
+                      Instructions(instructions);
+  for (int i = 0; i < textButtons.Count; i++)
             {
                 Button nextButton = textButtons[i];
                 if (i < possibleCards.Count)
@@ -280,6 +286,6 @@ public class MakeDecision : PhotonCompatible
         return answer;
     }
 
-    #endregion
+#endregion
 
 }

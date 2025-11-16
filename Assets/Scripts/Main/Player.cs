@@ -286,11 +286,8 @@ public class Player : PhotonCompatible
         Log.inst.inReaction.Add(Done);
         if (endPause)
         {
-            MakeDecision.inst.ChooseTextButton(new() { new("Done", Color.white) }, false);
-            if (Log.inst.undosInLog.Count >= 1)
-                MakeDecision.inst.Instructions("Pause to Undo");
-            else
-                MakeDecision.inst.Instructions("Pause to Read");
+            string instructions = (Log.inst.undosInLog.Count >= 1) ? "Pause to Undo" : "Pause to Read";
+            MakeDecision.inst.ChooseTextButton(new() { new("Done", Color.white) }, instructions, false);
         }
 
         void Done()

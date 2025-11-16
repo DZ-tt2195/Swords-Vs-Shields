@@ -66,6 +66,17 @@
       "StunCard"
     ],
     [
+      "Coven",
+      "DEFEND: -3 Sword -\u003e 3 different Allies each get +1 Health.",
+      "ATTACK: -3 Shield -\u003e 3 different Foes each lose 1 Health.",
+      "5",
+      "Defend",
+      "Attack",
+      "Claus Stephan|Dominion: Menagerie|(Coven)",
+      "LoseSword, HealAlly, Multiple",
+      "LoseShield, AttackFoe, Multiple"
+    ],
+    [
       "Dragon",
       "ATTACK: -6 Sword -\u003e All Foes lose 2 Health.",
       "PLAY: -1 Card.",
@@ -100,9 +111,9 @@
     ],
     [
       "Ninja",
-      "ATTACK: -2 Sword -\u003e One Foe with 3 Health or less loses 3 Health.",
+      "ATTACK: -1 Sword -\u003e One Foe with 3 Health or less loses 3 Health.",
       "\"\"",
-      "4",
+      "3",
       "Attack",
       "None",
       "Elisa Cella|Dominion: Rising Sun|(Ninja)",
@@ -130,6 +141,17 @@
       "Anthony Plumbo|Ixalan|(Seekers' Squire)",
       "LoseShield, NextAddSword",
       "DrawCard"
+    ],
+    [
+      "Student",
+      "DEFEND: Repeat another Ally's Defend ability (if you can pay its cost).",
+      "ATTACK: Repeat another Ally's Attack ability (if you can pay its cost).",
+      "3",
+      "Defend",
+      "Attack",
+      "Harald Lieske|Dominion: Allies|(Student)",
+      "\"\"",
+      "\"\""
     ],
     [
       "Trader",
@@ -161,7 +183,8 @@
       "Defend",
       "Attack",
       "Slawomir Maniak|Eldritch Moon|(Kessig Prowler)",
-      "LoseShield, ProtectCard"
+      "LoseShield, ProtectCard",
+      "LoseSword, AttackFoe"
     ]
   ]
 }

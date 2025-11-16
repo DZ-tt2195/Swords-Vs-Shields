@@ -9,7 +9,7 @@ public class Ninja : CardType
 
     public override AbilityType CanUseAbiltyOne(Player player, Card thisCard)
     {
-        if (player.GetSword() >= 2)
+        if (player.GetSword() >= 1)
             return AbilityType.Attack;
         else
             return AbilityType.None;
@@ -17,7 +17,7 @@ public class Ninja : CardType
 
     public override void DoAbilityOne(Player player, Card thisCard, int logged)
     {
-        player.SwordRPC(-2, logged);
+        player.SwordRPC(-1, logged);
         Log.inst.NewDecisionContainer(() => ChooseAttack(player, thisCard, logged), logged);
     }
 
@@ -31,8 +31,7 @@ public class Ninja : CardType
         }
         else
         {
-            MakeDecision.inst.Instructions($"Target Instruction-Player-{player.name}");
-            MakeDecision.inst.ChooseDisplayOnScreen(availableTroops, Attack, true);
+            MakeDecision.inst.ChooseDisplayOnScreen(availableTroops, $"Target Instruction-Player-{otherPlayer.name}", Attack, true);
         }
 
         void Attack(Card card)

@@ -31,8 +31,7 @@ public class Bee : CardType
         }
         else
         {
-            MakeDecision.inst.Instructions($"Target Instruction-Player-{player.name}");
-            MakeDecision.inst.ChooseDisplayOnScreen(availableTroops, Attack, true);
+            MakeDecision.inst.ChooseDisplayOnScreen(availableTroops, $"Target Instruction-Player-{otherPlayer.name}", Attack, true);
         }
 
         void Attack(Card card)

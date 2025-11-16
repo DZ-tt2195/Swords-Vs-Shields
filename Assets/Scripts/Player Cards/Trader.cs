@@ -17,8 +17,7 @@ public class Trader : CardType
     public override void DoAbilityOne(Player player, Card thisCard, int logged)
     {
         player.ActionRPC(-1, logged);
-        MakeDecision.inst.Instructions("Choose One Instruction");
-        MakeDecision.inst.ChooseTextButton(new() { new("2 Sword", Sword), new("2 Shield", Shield) });
+        MakeDecision.inst.ChooseTextButton(new() { new("2 Sword", Sword), new("2 Shield", Shield) }, "Choose One Instruction");
 
         void Sword()
         {
