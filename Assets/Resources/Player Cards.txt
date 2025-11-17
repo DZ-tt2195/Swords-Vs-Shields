@@ -45,13 +45,13 @@
     ],
     [
       "Bee",
-      "ATTACK: -2 Sword -\u003e One Foe loses 2 Health and becomes Stunned next round.",
+      "ATTACK: -2 Shield -\u003e One Foe loses 2 Health and becomes Stunned next round.",
       "\"\"",
       "3",
       "Attack",
       "None",
       "Tom Wanerstrand|Time Spiral|(Unyaro Bees)",
-      "LoseSword, StunCard, AttackFoe",
+      "LoseShield, StunCard, AttackFoe",
       "\"\""
     ],
     [
@@ -121,6 +121,17 @@
       "\"\""
     ],
     [
+      "Security",
+      "DEFEND: -3 Sword -\u003e Next round, +2 Shield.",
+      "PLAY: You get +3 Health.",
+      "3",
+      "Defend",
+      "Play",
+      "Eric J. Carter|Dominion|(Sentry)",
+      "LoseSword, NextAddShield",
+      "HealPlayer"
+    ],
+    [
       "Skirmisher",
       "ATTACK: -2 Sword -\u003e Opoonent loses 2 Health.",
       "PLAY: +1 Sword.",
@@ -133,9 +144,9 @@
     ],
     [
       "Squire",
-      "DEFEND: -2 Shield -\u003e Next round, +2 Sword.",
+      "DEFEND: -3 Shield -\u003e Next round, +2 Sword.",
       "PLAY: +1 Card.",
-      "2",
+      "3",
       "Defend",
       "Play",
       "Anthony Plumbo|Ixalan|(Seekers' Squire)",
@@ -185,6 +196,17 @@
       "Slawomir Maniak|Eldritch Moon|(Kessig Prowler)",
       "LoseShield, ProtectCard",
       "LoseSword, AttackFoe"
+    ],
+    [
+      "Vampire",
+      "ATTACK: -5 Sword -\u003e Opponent loses 6 Health.",
+      "PLAY: An Ally loses 3 Health.",
+      "7",
+      "Attack",
+      "Play",
+      "Martin Hoffmann|Dominion: Nocturne|(Vampire)",
+      "LoseSword, AttackPlayer",
+      "HurtAlly"
     ]
   ]
 }

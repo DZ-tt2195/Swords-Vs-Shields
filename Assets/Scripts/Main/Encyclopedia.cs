@@ -55,9 +55,9 @@ public class Encyclopedia : MonoBehaviour
             {
                 return text switch
                 {
-                    "Play" => card.thisCard.dataFile.typeOne == AbilityType.Play && card.thisCard.dataFile.typeTwo == AbilityType.Play,
-                    "Defend" => card.thisCard.dataFile.typeOne == AbilityType.Defend && card.thisCard.dataFile.typeTwo == AbilityType.Defend,
-                    "Attack" => card.thisCard.dataFile.typeOne == AbilityType.Attack && card.thisCard.dataFile.typeTwo == AbilityType.Attack,
+                    "Play" => card.thisCard.dataFile.typeOne == AbilityType.Play || card.thisCard.dataFile.typeTwo == AbilityType.Play,
+                    "Defend" => card.thisCard.dataFile.typeOne == AbilityType.Defend || card.thisCard.dataFile.typeTwo == AbilityType.Defend,
+                    "Attack" => card.thisCard.dataFile.typeOne == AbilityType.Attack || card.thisCard.dataFile.typeTwo == AbilityType.Attack,
                     _ => true  // no filter
                 };
             }

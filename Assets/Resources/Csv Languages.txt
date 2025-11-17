@@ -9,7 +9,7 @@
     ],
     [
       "Last Update",
-      "Last Updated: Nov 16, 2025"
+      "Last Updated: Nov 17, 2025"
     ],
     [
       "Translator Credit",
@@ -437,7 +437,7 @@
     ],
     [
       "Bee TextOne",
-      "ATTACK: -2 Sword -\u003e One Foe loses 2 Health and becomes Stunned next round."
+      "ATTACK: -2 Shield -\u003e One Foe loses 2 Health and becomes Stunned next round."
     ],
     [
       "Bee TextTwo",
@@ -461,7 +461,7 @@
     ],
     [
       "Squire TextOne",
-      "DEFEND: -2 Shield -\u003e Next round, +2 Sword."
+      "DEFEND: -3 Shield -\u003e Next round, +2 Sword."
     ],
     [
       "Squire TextTwo",
@@ -574,6 +574,30 @@
     [
       "Coven TextTwo",
       "ATTACK: -3 Shield -\u003e 3 different Foes each lose 1 Health."
+    ],
+    [
+      "Vampire",
+      "Vampire"
+    ],
+    [
+      "Vampire TextOne",
+      "ATTACK: -5 Sword -\u003e Opponent loses 6 Health."
+    ],
+    [
+      "Vampire TextTwo",
+      "PLAY: An Ally loses 3 Health."
+    ],
+    [
+      "Security",
+      "Security"
+    ],
+    [
+      "Security TextOne",
+      "DEFEND: -3 Sword -\u003e Next round, +2 Shield."
+    ],
+    [
+      "Security TextTwo",
+      "PLAY: You get +3 Health."
     ]
   ]
 }

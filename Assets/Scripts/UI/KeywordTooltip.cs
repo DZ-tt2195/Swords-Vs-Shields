@@ -81,7 +81,7 @@ public class KeywordTooltip : MonoBehaviour
         foreach (KeywordHover link in spriteKeywords)
         {
             string toReplace = link.translatedString;
-            answer = answer.Replace(toReplace, $"<link=\"{toReplace}\"><sprite=\"{toReplace}\" name=\"{toReplace}\"></link>");
+            answer = answer.Replace(toReplace, $"<link=\"{link.englishString}\"><sprite=\"{link.englishString}\" name=\"{link.englishString}\"></link>");
         }
         foreach (var next in listOfCardRC)
         {
@@ -137,7 +137,7 @@ public class KeywordTooltip : MonoBehaviour
 
         bool Display(KeywordHover keyword)
         {
-            if (keyword.translatedString.Equals(target) && !keyword.description.Equals(""))
+            if (keyword.englishString.Equals(target) && !keyword.description.Equals(""))
             {
                 tooltipText.text = keyword.description;
                 tooltipText.transform.parent.position = CalculatePosition(mousePosition);

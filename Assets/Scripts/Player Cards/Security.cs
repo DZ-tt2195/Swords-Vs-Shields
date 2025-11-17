@@ -1,14 +1,14 @@
 using UnityEngine;
 
-public class Squire : CardType
+public class Security : CardType
 {
-    public Squire(CardData dataFile) : base(dataFile)
+    public Security(CardData dataFile) : base(dataFile)
     {
     }
 
     public override AbilityType CanUseAbiltyOne(Player player, Card thisCard)
     {
-        if (player.GetShield() >= 3)
+        if (player.GetSword() >= 3)
             return AbilityType.Defend;
         else
             return AbilityType.None;
@@ -16,12 +16,12 @@ public class Squire : CardType
 
     public override void DoAbilityOne(Player player, Card thisCard, int logged)
     {
-        player.ShieldRPC(-3, logged);
-        player.NextRoundSword(2);
+        player.SwordRPC(-3, logged);
+        player.NextRoundShield(2);
     }
 
     public override void DoAbilityTwo(Player player, Card thisCard, int logged)
     {
-        player.DrawCardRPC(1, logged);
+        player.HealthRPC(3, logged);
     }
 }

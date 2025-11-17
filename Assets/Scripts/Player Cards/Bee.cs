@@ -9,7 +9,7 @@ public class Bee : CardType
 
     public override AbilityType CanUseAbiltyOne(Player player, Card thisCard)
     {
-        if (player.GetSword() >= 2)
+        if (player.GetShield() >= 2)
             return AbilityType.Attack;
         else
             return AbilityType.None;
@@ -17,7 +17,7 @@ public class Bee : CardType
 
     public override void DoAbilityOne(Player player, Card thisCard, int logged)
     {
-        player.SwordRPC(-2, logged);
+        player.ShieldRPC(-2, logged);
         Log.inst.NewDecisionContainer(() => ChooseAttack(player, thisCard, logged), logged);
     }
 

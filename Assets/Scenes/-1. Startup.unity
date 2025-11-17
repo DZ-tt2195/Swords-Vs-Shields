@@ -326,7 +326,11 @@ MonoBehaviour:
   - englishString: Stunned
     translatedString: 
     description: 
-    color: {r: 1, g: 1, b: 1, a: 0}
+    color: {r: 0, g: 0, b: 0, a: 0}
+  - englishString: Protected
+    translatedString: 
+    description: 
+    color: {r: 0, g: 0, b: 0, a: 0}
   spriteKeywords:
   - englishString: Sword
     translatedString: 
@@ -434,6 +438,23 @@ MonoBehaviour:
   sceneViewId: 2
   InstantiationId: 0
   isRuntimeInstantiated: 0
+--- !u!1 &375275011 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 582953607664488025, guid: d50eb448d0731474ebebdd3627d1ec5a, type: 3}
+  m_PrefabInstance: {fileID: 390494223}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &375275016
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 375275011}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd447db666c474fceaf9cfb6b4bdb9ad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::KeywordLinkHover
 --- !u!1 &377426094
 GameObject:
   m_ObjectHideFlags: 0
@@ -629,7 +650,16 @@ PrefabInstance:
     - {fileID: 2383158818842941943, guid: d50eb448d0731474ebebdd3627d1ec5a, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 5663905271825330652, guid: d50eb448d0731474ebebdd3627d1ec5a, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1456478576}
+    - targetCorrespondingSourceObject: {fileID: 582953607664488025, guid: d50eb448d0731474ebebdd3627d1ec5a, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 375275016}
+    - targetCorrespondingSourceObject: {fileID: 8131750164463628565, guid: d50eb448d0731474ebebdd3627d1ec5a, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1000817807}
   m_SourcePrefab: {fileID: 100100000, guid: d50eb448d0731474ebebdd3627d1ec5a, type: 3}
 --- !u!224 &390494224 stripped
 RectTransform:
@@ -858,6 +888,23 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 750, y: 400}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &1000817802 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8131750164463628565, guid: d50eb448d0731474ebebdd3627d1ec5a, type: 3}
+  m_PrefabInstance: {fileID: 390494223}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1000817807
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1000817802}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd447db666c474fceaf9cfb6b4bdb9ad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::KeywordLinkHover
 --- !u!1 &1062377870
 GameObject:
   m_ObjectHideFlags: 0
@@ -962,6 +1009,23 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 1
   m_TargetDisplay: 0
+--- !u!1 &1456478571 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5663905271825330652, guid: d50eb448d0731474ebebdd3627d1ec5a, type: 3}
+  m_PrefabInstance: {fileID: 390494223}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1456478576
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1456478571}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd447db666c474fceaf9cfb6b4bdb9ad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::KeywordLinkHover
 --- !u!1 &1693348572
 GameObject:
   m_ObjectHideFlags: 0
