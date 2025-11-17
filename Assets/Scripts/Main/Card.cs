@@ -26,7 +26,7 @@ public class Card : PhotonCompatible
         selectMe = GetComponent<ButtonSelect>();
         layout = GetComponent<CardLayout>();
 
-        if (!PhotonNetwork.CurrentRoom.CustomProperties.ContainsKey(HealthString()))
+        if (PhotonNetwork.IsConnected && !PhotonNetwork.CurrentRoom.CustomProperties.ContainsKey(HealthString()))
         {
             ExitGames.Client.Photon.Hashtable initialProps = new()
             {
@@ -44,12 +44,12 @@ public class Card : PhotonCompatible
 
     public string ProtectString() => $"{this.photonView.ViewID}_Protect";
 
-    public void AssignCard(CardData dataFile)
+    public void AssignCard(CardData dataFile, float startingAlpha)
     {
         string noSpaces = dataFile.cardName.Replace(" ", "");
         thisCard = (CardType)Activator.CreateInstance(Type.GetType(noSpaces), dataFile);
 
-        this.layout.FillInCards(dataFile, 0, 0);
+        this.layout.FillInCards(dataFile, startingAlpha, 0);
         this.name = dataFile.cardName;
         KeywordTooltip.instance.NewCardRC(dataFile.cardName, this.layout);
     }

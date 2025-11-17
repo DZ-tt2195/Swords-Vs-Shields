@@ -31,14 +31,14 @@ public class ConnectToLobby : MonoBehaviourPunCallbacks
     [SerializeField] Transform part2;
     [SerializeField] Transform keepJoinButtons;
     [SerializeField] TMP_InputField joinInput;
-    [SerializeField] Button joinManual;
+    [SerializeField] Button joinManually;
     [SerializeField] Button disconnectButton;
     List<JoinRoomButton> listOfJoinButtons = new();
 
     private void Start()
     {
         part2.gameObject.SetActive(true);
-        joinManual.onClick.AddListener(() => JoinRoom(joinInput.text));
+        joinManually.onClick.AddListener(() => JoinRoom(joinInput.text));
         disconnectButton.onClick.AddListener(() => PhotonNetwork.Disconnect());
 
         foreach (Transform child in keepJoinButtons)

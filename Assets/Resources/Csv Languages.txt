@@ -9,7 +9,7 @@
     ],
     [
       "Last Update",
-      "Last Updated: November 15th, 2025"
+      "Last Updated: Nov 16, 2025"
     ],
     [
       "Translator Credit",
@@ -110,6 +110,42 @@
     [
       "Failed to reconnect",
       "Failed to reconnect to $Room$'s room."
+    ],
+    [
+      "Encyclopedia",
+      "Encyclopedia"
+    ],
+    [
+      "Close",
+      "Close"
+    ],
+    [
+      "Starting Health",
+      "Starting Health"
+    ],
+    [
+      "Type 1",
+      "Type 1"
+    ],
+    [
+      "Type 2",
+      "Type 2"
+    ],
+    [
+      "Any",
+      "Any"
+    ],
+    [
+      "Defend",
+      "Defend"
+    ],
+    [
+      "Attack",
+      "Attack"
+    ],
+    [
+      "Play",
+      "Play"
     ],
     [
       "Type into chat",

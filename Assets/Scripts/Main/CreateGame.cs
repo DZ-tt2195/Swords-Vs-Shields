@@ -99,7 +99,7 @@ public class CreateGame : PhotonCompatible
         for (int i = 0; i<arrayOfPVs.Length; i++)
         {
             GameObject obj = PhotonView.Find(arrayOfPVs[i]).gameObject;
-            obj.GetComponent<Card>().AssignCard(Translator.inst.playerCardFiles[cardNames[i]]);
+            obj.GetComponent<Card>().AssignCard(Translator.inst.playerCardFiles[cardNames[i]], 0f);
         }
     }
 
