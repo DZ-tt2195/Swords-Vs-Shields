@@ -6,7 +6,7 @@ public class Trader : CardType
     {
     }
 
-    public override AbilityType CanUseAbiltyOne(Player player, Card thisCard)
+    protected override AbilityType CanUseAbiltyOne(Player player, Card thisCard)
     {
         if (player.GetAction() >= 1)
             return AbilityType.Defend;
@@ -14,7 +14,7 @@ public class Trader : CardType
             return AbilityType.None;
     }
 
-    public override void DoAbilityOne(Player player, Card thisCard, int logged)
+    protected override void DoAbilityOne(Player player, Card thisCard, int logged)
     {
         player.ActionRPC(-1, logged);
         MakeDecision.inst.ChooseTextButton(new() { new("2 Sword", Sword), new("2 Shield", Shield) }, "Choose One Instruction");

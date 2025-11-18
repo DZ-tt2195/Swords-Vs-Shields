@@ -88,6 +88,17 @@
       "DiscardCard"
     ],
     [
+      "Gladiator",
+      "ATTACK: -1 Card -\u003e A Foe with an Attack ability loses 4 Health.",
+      "\"\"",
+      "4",
+      "Attack",
+      "None",
+      "Keli Stakenas|Dominion: Empires|(Gladiator)",
+      "DiscardCard, AttackFoe, TargetAttackCard",
+      "\"\""
+    ],
+    [
       "Guardian",
       "DEFEND: -4 Shield -\u003e You get +1 Health per Ally you have.",
       "\"\"",
@@ -97,6 +108,17 @@
       "Martin Hoffmann|Dominion: Nocturne|(Guardian)",
       "LoseShield, HealPlayer, PerTroop",
       "\"\""
+    ],
+    [
+      "Investor",
+      "DEFEND: This loses 2 Health -\u003e You get +3 Health.",
+      "PLAY: -2 Sword.",
+      "6",
+      "Defend",
+      "Play",
+      "Claus Stephan|Dominion: Renaissance|(Patron)",
+      "HurtAlly, HealPlayer",
+      "LoseSword"
     ],
     [
       "Minstrel",
@@ -161,8 +183,8 @@
       "Defend",
       "Attack",
       "Harald Lieske|Dominion: Allies|(Student)",
-      "\"\"",
-      "\"\""
+      "TargetDefendCard",
+      "TargetAttackCard"
     ],
     [
       "Trader",

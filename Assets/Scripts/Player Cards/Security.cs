@@ -6,7 +6,7 @@ public class Security : CardType
     {
     }
 
-    public override AbilityType CanUseAbiltyOne(Player player, Card thisCard)
+    protected override AbilityType CanUseAbiltyOne(Player player, Card thisCard)
     {
         if (player.GetSword() >= 3)
             return AbilityType.Defend;
@@ -14,13 +14,13 @@ public class Security : CardType
             return AbilityType.None;
     }
 
-    public override void DoAbilityOne(Player player, Card thisCard, int logged)
+    protected override void DoAbilityOne(Player player, Card thisCard, int logged)
     {
         player.SwordRPC(-3, logged);
         player.NextRoundShield(2);
     }
 
-    public override void DoAbilityTwo(Player player, Card thisCard, int logged)
+    protected override void DoAbilityTwo(Player player, Card thisCard, int logged)
     {
         player.HealthRPC(3, logged);
     }

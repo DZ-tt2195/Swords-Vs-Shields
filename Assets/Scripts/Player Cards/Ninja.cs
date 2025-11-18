@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class Ninja : CardType
@@ -7,7 +8,7 @@ public class Ninja : CardType
     {
     }
 
-    public override AbilityType CanUseAbiltyOne(Player player, Card thisCard)
+    protected override AbilityType CanUseAbiltyOne(Player player, Card thisCard)
     {
         if (player.GetSword() >= 1)
             return AbilityType.Attack;
@@ -15,7 +16,7 @@ public class Ninja : CardType
             return AbilityType.None;
     }
 
-    public override void DoAbilityOne(Player player, Card thisCard, int logged)
+    protected override void DoAbilityOne(Player player, Card thisCard, int logged)
     {
         player.SwordRPC(-1, logged);
         Log.inst.NewDecisionContainer(() => ChooseAttack(player, thisCard, logged), logged);
@@ -24,7 +25,8 @@ public class Ninja : CardType
     void ChooseAttack(Player player, Card thisCard, int logged)
     {
         Player otherPlayer = CreateGame.inst.OtherPlayer(player.myPosition);
-        List<MiniCardDisplay> availableTroops = otherPlayer.AliveTroops();
+        List<MiniCardDisplay> availableTroops = otherPlayer.AliveTroops().Where(display => display.card.GetHealth() <= 3).ToList();
+
         if (availableTroops.Count == 0)
         {
             Log.inst.AddMyText($"Card Failed-Card-{thisCard.name}", false, logged);

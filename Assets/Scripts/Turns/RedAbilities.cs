@@ -29,9 +29,7 @@ public class RedAbilities : Turn
             Card card = display.card;
             if (alreadyDone.Contains(card) || !card.CanUseAbility())
                 continue;
-            if (card.thisCard.CanUseAbiltyOne(player, card) == AbilityType.Attack)
-                redCards.Add(display);
-            if (card.thisCard.CanUseAbiltyTwo(player, card) == AbilityType.Attack)
+            if (card.thisCard.HasType(AbilityType.Attack, player, card, -1))
                 redCards.Add(display);
         }
 
@@ -42,10 +40,7 @@ public class RedAbilities : Turn
             void ChooseToUse(Card card)
             {
                 Log.inst.AddMyText($"Resolve Card-Player-{player.name}-Card-{card.name}", false);
-                if (card.thisCard.CanUseAbiltyOne(player, card) == AbilityType.Attack)
-                    Log.inst.NewDecisionContainer(() => card.thisCard.DoAbilityOne(player, card, 1), 1);
-                if (card.thisCard.CanUseAbiltyTwo(player, card) == AbilityType.Attack)
-                    Log.inst.NewDecisionContainer(() => card.thisCard.DoAbilityTwo(player, card, 1), 1);
+                card.thisCard.HasType(AbilityType.Attack, player, card, 1);
 
                 HashSet<Card> newSet = new(alreadyDone);
                 newSet.Add(card);

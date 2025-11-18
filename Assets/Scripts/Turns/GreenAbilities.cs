@@ -47,9 +47,7 @@ public class GreenAbilities : Turn
             Card card = display.card;
             if (alreadyDone.Contains(card) || !card.CanUseAbility())
                 continue;
-            if (card.thisCard.CanUseAbiltyOne(player, card) == AbilityType.Defend)
-                greenCards.Add(display);
-            if (card.thisCard.CanUseAbiltyTwo(player, card) == AbilityType.Defend)
+            if (card.thisCard.HasType(AbilityType.Defend, player, card, -1))
                 greenCards.Add(display);
         }
 
@@ -60,10 +58,7 @@ public class GreenAbilities : Turn
             void ChooseToUse(Card card)
             {
                 Log.inst.AddMyText($"Resolve Card-Player-{player.name}-Card-{card.name}", false);
-                if (card.thisCard.CanUseAbiltyOne(player, card) == AbilityType.Defend)
-                    Log.inst.NewDecisionContainer(() => card.thisCard.DoAbilityOne(player, card, 1), 1);
-                if (card.thisCard.CanUseAbiltyTwo(player, card) == AbilityType.Defend)
-                    Log.inst.NewDecisionContainer(() => card.thisCard.DoAbilityTwo(player, card, 1), 1);
+                card.thisCard.HasType(AbilityType.Defend, player, card, 1);
 
                 HashSet<Card> newSet = new(alreadyDone);
                 newSet.Add(card);
@@ -86,12 +81,7 @@ public class GreenAbilities : Turn
 
                 card.HealthRPC(player, card.thisCard.dataFile.startingHealth, -1);
                 Log.inst.NewRollback(() => HandToPlay(player, card));
-
-                if (card.thisCard.CanUseAbiltyOne(player, card) == AbilityType.Play)
-                    Log.inst.NewDecisionContainer(() => card.thisCard.DoAbilityOne(player, card, 1), 1);
-                if (card.thisCard.CanUseAbiltyTwo(player, card) == AbilityType.Play)
-                    Log.inst.NewDecisionContainer(() => card.thisCard.DoAbilityTwo(player, card, 1), 1);
-
+                card.thisCard.HasType(AbilityType.Play, player, card, 1);
                 Log.inst.NewDecisionContainer(() => NextAbility(player, alreadyDone), 0);
             }
 

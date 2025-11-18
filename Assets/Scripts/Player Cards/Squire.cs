@@ -6,7 +6,7 @@ public class Squire : CardType
     {
     }
 
-    public override AbilityType CanUseAbiltyOne(Player player, Card thisCard)
+    protected override AbilityType CanUseAbiltyOne(Player player, Card thisCard)
     {
         if (player.GetShield() >= 3)
             return AbilityType.Defend;
@@ -14,13 +14,13 @@ public class Squire : CardType
             return AbilityType.None;
     }
 
-    public override void DoAbilityOne(Player player, Card thisCard, int logged)
+    protected override void DoAbilityOne(Player player, Card thisCard, int logged)
     {
         player.ShieldRPC(-3, logged);
         player.NextRoundSword(2);
     }
 
-    public override void DoAbilityTwo(Player player, Card thisCard, int logged)
+    protected override void DoAbilityTwo(Player player, Card thisCard, int logged)
     {
         player.DrawCardRPC(1, logged);
     }

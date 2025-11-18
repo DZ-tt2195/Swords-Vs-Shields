@@ -8,7 +8,7 @@ public class Cannon : CardType
     {
     }
 
-    public override AbilityType CanUseAbiltyOne(Player player, Card thisCard)
+    protected override AbilityType CanUseAbiltyOne(Player player, Card thisCard)
     {
         otherPlayer = CreateGame.inst.OtherPlayer(player.myPosition);
         if (player.GetShield() >= 4)
@@ -17,13 +17,13 @@ public class Cannon : CardType
             return AbilityType.None;
     }
 
-    public override void DoAbilityOne(Player player, Card thisCard, int logged)
+    protected override void DoAbilityOne(Player player, Card thisCard, int logged)
     {
         player.ShieldRPC(-4, logged);
         otherPlayer.HealthRPC(-6, logged);
     }
 
-    public override void DoAbilityTwo(Player player, Card thisCard, int logged)
+    protected override void DoAbilityTwo(Player player, Card thisCard, int logged)
     {
         thisCard.StunRPC(0, logged);
     }

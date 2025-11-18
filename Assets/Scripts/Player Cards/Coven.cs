@@ -32,7 +32,7 @@ public class Coven : CardType
         }
     }
 
-    public override AbilityType CanUseAbiltyOne(Player player, Card thisCard)
+    protected override AbilityType CanUseAbiltyOne(Player player, Card thisCard)
     {
         if (player.GetSword() >= 3)
             return AbilityType.Defend;
@@ -40,7 +40,7 @@ public class Coven : CardType
             return AbilityType.None;
     }
 
-    public override void DoAbilityOne(Player player, Card thisCard, int logged)
+    protected override void DoAbilityOne(Player player, Card thisCard, int logged)
     {
         player.SwordRPC(-3, logged);
         ChooseAnother(player, thisCard, new(), Heal, logged);
@@ -51,7 +51,7 @@ public class Coven : CardType
         }
     }
 
-    public override AbilityType CanUseAbiltyTwo(Player player, Card thisCard)
+    protected override AbilityType CanUseAbiltyTwo(Player player, Card thisCard)
     {
         if (player.GetShield() >= 3)
             return AbilityType.Attack;
@@ -59,7 +59,7 @@ public class Coven : CardType
             return AbilityType.None;
     }
 
-    public override void DoAbilityTwo(Player player, Card thisCard, int logged)
+    protected override void DoAbilityTwo(Player player, Card thisCard, int logged)
     {
         player.ShieldRPC(-3, logged);
         Player otherPlayer = CreateGame.inst.OtherPlayer(player.myPosition);

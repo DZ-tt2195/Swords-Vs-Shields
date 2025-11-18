@@ -1,14 +1,15 @@
+using System.Collections.Generic;
 using UnityEngine;
 
-public class Acolyte : CardType
+public class Investor : CardType
 {
-    public Acolyte(CardData dataFile) : base(dataFile)
+    public Investor(CardData dataFile) : base(dataFile)
     {
     }
 
     protected override AbilityType CanUseAbiltyOne(Player player, Card thisCard)
     {
-        if (player.GetShield() >= 2)
+        if (thisCard.GetHealth() >= 2)
             return AbilityType.Defend;
         else
             return AbilityType.None;
@@ -16,12 +17,12 @@ public class Acolyte : CardType
 
     protected override void DoAbilityOne(Player player, Card thisCard, int logged)
     {
-        player.ShieldRPC(-2, logged);
-        player.HealthRPC(2, logged);
+        thisCard.HealthRPC(player, -2, logged);
+        player.HealthRPC(3, logged);
     }
 
     protected override void DoAbilityTwo(Player player, Card thisCard, int logged)
     {
-        player.ShieldRPC(1, logged);
+        player.SwordRPC(-2, logged);
     }
 }

@@ -7,7 +7,7 @@ public class Minstrel : CardType
     {
     }
 
-    public override AbilityType CanUseAbiltyOne(Player player, Card thisCard)
+    protected override AbilityType CanUseAbiltyOne(Player player, Card thisCard)
     {
         if (player.GetHand().Count >= 1)
             return AbilityType.Defend;
@@ -15,7 +15,7 @@ public class Minstrel : CardType
             return AbilityType.None;
     }
 
-    public override void DoAbilityOne(Player player, Card thisCard, int logged)
+    protected override void DoAbilityOne(Player player, Card thisCard, int logged)
     {
         List<Card> handCards = player.GetHand();
         MakeDecision.inst.ChooseCardOnScreen(handCards, "Discard Instruction", Discard);
@@ -27,7 +27,7 @@ public class Minstrel : CardType
         }
     }
 
-    public override void DoAbilityTwo(Player player, Card thisCard, int logged)
+    protected override void DoAbilityTwo(Player player, Card thisCard, int logged)
     {
         player.ActionRPC(1, logged);
     }

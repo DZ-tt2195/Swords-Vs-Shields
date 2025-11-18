@@ -6,7 +6,7 @@ public class Guardian : CardType
     {
     }
 
-    public override AbilityType CanUseAbiltyOne(Player player, Card thisCard)
+    protected override AbilityType CanUseAbiltyOne(Player player, Card thisCard)
     {
         if (player.GetShield() >= 4)
             return AbilityType.Defend;
@@ -14,7 +14,7 @@ public class Guardian : CardType
             return AbilityType.None;
     }
 
-    public override void DoAbilityOne(Player player, Card thisCard, int logged)
+    protected override void DoAbilityOne(Player player, Card thisCard, int logged)
     {
         player.ShieldRPC(-4, logged);
         player.HealthRPC(player.GetTroops().Count, logged);

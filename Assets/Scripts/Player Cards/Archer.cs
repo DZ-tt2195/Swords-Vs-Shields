@@ -6,7 +6,7 @@ public class Archer : CardType
     {
     }
 
-    public override AbilityType CanUseAbiltyOne(Player player, Card thisCard)
+    protected override AbilityType CanUseAbiltyOne(Player player, Card thisCard)
     {
         if (player.GetSword() >= 2)
             return AbilityType.Defend;
@@ -14,13 +14,13 @@ public class Archer : CardType
             return AbilityType.None;
     }
 
-    public override void DoAbilityOne(Player player, Card thisCard, int logged)
+    protected override void DoAbilityOne(Player player, Card thisCard, int logged)
     {
         player.SwordRPC(-2, logged);
         player.DrawCardRPC(1, logged);
     }
 
-    public override AbilityType CanUseAbiltyTwo(Player player, Card thisCard)
+    protected override AbilityType CanUseAbiltyTwo(Player player, Card thisCard)
     {
         if (player.GetSword() >= 4)
             return AbilityType.Attack;
@@ -28,7 +28,7 @@ public class Archer : CardType
             return AbilityType.None;
     }
 
-    public override void DoAbilityTwo(Player player, Card thisCard, int logged)
+    protected override void DoAbilityTwo(Player player, Card thisCard, int logged)
     {
         player.SwordRPC(-4, logged);
         int playerHand = player.GetHand().Count;

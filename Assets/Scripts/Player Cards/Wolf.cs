@@ -8,7 +8,7 @@ public class Wolf : CardType
     {
     }
 
-    public override AbilityType CanUseAbiltyOne(Player player, Card thisCard)
+    protected override AbilityType CanUseAbiltyOne(Player player, Card thisCard)
     {
         if (player.GetSword() >= 3)
             return AbilityType.Defend;
@@ -16,7 +16,7 @@ public class Wolf : CardType
             return AbilityType.None;
     }
 
-    public override void DoAbilityOne(Player player, Card thisCard, int logged)
+    protected override void DoAbilityOne(Player player, Card thisCard, int logged)
     {
         player.SwordRPC(-3, logged);
         Log.inst.NewDecisionContainer(() => ChooseProtect(player, thisCard, logged), logged);
@@ -39,7 +39,7 @@ public class Wolf : CardType
         }
     }
 
-    public override AbilityType CanUseAbiltyTwo(Player player, Card thisCard)
+    protected override AbilityType CanUseAbiltyTwo(Player player, Card thisCard)
     {
         if (player.GetSword() >= 3)
             return AbilityType.Attack;
@@ -47,7 +47,7 @@ public class Wolf : CardType
             return AbilityType.None;
     }
 
-    public override void DoAbilityTwo(Player player, Card thisCard, int logged)
+    protected override void DoAbilityTwo(Player player, Card thisCard, int logged)
     {
         player.SwordRPC(-3, logged);
         Log.inst.NewDecisionContainer(() => ChooseAttack(player, thisCard, logged), logged);
@@ -70,6 +70,5 @@ public class Wolf : CardType
         {
             card.HealthRPC(otherPlayer, - 3, logged);
         }
-
     }
 }

@@ -15,15 +15,13 @@ public class Student : CardType
             Card card = display.card;
             if (card == toIgnore || !card.CanUseAbility())
                 continue;
-            if (card.thisCard.CanUseAbiltyOne(player, card) == toFind)
-                toFindCards.Add(display);
-            if (card.thisCard.CanUseAbiltyTwo(player, card) == toFind)
+            if (card.thisCard.HasType(toFind, player, card, -1))
                 toFindCards.Add(display);
         }
         return toFindCards;
     }
 
-    public override void DoAbilityOne(Player player, Card thisCard, int logged)
+    protected override void DoAbilityOne(Player player, Card thisCard, int logged)
     {
         List<MiniCardDisplay> defendAbilities = FindAbilities(player, thisCard, AbilityType.Defend);
         if (defendAbilities.Count >= 1)
@@ -34,14 +32,11 @@ public class Student : CardType
         void ChooseToUse(Card card)
         {
             Log.inst.AddMyText($"Resolve Card-Player-{player.name}-Card-{card.name}", false, logged);
-            if (card.thisCard.CanUseAbiltyOne(player, card) == AbilityType.Defend)
-                Log.inst.NewDecisionContainer(() => card.thisCard.DoAbilityOne(player, card, logged+1), logged+1);
-            if (card.thisCard.CanUseAbiltyTwo(player, card) == AbilityType.Defend)
-                Log.inst.NewDecisionContainer(() => card.thisCard.DoAbilityTwo(player, card, logged+1), logged+1);
+            card.thisCard.HasType(AbilityType.Defend, player, card, logged);
         }
     }
 
-    public override void DoAbilityTwo(Player player, Card thisCard, int logged)
+    protected override void DoAbilityTwo(Player player, Card thisCard, int logged)
     {
         List<MiniCardDisplay> attackAbilities = FindAbilities(player, thisCard, AbilityType.Attack);
         if (attackAbilities.Count >= 1)
@@ -52,10 +47,7 @@ public class Student : CardType
         void ChooseToUse(Card card)
         {
             Log.inst.AddMyText($"Resolve Card-Player-{player.name}-Card-{card.name}", false, logged);
-            if (card.thisCard.CanUseAbiltyOne(player, card) == AbilityType.Attack)
-                Log.inst.NewDecisionContainer(() => card.thisCard.DoAbilityOne(player, card, logged + 1), logged + 1);
-            if (card.thisCard.CanUseAbiltyTwo(player, card) == AbilityType.Attack)
-                Log.inst.NewDecisionContainer(() => card.thisCard.DoAbilityTwo(player, card, logged + 1), logged + 1);
+            card.thisCard.HasType(AbilityType.Attack, player, card, logged);
         }
     }
 }

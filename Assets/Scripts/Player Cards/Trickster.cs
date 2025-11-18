@@ -9,7 +9,7 @@ public class Trickster : CardType
     {
     }
 
-    public override AbilityType CanUseAbiltyOne(Player player, Card thisCard)
+    protected override AbilityType CanUseAbiltyOne(Player player, Card thisCard)
     {
         otherPlayer = CreateGame.inst.OtherPlayer(player.myPosition);
         if (player.GetSword() >= 2)
@@ -18,7 +18,7 @@ public class Trickster : CardType
             return AbilityType.None;
     }
 
-    public override void DoAbilityOne(Player player, Card thisCard, int logged)
+    protected override void DoAbilityOne(Player player, Card thisCard, int logged)
     {
         player.SwordRPC(-2, logged);
         otherPlayer.HealthRPC(-4, logged);

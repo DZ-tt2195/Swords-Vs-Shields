@@ -598,6 +598,30 @@
     [
       "Security TextTwo",
       "PLAY: You get +3 Health."
+    ],
+    [
+      "Investor",
+      "Investor"
+    ],
+    [
+      "Investor TextOne",
+      "DEFEND: This loses 2 Health -\u003e You get +3 Health."
+    ],
+    [
+      "Investor TextTwo",
+      "PLAY: -2 Sword."
+    ],
+    [
+      "Gladiator",
+      "Gladiator"
+    ],
+    [
+      "Gladiator TextOne",
+      "ATTACK: -1 Card -\u003e A Foe with an Attack ability loses 4 Health."
+    ],
+    [
+      "Gladiator TextTwo",
+      "\"\""
     ]
   ]
 }
