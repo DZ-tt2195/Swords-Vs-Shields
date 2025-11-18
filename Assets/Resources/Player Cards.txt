@@ -143,6 +143,17 @@
       "\"\""
     ],
     [
+      "Raider",
+      "ATTACK: -1 Action -\u003e A Foe with a Defend ability loses 3 Health.",
+      "\"\"",
+      "4",
+      "Attack",
+      "None",
+      "Jesse Mead|Dominion: Adventures|(Raid)",
+      "LoseAction, AttackFoe, TargetDefendCard",
+      "\"\""
+    ],
+    [
       "Security",
       "DEFEND: -3 Sword -\u003e Next round, +2 Shield.",
       "PLAY: You get +3 Health.",
@@ -174,17 +185,6 @@
       "Anthony Plumbo|Ixalan|(Seekers' Squire)",
       "LoseShield, NextAddSword",
       "DrawCard"
-    ],
-    [
-      "Student",
-      "DEFEND: Repeat another Ally's Defend ability (if you can pay its cost).",
-      "ATTACK: Repeat another Ally's Attack ability (if you can pay its cost).",
-      "3",
-      "Defend",
-      "Attack",
-      "Harald Lieske|Dominion: Allies|(Student)",
-      "TargetDefendCard",
-      "TargetAttackCard"
     ],
     [
       "Trader",

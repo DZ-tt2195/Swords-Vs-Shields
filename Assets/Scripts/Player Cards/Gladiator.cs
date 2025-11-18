@@ -49,7 +49,7 @@ public class Gladiator : CardType
 
         void Attack(Card card)
         {
-            card.HealthRPC(otherPlayer, -3, logged);
+            card.HealthRPC(otherPlayer, -4, logged);
         }
     }
 }

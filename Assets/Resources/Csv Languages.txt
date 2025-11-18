@@ -552,18 +552,6 @@
       "ATTACK: -3 Sword -\u003e A Foe loses 3 Health."
     ],
     [
-      "Student",
-      "Student"
-    ],
-    [
-      "Student TextOne",
-      "DEFEND: Repeat another Ally's Defend ability (if you can pay its cost)."
-    ],
-    [
-      "Student TextTwo",
-      "ATTACK: Repeat another Ally's Attack ability (if you can pay its cost)."
-    ],
-    [
       "Coven",
       "Coven"
     ],
@@ -621,6 +609,18 @@
     ],
     [
       "Gladiator TextTwo",
+      "\"\""
+    ],
+    [
+      "Raider",
+      "Raider"
+    ],
+    [
+      "Raider TextOne",
+      "ATTACK: -1 Action -\u003e A Foe with a Defend ability loses 3 Health."
+    ],
+    [
+      "Raider TextTwo",
       "\"\""
     ]
   ]
