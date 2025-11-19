@@ -64,6 +64,7 @@ public class Encyclopedia : MonoBehaviour
 
             card.transform.SetParent(include ? groupUI : null);
         }
-        LayoutRebuilder.ForceRebuildLayoutImmediate(groupUI);
+
+        groupUI.sizeDelta = new(groupUI.sizeDelta.x, 400 * Mathf.Ceil(groupUI.childCount / 6f));
     }
 }

@@ -9,7 +9,7 @@
     ],
     [
       "Last Update",
-      "Last Updated: Nov 17, 2025"
+      "Last Updated: Nov 19, 2025"
     ],
     [
       "Translator Credit",
@@ -492,15 +492,15 @@
       "\"\""
     ],
     [
-      "Guardian",
+      "Partier",
       "\"\""
     ],
     [
-      "Guardian TextOne",
+      "Partier TextOne",
       "DEFEND: -4 Shield -\u003e You get +1 Health per Ally you have."
     ],
     [
-      "Guardian TextTwo",
+      "Partier TextTwo",
       "\"\""
     ],
     [
@@ -509,7 +509,7 @@
     ],
     [
       "Trickster TextOne",
-      "ATTACK: -2 Sword -\u003e Opponent loses 4 Health and gets +1 Sword next round."
+      "ATTACK: -2 Sword -\u003e Opponent loses 4 Health and gets +2 Sword next round."
     ],
     [
       "Trickster TextTwo",
@@ -564,15 +564,15 @@
       "ATTACK: -3 Shield -\u003e 3 different Foes each lose 1 Health."
     ],
     [
-      "Vampire",
-      "Vampire"
+      "Demon",
+      "Demon"
     ],
     [
-      "Vampire TextOne",
-      "ATTACK: -5 Sword -\u003e Opponent loses 6 Health."
+      "Demon TextOne",
+      "ATTACK: -5 Sword -\u003e Opponent loses 5 Health and 1 Action next round."
     ],
     [
-      "Vampire TextTwo",
+      "Demon TextTwo",
       "PLAY: An Ally loses 3 Health."
     ],
     [
@@ -621,6 +621,42 @@
     ],
     [
       "Raider TextTwo",
+      "\"\""
+    ],
+    [
+      "Guardian",
+      "Guardian"
+    ],
+    [
+      "Guardian TextOne",
+      "DEFEND: -1 Shield -\u003e An Ally gets +1 Health."
+    ],
+    [
+      "Guardian TextTwo",
+      "PLAY: An Ally becomes Protected this round."
+    ],
+    [
+      "Vampire",
+      "Vampire"
+    ],
+    [
+      "Vampire TextOne",
+      "DEFEND: -3 Sword -\u003e You get +3 Health."
+    ],
+    [
+      "Vampire TextTwo",
+      "ATTACK: -3 Shield -\u003e Opponent loses 3 Health."
+    ],
+    [
+      "Innkeeper",
+      "Innkeeper"
+    ],
+    [
+      "Innkeeper TextOne",
+      "DEFEND: You lose 3 Health -\u003e An Ally gets +5 Health and becomes Stunned next round."
+    ],
+    [
+      "Innkeeper TextTwo",
       "\"\""
     ]
   ]

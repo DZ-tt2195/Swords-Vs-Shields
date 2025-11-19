@@ -77,6 +77,17 @@
       "LoseShield, AttackFoe, Multiple"
     ],
     [
+      "Demon",
+      "ATTACK: -5 Sword -\u003e Opponent loses 5 Health and 1 Action next round.",
+      "PLAY: An Ally loses 3 Health.",
+      "6",
+      "Attack",
+      "Play",
+      "Vincent Proce|Guilds of Ravnica|(Doom Whisperer)",
+      "LoseSword, AttackPlayer, LoseNextAction",
+      "HurtAlly"
+    ],
+    [
       "Dragon",
       "ATTACK: -6 Sword -\u003e All Foes lose 2 Health.",
       "PLAY: -1 Card.",
@@ -100,13 +111,24 @@
     ],
     [
       "Guardian",
-      "DEFEND: -4 Shield -\u003e You get +1 Health per Ally you have.",
+      "DEFEND: -1 Shield -\u003e An Ally gets +1 Health.",
+      "PLAY: An Ally becomes Protected this round.",
+      "2",
+      "Defend",
+      "Play",
+      "Martin Hoffmann|Dominion: Nocturne|(Guardian)",
+      "LoseShield, HealAlly",
+      "ProtectCard"
+    ],
+    [
+      "Innkeeper",
+      "DEFEND: You lose 3 Health -\u003e An Ally gets +5 Health and becomes Stunned next round.",
       "\"\"",
-      "5",
+      "6",
       "Defend",
       "None",
-      "Martin Hoffmann|Dominion: Nocturne|(Guardian)",
-      "LoseShield, HealPlayer, PerTroop",
+      "Eric Deschamps|Adventures of the Forgotten Realm|(Prosperous Innkeeper)",
+      "HurtController, StunCard, HealAlly",
       "\"\""
     ],
     [
@@ -128,7 +150,7 @@
       "Defend",
       "Play",
       "Guillaume Ducos|Dominion: Dark Ages|(Wandering Minstrel)",
-      "DiscardCard, NextAddAction",
+      "DiscardCard, AddNextAction",
       "AddAction"
     ],
     [
@@ -140,6 +162,17 @@
       "None",
       "Elisa Cella|Dominion: Rising Sun|(Ninja)",
       "LoseSword, AttackFoe, HealthOrLess",
+      "\"\""
+    ],
+    [
+      "Partier",
+      "DEFEND: -4 Shield -\u003e You get +1 Health per Ally you have.",
+      "\"\"",
+      "5",
+      "Defend",
+      "None",
+      "Jesper Ejsing|Innistrad: Crimson Vow|(Gluttonous Guest)",
+      "LoseShield, HealPlayer",
       "\"\""
     ],
     [
@@ -161,7 +194,7 @@
       "Defend",
       "Play",
       "Eric J. Carter|Dominion|(Sentry)",
-      "LoseSword, NextAddShield",
+      "LoseSword, AddNextShield",
       "HealPlayer"
     ],
     [
@@ -183,7 +216,7 @@
       "Defend",
       "Play",
       "Anthony Plumbo|Ixalan|(Seekers' Squire)",
-      "LoseShield, NextAddSword",
+      "LoseShield, AddNextSword",
       "DrawCard"
     ],
     [
@@ -199,13 +232,13 @@
     ],
     [
       "Trickster",
-      "ATTACK: -2 Sword -\u003e Opponent loses 4 Health and gets +1 Sword next round.",
+      "ATTACK: -2 Sword -\u003e Opponent loses 4 Health and gets +2 Sword next round.",
       "\"\"",
-      "4",
+      "5",
       "Attack",
       "None",
       "Mila Pesic|Throne of Eldraine|(Bog Naughty)",
-      "LoseSword, AttackPlayer, NextAddSword",
+      "LoseSword, AttackPlayer, AddNextSword",
       "\"\""
     ],
     [
@@ -221,14 +254,14 @@
     ],
     [
       "Vampire",
-      "ATTACK: -5 Sword -\u003e Opponent loses 6 Health.",
-      "PLAY: An Ally loses 3 Health.",
-      "7",
+      "DEFEND: -3 Sword -\u003e You get +3 Health.",
+      "ATTACK: -3 Shield -\u003e Opponent loses 3 Health.",
+      "6",
+      "Defend",
       "Attack",
-      "Play",
       "Martin Hoffmann|Dominion: Nocturne|(Vampire)",
-      "LoseSword, AttackPlayer",
-      "HurtAlly"
+      "LoseSword, HealPlayer",
+      "LoseShield, AttackPlayer"
     ]
   ]
 }

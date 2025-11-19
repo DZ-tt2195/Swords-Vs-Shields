@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class Guardian : CardType
@@ -8,7 +10,7 @@ public class Guardian : CardType
 
     protected override AbilityType CanUseAbiltyOne(Player player, Card thisCard)
     {
-        if (player.GetShield() >= 4)
+        if (player.GetShield() >= 1)
             return AbilityType.Defend;
         else
             return AbilityType.None;
@@ -16,7 +18,36 @@ public class Guardian : CardType
 
     protected override void DoAbilityOne(Player player, Card thisCard, int logged)
     {
-        player.ShieldRPC(-4, logged);
-        player.HealthRPC(player.GetTroops().Count, logged);
+        player.ShieldRPC(-1, logged);
+        List<MiniCardDisplay> availableTroops = player.AliveTroops();
+        if (availableTroops.Count == 0)
+        {
+            Log.inst.AddMyText($"Card Failed-Card-{thisCard.name}", false, logged);
+        }
+        else
+        {
+            MakeDecision.inst.ChooseDisplayOnScreen(availableTroops, $"Target Instruction-Player-{player.name}", Protect, true);
+        }
+        void Protect(Card card)
+        {
+            card.HealthRPC(player, 1, logged);
+        }
+    }
+
+    protected override void DoAbilityTwo(Player player, Card thisCard, int logged)
+    {
+        List<MiniCardDisplay> availableTroops = player.AliveTroops();
+        if (availableTroops.Count == 0)
+        {
+            Log.inst.AddMyText($"Card Failed-Card-{thisCard.name}", false, logged);
+        }
+        else
+        {
+            MakeDecision.inst.ChooseDisplayOnScreen(availableTroops, $"Target Instruction-Player-{player.name}", Protect, true);
+        }
+        void Protect(Card card)
+        {
+            card.ProtectRPC(0, logged);
+        }
     }
 }

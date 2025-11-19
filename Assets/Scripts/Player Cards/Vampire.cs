@@ -1,5 +1,5 @@
+using System;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 public class Vampire : CardType
@@ -10,26 +10,30 @@ public class Vampire : CardType
 
     protected override AbilityType CanUseAbiltyOne(Player player, Card thisCard)
     {
-        if (player.GetSword() >= 5)
-            return AbilityType.Attack;
+        if (player.GetSword() >= 3)
+            return AbilityType.Defend;
         else
             return AbilityType.None;
     }
 
     protected override void DoAbilityOne(Player player, Card thisCard, int logged)
     {
-        player.SwordRPC(-5, logged);
-        CreateGame.inst.OtherPlayer(player.myPosition).HealthRPC(-6, logged);
+        player.SwordRPC(-3, logged);
+        player.HealthRPC(3, logged);
+    }
+
+    protected override AbilityType CanUseAbiltyTwo(Player player, Card thisCard)
+    {
+        if (player.GetShield() >= 3)
+            return AbilityType.Attack;
+        else
+            return AbilityType.None;
     }
 
     protected override void DoAbilityTwo(Player player, Card thisCard, int logged)
     {
-        List<MiniCardDisplay> availableTroops = player.AliveTroops();
-            MakeDecision.inst.ChooseDisplayOnScreen(availableTroops, $"Target Instruction-Player-{player.name}", Damage, true);
-
-        void Damage(Card card)
-        {
-            card.HealthRPC(player, -3, logged);
-        }
+        player.ShieldRPC(-3, logged);
+        Player otherPlayer = CreateGame.inst.OtherPlayer(player.myPosition);
+        otherPlayer.HealthRPC(-3, logged);
     }
 }
