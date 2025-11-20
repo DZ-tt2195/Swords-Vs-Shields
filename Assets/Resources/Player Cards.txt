@@ -34,13 +34,13 @@
     ],
     [
       "Archer",
-      "DEFEND: -2 Sword -\u003e +1 Card.",
+      "DEFEND: -1 Action -\u003e +1 Card.",
       "ATTACK: -4 Sword -\u003e Opponent loses 1 Health per Card you have in hand.",
       "3",
       "Defend",
       "Attack",
       "Harald Lieske|Dominion: Allies|(Archer)",
-      "LoseSword, DrawCard",
+      "LoseAction, DrawCard",
       "LoseSword, AttackPlayer, PerHand"
     ],
     [
@@ -52,6 +52,17 @@
       "None",
       "Tom Wanerstrand|Time Spiral|(Unyaro Bees)",
       "LoseShield, StunCard, AttackFoe",
+      "\"\""
+    ],
+    [
+      "Blacksmith",
+      "DEFEND: -2 Sword and -2 Shield -\u003e +1 Card and +1 Action.",
+      "#N/A",
+      "4",
+      "Defend",
+      "None",
+      "Julien Delval|Dominion: Allies|(Blacksmith)",
+      "LoseShield, LoseSword, DrawCard, AddAction",
       "\"\""
     ],
     [
@@ -78,7 +89,7 @@
     ],
     [
       "Demon",
-      "ATTACK: -5 Sword -\u003e Opponent loses 5 Health and 1 Action next round.",
+      "ATTACK: -5 Sword -\u003e Opponent loses 5 Health, and loses 1 Action next round.",
       "PLAY: An Ally loses 3 Health.",
       "6",
       "Attack",
@@ -111,13 +122,13 @@
     ],
     [
       "Guardian",
-      "DEFEND: -1 Shield -\u003e An Ally gets +1 Health.",
+      "DEFEND: -1 Shield -\u003e You or an Ally gets +1 Health.",
       "PLAY: An Ally becomes Protected this round.",
       "2",
       "Defend",
       "Play",
       "Martin Hoffmann|Dominion: Nocturne|(Guardian)",
-      "LoseShield, HealAlly",
+      "LoseShield, HealAny",
       "ProtectCard"
     ],
     [

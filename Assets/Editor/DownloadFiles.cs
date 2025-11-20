@@ -51,34 +51,14 @@ public static class FileManager
         string baseText = "";
         string[][] csvFile = Translator.ReadFile("Csv Languages");
 
-        using (StreamWriter writer = new StreamWriter("Assets/Scripts/TestScript.cs"))
+        for (int i = 2; i < csvFile.Length; i++)
         {
-            writer.WriteLine("public enum TranslationKey");
-            writer.WriteLine("{");
-
-            for (int i = 2; i < csvFile.Length; i++)
-            {
-                string key = FixLine(csvFile[i][0]);
-                string value = FixLine(csvFile[i][1]).Replace("u003e", ">");
-
-                baseText += $"{key}={value}\n";
-                key = key.Replace(" ", "_");
-                if (i < csvFile.Length - 1)
-                    writer.WriteLine($"    {key},");
-                else
-                    writer.WriteLine($"    {key}");
-            }
-
-            writer.WriteLine("}");
-        }
-
-        string FixLine(string line)
-        {
-            return line.Replace("\"", "").Replace("\\", "").Replace("]", "").Replace("|", "\n").Trim();
+            string key = Translator.FixLine(csvFile[i][0]);
+            string value = Translator.FixLine(csvFile[i][1]).Replace("u003e", ">");
+            baseText += $"{key}={value}\n";
         }
 
         File.WriteAllText($"Assets/Resources/BaseTxtFile.txt", baseText);
-
         /*
         string filePath = Path.Combine(Application.persistentDataPath, "BaseTxtFile.txt");
         using (StreamWriter writer = new StreamWriter(filePath))

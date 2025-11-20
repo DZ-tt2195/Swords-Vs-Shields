@@ -90,7 +90,7 @@ public class Translator : PhotonCompatible
                     if (line != "")
                     {
                         string[] parts = line.Split('=');
-                        newDictionary[parts[0].Trim()] = parts[1].Trim();
+                        newDictionary[FixLine(parts[0])] = FixLine(parts[1]);
                     }
                 }
             }
@@ -108,6 +108,11 @@ public class Translator : PhotonCompatible
         }
     }
 
+    public static string FixLine(string line)
+    {
+        return line.Replace("\"", "").Replace("\\", "").Replace("]", "").Replace("|", "\n").Trim();
+    }
+
     void CsvLanguages(string[][] data)
     {
         for (int i = 1; i < data[1].Length; i++)
@@ -121,7 +126,7 @@ public class Translator : PhotonCompatible
         {
             for (int j = 0; j < data[i].Length; j++)
             {
-                data[i][j] = data[i][j].Replace("\"", "").Replace("\\", "").Replace("]", "").Replace("|", "\n").Trim();
+                data[i][j] = FixLine(data[i][j]);
                 if (j > 0)
                 {
                     string language = data[1][j];
@@ -149,7 +154,7 @@ public class Translator : PhotonCompatible
         for (int i = 2; i < data.Length; i++)
         {
             for (int j = 0; j < data[i].Length; j++)
-                data[i][j] = data[i][j].Trim().Replace("\"", "").Replace("\\", "").Replace("]", "");
+                data[i][j] = FixLine(data[i][j]);
 
             if (data[i][0].IsNullOrEmpty())
                 continue;

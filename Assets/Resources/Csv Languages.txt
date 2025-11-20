@@ -413,7 +413,7 @@
     ],
     [
       "Archer TextOne",
-      "DEFEND: -2 Sword -\u003e +1 Card."
+      "DEFEND: -1 Action -\u003e +1 Card."
     ],
     [
       "Archer TextTwo",
@@ -549,7 +549,7 @@
     ],
     [
       "Demon TextOne",
-      "ATTACK: -5 Sword -\u003e Opponent loses 5 Health and 1 Action next round."
+      "ATTACK: -5 Sword -\u003e Opponent loses 5 Health, and loses 1 Action next round."
     ],
     [
       "Demon TextTwo",
@@ -601,7 +601,7 @@
     ],
     [
       "Guardian TextOne",
-      "DEFEND: -1 Shield -\u003e An Ally gets +1 Health."
+      "DEFEND: -1 Shield -\u003e You or an Ally gets +1 Health."
     ],
     [
       "Guardian TextTwo",
@@ -634,6 +634,14 @@
     [
       "Warlord TextOne",
       "ATTACK: -1 Card -\u003e Opponent loses 2 Health, and next round they lose 1 Sword and 1 Shield."
+    ],
+    [
+      "Blacksmith ",
+      "Blacksmith"
+    ],
+    [
+      "Blacksmith TextOne",
+      "DEFEND: -2 Sword and -2 Shield -\u003e +1 Card and +1 Action."
     ]
   ]
 }
