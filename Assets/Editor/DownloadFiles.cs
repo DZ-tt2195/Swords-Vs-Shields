@@ -13,7 +13,7 @@ public static class FileManager
     private static string apiKey = "AIzaSyCl_GqHd1-WROqf7i2YddE3zH6vSv3sNTA";
     private static string baseUrl = "https://sheets.googleapis.com/v4/spreadsheets/";
 
-    [MenuItem("Tools/Download From Spreadsheet")]
+    [MenuItem("Tools/Download from spreadsheet")]
     public static void DownloadFiles()
     {
         Debug.Log($"starting downloads");
@@ -51,11 +51,25 @@ public static class FileManager
         string baseText = "";
         string[][] csvFile = Translator.ReadFile("Csv Languages");
 
-        for (int i = 2; i < csvFile.Length; i++)
+        using (StreamWriter writer = new StreamWriter("Assets/Scripts/TestScript.cs"))
         {
-            string key = FixLine(csvFile[i][0]);
-            string text = FixLine(csvFile[i][1]);
-            baseText += $"{key}={text}\n";
+            writer.WriteLine("public enum TranslationKey");
+            writer.WriteLine("{");
+
+            for (int i = 2; i < csvFile.Length; i++)
+            {
+                string key = FixLine(csvFile[i][0]);
+                string value = FixLine(csvFile[i][1]).Replace("u003e", ">");
+
+                baseText += $"{key}={value}\n";
+                key = key.Replace(" ", "_");
+                if (i < csvFile.Length - 1)
+                    writer.WriteLine($"    {key},");
+                else
+                    writer.WriteLine($"    {key}");
+            }
+
+            writer.WriteLine("}");
         }
 
         string FixLine(string line)
@@ -63,8 +77,7 @@ public static class FileManager
             return line.Replace("\"", "").Replace("\\", "").Replace("]", "").Replace("|", "\n").Trim();
         }
 
-        string filePath = $"Assets/Resources/BaseTxtFile.txt";
-        File.WriteAllText($"{filePath}", baseText);
+        File.WriteAllText($"Assets/Resources/BaseTxtFile.txt", baseText);
 
         /*
         string filePath = Path.Combine(Application.persistentDataPath, "BaseTxtFile.txt");

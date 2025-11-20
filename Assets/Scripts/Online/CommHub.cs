@@ -41,31 +41,13 @@ public class CommHub : PhotonCompatible
     [PunRPC]
     void ShareMessage(string logText, bool translate)
     {
-        string targetText = "\n";
-
+        string targetText = "";
         if (translate)
-        {
-            string[] splitUp = logText.Split('-');
-            List<(string, string)> toTranslate = new();
-
-            for (int i = 1; i < splitUp.Length; i += 2)
-            {
-                string first = splitUp[i];
-                string second = first switch
-                {
-                    "Card" => Translator.inst.Translate(splitUp[i + 1]),
-                    _ => splitUp[i + 1]
-                };
-                toTranslate.Add((first, second));
-            }
-            targetText += Translator.inst.Translate($"{splitUp[0]}", toTranslate);
-            targetText = KeywordTooltip.instance.EditText(targetText);
-        }
+            targetText = Translator.inst.SplitAndTranslate(-1, logText);
         else
-        {
-            targetText += logText;
-        }
-        allTexts.text += targetText;
+            targetText = logText;
+        allTexts.text += $"{targetText}\n";
+        ChangeScrolling();
     }
 
     void ChangeScrolling()
