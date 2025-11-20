@@ -9,7 +9,7 @@ using MyBox;
 using UnityEngine.UI;
 using TMPro;
 
-public enum RoomProp { Game, CanPlay, GameOver, JoinAsSpec, MasterDeck, MasterDiscard, CurrentPhase, CurrentRound }
+public enum RoomProp { GameName, CanPlay, GameOver, JoinAsSpec, MasterDeck, MasterDiscard, CurrentPhase, CurrentRound }
 
 [Serializable]
 public class PlayerUI
@@ -81,7 +81,7 @@ public class CreateGame : PhotonCompatible
                 CreatePlayer();
 
                 PlayerPrefs.SetString("LastRoom", PhotonNetwork.CurrentRoom.Name);
-                if (PhotonNetwork.CurrentRoom.Players.Count == (int)PhotonNetwork.CurrentRoom.CustomProperties[RoomProp.CanPlay.ToString()])
+                if (PhotonNetwork.CurrentRoom.Players.Count == (int)GetRoomProperty(RoomProp.CanPlay.ToString()))
                     InstantChangeRoomProp(RoomProp.JoinAsSpec, true, false);
             }
         }
@@ -141,6 +141,7 @@ public class CreateGame : PhotonCompatible
     {
         ExitGames.Client.Photon.Hashtable initialProps = new()
         {
+            [RoomProp.GameOver.ToString()] = false,
             [RoomProp.MasterDiscard.ToString()] = new int[0],
             [RoomProp.CurrentPhase.ToString()] = 0,
             [RoomProp.CurrentRound.ToString()] = 0,

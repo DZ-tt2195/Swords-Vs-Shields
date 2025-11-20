@@ -12,24 +12,24 @@
     ],
     [
       "Acolyte",
-      "DEFEND: -2 Shield -\u003e You get +2 Health.",
+      "DEFEND: -2 Shield -\u003e You or an Ally gets +2 Health.",
       "PLAY: +1 Shield.",
       "4",
       "Defend",
       "Play",
       "Hans Krill|Dominion: Allies|(Acolyte)",
-      "LoseShield, HealPlayer",
+      "LoseShield, HealAny",
       "AddShield"
     ],
     [
       "Angel",
-      "DEFEND: -2 Shield -\u003e All Allies get +1 Health.",
-      "\"\"",
+      "DEFEND: You lose 2 Health -\u003e All Allies get +1 Health.",
+      "#N/A",
       "3",
       "Defend",
       "None",
       "Magali Villeneuve|Oath of the Gatewatch|(Linvala, the Preserver)",
-      "LoseShield, HealAlly, Multiple",
+      "HurtController, HealAlly, Multiple",
       "\"\""
     ],
     [
@@ -46,7 +46,7 @@
     [
       "Bee",
       "ATTACK: -2 Shield -\u003e One Foe loses 2 Health and becomes Stunned next round.",
-      "\"\"",
+      "#N/A",
       "3",
       "Attack",
       "None",
@@ -100,13 +100,13 @@
     ],
     [
       "Gladiator",
-      "ATTACK: -1 Card -\u003e A Foe with an Attack ability loses 4 Health.",
-      "\"\"",
+      "ATTACK: -1 Action -\u003e A Foe with an Attack ability loses 3 Health.",
+      "#N/A",
       "4",
       "Attack",
       "None",
       "Keli Stakenas|Dominion: Empires|(Gladiator)",
-      "DiscardCard, AttackFoe, TargetAttackCard",
+      "LoseAction, AttackFoe, TargetAttackCard",
       "\"\""
     ],
     [
@@ -123,7 +123,7 @@
     [
       "Innkeeper",
       "DEFEND: You lose 3 Health -\u003e An Ally gets +5 Health and becomes Stunned next round.",
-      "\"\"",
+      "#N/A",
       "6",
       "Defend",
       "None",
@@ -156,7 +156,7 @@
     [
       "Ninja",
       "ATTACK: -1 Sword -\u003e One Foe with 3 Health or less loses 3 Health.",
-      "\"\"",
+      "#N/A",
       "3",
       "Attack",
       "None",
@@ -167,7 +167,7 @@
     [
       "Partier",
       "DEFEND: -4 Shield -\u003e You get +1 Health per Ally you have.",
-      "\"\"",
+      "#N/A",
       "5",
       "Defend",
       "None",
@@ -178,7 +178,7 @@
     [
       "Raider",
       "ATTACK: -1 Action -\u003e A Foe with a Defend ability loses 3 Health.",
-      "\"\"",
+      "#N/A",
       "4",
       "Attack",
       "None",
@@ -199,13 +199,13 @@
     ],
     [
       "Skirmisher",
-      "ATTACK: -2 Sword -\u003e Opoonent loses 2 Health.",
+      "ATTACK: -2 Sword -\u003e An Opponent or Foe loses 2 Health.",
       "PLAY: +1 Sword.",
       "4",
       "Attack",
       "Play",
       "Claus Stephan|Dominion: Allies|(Skirmisher)",
-      "LoseSword, AttackPlayer",
+      "LoseSword, AttackAny",
       "AddSword"
     ],
     [
@@ -222,7 +222,7 @@
     [
       "Trader",
       "DEFEND: -1 Action -\u003e Choose one: +2 Sword or +2 Shield.",
-      "\"\"",
+      "#N/A",
       "5",
       "Defend",
       "None",
@@ -233,12 +233,23 @@
     [
       "Trickster",
       "ATTACK: -2 Sword -\u003e Opponent loses 4 Health and gets +2 Sword next round.",
-      "\"\"",
+      "#N/A",
       "5",
       "Attack",
       "None",
       "Mila Pesic|Throne of Eldraine|(Bog Naughty)",
       "LoseSword, AttackPlayer, AddNextSword",
+      "\"\""
+    ],
+    [
+      "Warlord",
+      "ATTACK: -1 Card -\u003e Opponent loses 2 Health, and next round they lose 1 Sword and 1 Shield.",
+      "#N/A",
+      "4",
+      "Attack",
+      "None",
+      "Harald Lieske|Dominion: Allies|(Warlord)",
+      "DiscardCard, AttackPlayer, LoseNextSword, LoseNextShield",
       "\"\""
     ],
     [
@@ -256,7 +267,7 @@
       "Vampire",
       "DEFEND: -3 Sword -\u003e You get +3 Health.",
       "ATTACK: -3 Shield -\u003e Opponent loses 3 Health.",
-      "6",
+      "5",
       "Defend",
       "Attack",
       "Martin Hoffmann|Dominion: Nocturne|(Vampire)",

@@ -1,4 +1,6 @@
 using UnityEngine;
+using System.Collections.Generic;
+using System.Collections;
 
 public class Acolyte : CardType
 {
@@ -17,7 +19,21 @@ public class Acolyte : CardType
     protected override void DoAbilityOne(Player player, Card thisCard, int logged)
     {
         player.ShieldRPC(-2, logged);
-        player.HealthRPC(2, logged);
+        MakeDecision.inst.ChooseTextButton(new() { new($"Pick Player-Player-{player.name}", HealPlayer) }, "Choose One");
+
+        List<MiniCardDisplay> availableTroops = player.AliveTroops();
+        if (availableTroops.Count >= 1)
+            MakeDecision.inst.ChooseDisplayOnScreen(availableTroops, $"Choose One", HealCard, false);
+
+        void HealCard(Card card)
+        {
+            card.HealthRPC(player, 2, logged);
+        }
+
+        void HealPlayer()
+        {
+            player.HealthRPC(2, logged);
+        }
     }
 
     protected override void DoAbilityTwo(Player player, Card thisCard, int logged)

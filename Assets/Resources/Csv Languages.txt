@@ -336,6 +336,10 @@
       "Choose one of $Player$'s Card."
     ],
     [
+      "Pick Player",
+      "$Player$"
+    ],
+    [
       "Use Green Instruction",
       "Use an Ally's Defend ability, or spend Action to play Card."
     ],
@@ -389,7 +393,7 @@
     ],
     [
       "Skirmisher TextOne",
-      "ATTACK: -2 Sword -\u003e Opoonent loses 2 Health."
+      "ATTACK: -2 Sword -\u003e An Opponent or Foe loses 2 Health."
     ],
     [
       "Skirmisher TextTwo",
@@ -402,10 +406,6 @@
     [
       "Trader TextOne",
       "DEFEND: -1 Action -\u003e Choose one: +2 Sword or +2 Shield."
-    ],
-    [
-      "Trader TextTwo",
-      "\"\""
     ],
     [
       "Archer",
@@ -440,20 +440,12 @@
       "ATTACK: -2 Shield -\u003e One Foe loses 2 Health and becomes Stunned next round."
     ],
     [
-      "Bee TextTwo",
-      "\"\""
-    ],
-    [
       "Ninja",
       "Ninja"
     ],
     [
       "Ninja TextOne",
       "ATTACK: -1 Sword -\u003e One Foe with 3 Health or less loses 3 Health."
-    ],
-    [
-      "Ninja TextTwo",
-      "\"\""
     ],
     [
       "Squire",
@@ -485,23 +477,15 @@
     ],
     [
       "Angel TextOne",
-      "DEFEND: -2 Shield -\u003e All Allies get +1 Health."
-    ],
-    [
-      "Angel TextTwo",
-      "\"\""
+      "DEFEND: You lose 2 Health -\u003e All Allies get +1 Health."
     ],
     [
       "Partier",
-      "\"\""
+      "Partier"
     ],
     [
       "Partier TextOne",
       "DEFEND: -4 Shield -\u003e You get +1 Health per Ally you have."
-    ],
-    [
-      "Partier TextTwo",
-      "\"\""
     ],
     [
       "Trickster",
@@ -510,10 +494,6 @@
     [
       "Trickster TextOne",
       "ATTACK: -2 Sword -\u003e Opponent loses 4 Health and gets +2 Sword next round."
-    ],
-    [
-      "Trickster TextTwo",
-      "\"\""
     ],
     [
       "Minstrel",
@@ -533,7 +513,7 @@
     ],
     [
       "Acolyte TextOne",
-      "DEFEND: -2 Shield -\u003e You get +2 Health."
+      "DEFEND: -2 Shield -\u003e You or an Ally gets +2 Health."
     ],
     [
       "Acolyte TextTwo",
@@ -605,11 +585,7 @@
     ],
     [
       "Gladiator TextOne",
-      "ATTACK: -1 Card -\u003e A Foe with an Attack ability loses 4 Health."
-    ],
-    [
-      "Gladiator TextTwo",
-      "\"\""
+      "ATTACK: -1 Action -\u003e A Foe with an Attack ability loses 3 Health."
     ],
     [
       "Raider",
@@ -618,10 +594,6 @@
     [
       "Raider TextOne",
       "ATTACK: -1 Action -\u003e A Foe with a Defend ability loses 3 Health."
-    ],
-    [
-      "Raider TextTwo",
-      "\"\""
     ],
     [
       "Guardian",
@@ -656,8 +628,12 @@
       "DEFEND: You lose 3 Health -\u003e An Ally gets +5 Health and becomes Stunned next round."
     ],
     [
-      "Innkeeper TextTwo",
-      "\"\""
+      "Warlord",
+      "Warlord"
+    ],
+    [
+      "Warlord TextOne",
+      "ATTACK: -1 Card -\u003e Opponent loses 2 Health, and next round they lose 1 Sword and 1 Shield."
     ]
   ]
 }

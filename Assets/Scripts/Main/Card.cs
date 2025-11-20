@@ -60,7 +60,6 @@ public class Card : PhotonCompatible
 
     public void MoveCardRPC(Vector3 newPos, float waitTime, Vector3 newScale)
     {
-        StopAllCoroutines();
         StartCoroutine(MoveCard(newPos, waitTime, newScale));
     }
 
@@ -83,14 +82,12 @@ public class Card : PhotonCompatible
 
     public void FlipCardRPC(float newAlpha, float totalTime, float rotation)
     {
-        StartCoroutine(FlipCard(newAlpha, totalTime, rotation));
+        if (!flipping || this.layout.GetAlpha() != newAlpha)
+            StartCoroutine(FlipCard(newAlpha, totalTime, rotation));
     }
 
     IEnumerator FlipCard(float newAlpha, float totalTime, float rotation)
     {
-        if (flipping || this.layout.GetAlpha() == newAlpha)
-            yield break;
-
         flipping = true;
         transform.localEulerAngles = new Vector3(0, 0, rotation);
         float elapsedTime = 0f;

@@ -31,7 +31,7 @@ public class MiniCardDisplay : MonoBehaviour, IPointerClickHandler
         int currentHealth = card.GetHealth();
         drawX.gameObject.SetActive(currentHealth <= 0);
 
-        string text = $"{currentHealth} Health";
+        string text = $"{currentHealth} {Translator.inst.Translate("Health")}";
         if (!card.CanUseAbility())
             text += $" {Translator.inst.Translate("Stunned")}";
         if (!card.CanTakeDamage())

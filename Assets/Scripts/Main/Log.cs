@@ -216,11 +216,11 @@ public class Log : PhotonCompatible
 
     public void ShareTexts()
     {
-        Debug.Log($"sharing {currentLogTexts.Count} texts");
+        //Debug.Log($"sharing {currentLogTexts.Count} texts");
         int currentPosition = (int)GetPlayerProperty(PhotonNetwork.LocalPlayer, PlayerProp.Position.ToString());
         foreach (LogText nextLog in currentLogTexts)
         {
-            DoFunction(() => AddToPast(currentPosition, nextLog.text, nextLog.indent, nextLog.important));
+            DoFunction(() => AddToPast(currentPosition, nextLog.text, nextLog.indent, nextLog.important), RpcTarget.AllBuffered);
         }
         allCurrent.text = "";
         importantCurrent.text = "";
@@ -400,7 +400,7 @@ public class Log : PhotonCompatible
         if (currentContainer != null)
         {
             currentContainer.complete = true;
-            Debug.Log($"{currentContainer.action} is complete");
+            //Debug.Log($"{currentContainer.action} is complete");
         }
         StartCoroutine(WaitAndContinue());
     }

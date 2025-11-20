@@ -42,27 +42,31 @@ public class CardLayout : MonoBehaviour, IPointerClickHandler
 
     public void FillInCards(CardData dataFile, float alpha, float rotation)
     {
+        bool newCard = storedData != dataFile;
         storedData = dataFile;
         cg.alpha = alpha;
         this.transform.localEulerAngles = new(0, 0, rotation);
         this.rotation = rotation;
 
-        cardName.text = KeywordTooltip.instance.EditText($"{Translator.inst.Translate(dataFile.cardName)} {dataFile.startingHealth} Health");
-        cardArt.sprite = dataFile.sprite;
-        string textOne = Translator.inst.Translate($"{dataFile.cardName} TextOne");
-        string textTwo = Translator.inst.Translate($"{dataFile.cardName} TextTwo");
-
-        if (dataFile.typeTwo == AbilityType.None)
+        if (newCard)
         {
-            UseBigBox(true);
-            ApplyText(bigText, textOne, dataFile.typeOne);
+            cardName.text = KeywordTooltip.instance.EditText($"{Translator.inst.Translate(dataFile.cardName)} {dataFile.startingHealth} {Translator.inst.Translate("Health")}");
+            cardArt.sprite = dataFile.sprite;
+            string textOne = Translator.inst.Translate($"{dataFile.cardName} TextOne");
+            string textTwo = Translator.inst.Translate($"{dataFile.cardName} TextTwo");
 
-        }
-        else
-        {
-            UseBigBox(false);
-            ApplyText(smallTextOne, textOne, dataFile.typeOne);
-            ApplyText(smallTextTwo, textTwo, dataFile.typeTwo);
+            if (dataFile.typeTwo == AbilityType.None)
+            {
+                UseBigBox(true);
+                ApplyText(bigText, textOne, dataFile.typeOne);
+
+            }
+            else
+            {
+                UseBigBox(false);
+                ApplyText(smallTextOne, textOne, dataFile.typeOne);
+                ApplyText(smallTextTwo, textTwo, dataFile.typeTwo);
+            }
         }
     }
 

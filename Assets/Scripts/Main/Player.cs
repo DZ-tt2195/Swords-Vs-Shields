@@ -38,7 +38,7 @@ public class Player : PhotonCompatible
             {
                 DoFunction(() => SendName(PlayerPrefs.GetString("Online Username")), RpcTarget.AllBuffered);
             }
-            Invoke(nameof(StartTurn), 0.5f);
+            Invoke(nameof(StartTurn), 1f);
         }
     }
 
