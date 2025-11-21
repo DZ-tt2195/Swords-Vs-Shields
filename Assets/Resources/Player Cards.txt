@@ -154,6 +154,17 @@
       "LoseSword"
     ],
     [
+      "Mercenary",
+      "ATTACK: -3 Sword -\u003e An Opponent or Foe loses 5 Health.",
+      "PLAY: You lose 3 Health.",
+      "6",
+      "Attack",
+      "Play",
+      "Martin Hoffmann|Dominion: Dark Ages|(Mercenary)",
+      "LoseSword, AttackAny",
+      "HurtController"
+    ],
+    [
       "Minstrel",
       "DEFEND: -1 Card -\u003e Next round, +1 Action.",
       "PLAY: +1 Action.",
@@ -264,17 +275,6 @@
       "\"\""
     ],
     [
-      "Wolf",
-      "DEFEND: -3 Shield -\u003e An Ally with less Health than this becomes Protected this round.",
-      "ATTACK: -3 Sword -\u003e A Foe loses 3 Health.",
-      "5",
-      "Defend",
-      "Attack",
-      "Slawomir Maniak|Eldritch Moon|(Kessig Prowler)",
-      "LoseShield, ProtectCard",
-      "LoseSword, AttackFoe"
-    ],
-    [
       "Vampire",
       "DEFEND: -3 Sword -\u003e You get +3 Health.",
       "ATTACK: -3 Shield -\u003e Opponent loses 3 Health.",
@@ -284,6 +284,17 @@
       "Martin Hoffmann|Dominion: Nocturne|(Vampire)",
       "LoseSword, HealPlayer",
       "LoseShield, AttackPlayer"
+    ],
+    [
+      "Vassal",
+      "DEFEND: Another Ally loses 3 Health -\u003e An Ally becomes Protected this round.",
+      "#N/A",
+      "5",
+      "Defend",
+      "",
+      "Julien Delval|Dominion|(Vassal)",
+      "HurtAlly, ProtectCard",
+      "\"\""
     ]
   ]
 }

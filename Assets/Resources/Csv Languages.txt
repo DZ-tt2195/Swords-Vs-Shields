@@ -520,18 +520,6 @@
       "PLAY: +1 Shield."
     ],
     [
-      "Wolf",
-      "Wolf"
-    ],
-    [
-      "Wolf TextOne",
-      "DEFEND: -3 Shield -\u003e An Ally with less Health than this becomes Protected this round."
-    ],
-    [
-      "Wolf TextTwo",
-      "ATTACK: -3 Sword -\u003e A Foe loses 3 Health."
-    ],
-    [
       "Coven",
       "Coven"
     ],
@@ -642,6 +630,26 @@
     [
       "Blacksmith TextOne",
       "DEFEND: -2 Sword and -2 Shield -\u003e +1 Card and +1 Action."
+    ],
+    [
+      "Vassal",
+      "Vassal"
+    ],
+    [
+      "Vassal TextOne",
+      "DEFEND: Another Ally loses 3 Health -\u003e An Ally becomes Protected this round."
+    ],
+    [
+      "Mercenary",
+      "Mercenary"
+    ],
+    [
+      "Mercenary TextOne",
+      "ATTACK: -3 Sword -\u003e An Opponent or Foe loses 5 Health."
+    ],
+    [
+      "Mercenary TextTwo",
+      "PLAY: You lose 3 Health."
     ]
   ]
 }
