@@ -9,7 +9,7 @@
     ],
     [
       "Last Update",
-      "Last Updated: Nov 19, 2025"
+      "Last Updated: Nov 21, 2025"
     ],
     [
       "Translator Credit",
@@ -601,11 +601,11 @@
     ],
     [
       "Vampire TextOne",
-      "DEFEND: -3 Sword -\u003e You get +3 Health."
+      "DEFEND: -3 Sword -\u003e You get +2 Health."
     ],
     [
       "Vampire TextTwo",
-      "ATTACK: -3 Shield -\u003e Opponent loses 3 Health."
+      "ATTACK: -3 Shield -\u003e Opponent loses 2 Health."
     ],
     [
       "Innkeeper",
@@ -616,12 +616,12 @@
       "DEFEND: You lose 3 Health -\u003e An Ally gets +5 Health and becomes Stunned next round."
     ],
     [
-      "Warlord",
-      "Warlord"
+      "Bureaucrat",
+      "Bureaucrat"
     ],
     [
-      "Warlord TextOne",
-      "ATTACK: -1 Card -\u003e Opponent loses 2 Health, and next round they lose 1 Sword and 1 Shield."
+      "Bureaucrat TextOne",
+      "ATTACK: -4 Shield -\u003e Opponent loses 2 Health, and next round they lose 1 Sword and 1 Shield."
     ],
     [
       "Blacksmith ",
@@ -650,6 +650,26 @@
     [
       "Mercenary TextTwo",
       "PLAY: You lose 3 Health."
+    ],
+    [
+      "Leprechaun",
+      "Leprechaun"
+    ],
+    [
+      "Leprechaun TextOne",
+      "DEFEND: If you have exactly 7 Allies, +2 Sword and +2 Shield; otherwise you lose 2 Health."
+    ],
+    [
+      "Berserker",
+      "Berserker"
+    ],
+    [
+      "Berserker TextOne",
+      "ATTACK: An Opponent or Foe loses 3 Health."
+    ],
+    [
+      "Berserker TextTwo",
+      "PLAY: Next round, -1 Sword and -1 Shield."
     ]
   ]
 }

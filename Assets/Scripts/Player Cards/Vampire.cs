@@ -19,7 +19,7 @@ public class Vampire : CardType
     protected override void DoAbilityOne(Player player, Card thisCard, int logged)
     {
         player.SwordRPC(-3, logged);
-        player.HealthRPC(3, logged);
+        player.HealthRPC(2, logged);
     }
 
     protected override AbilityType CanUseAbiltyTwo(Player player, Card thisCard)
@@ -34,6 +34,6 @@ public class Vampire : CardType
     {
         player.ShieldRPC(-3, logged);
         Player otherPlayer = CreateGame.inst.OtherPlayer(player.myPosition);
-        otherPlayer.HealthRPC(-3, logged);
+        otherPlayer.HealthRPC(-2, logged);
     }
 }

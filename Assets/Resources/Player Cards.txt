@@ -55,6 +55,17 @@
       "\"\""
     ],
     [
+      "Berserker",
+      "ATTACK: An Opponent or Foe loses 3 Health.",
+      "PLAY: Next round, -1 Sword and -1 Shield.",
+      "4",
+      "Attack",
+      "Play",
+      "Julien Delval|Dominion: Hinterlands|(Berserker)",
+      "AttackAny",
+      "LoseNextSword, LoseNextShield"
+    ],
+    [
       "Blacksmith",
       "DEFEND: -2 Sword and -2 Shield -\u003e +1 Card and +1 Action.",
       "#N/A",
@@ -63,6 +74,17 @@
       "None",
       "Julien Delval|Dominion: Allies|(Blacksmith)",
       "LoseShield, LoseSword, DrawCard, AddAction",
+      "\"\""
+    ],
+    [
+      "Bureaucrat",
+      "ATTACK: -4 Shield -\u003e Opponent loses 2 Health, and next round they lose 1 Sword and 1 Shield.",
+      "#N/A",
+      "4",
+      "Attack",
+      "None",
+      "Aaron Miller|Ravnica Allegiance|(Tithe Taker)",
+      "LoseShield, AttackPlayer, LoseNextSword, LoseNextShield",
       "\"\""
     ],
     [
@@ -152,6 +174,17 @@
       "Claus Stephan|Dominion: Renaissance|(Patron)",
       "HurtAlly, HealPlayer",
       "LoseSword"
+    ],
+    [
+      "Leprechaun",
+      "DEFEND: If you have exactly 7 Allies, +2 Sword and +2 Shield; otherwise you lose 2 Health.",
+      "#N/A",
+      "3",
+      "Defend",
+      "None",
+      "Brian Brinlee|Dominion: Nocturne|(Leprechaun)",
+      "AddSword, AddShield, HurtController",
+      "\"\""
     ],
     [
       "Mercenary",
@@ -264,21 +297,10 @@
       "\"\""
     ],
     [
-      "Warlord",
-      "ATTACK: -1 Card -\u003e Opponent loses 2 Health, and next round they lose 1 Sword and 1 Shield.",
-      "#N/A",
-      "4",
-      "Attack",
-      "None",
-      "Harald Lieske|Dominion: Allies|(Warlord)",
-      "DiscardCard, AttackPlayer, LoseNextSword, LoseNextShield",
-      "\"\""
-    ],
-    [
       "Vampire",
-      "DEFEND: -3 Sword -\u003e You get +3 Health.",
-      "ATTACK: -3 Shield -\u003e Opponent loses 3 Health.",
-      "5",
+      "DEFEND: -3 Sword -\u003e You get +2 Health.",
+      "ATTACK: -3 Shield -\u003e Opponent loses 2 Health.",
+      "7",
       "Defend",
       "Attack",
       "Martin Hoffmann|Dominion: Nocturne|(Vampire)",
@@ -291,7 +313,7 @@
       "#N/A",
       "5",
       "Defend",
-      "",
+      "None",
       "Julien Delval|Dominion|(Vassal)",
       "HurtAlly, ProtectCard",
       "\"\""
