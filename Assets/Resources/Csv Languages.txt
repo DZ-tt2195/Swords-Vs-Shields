@@ -465,7 +465,7 @@
     ],
     [
       "Cannon TextOne",
-      "ATTACK: -4 Shield -\u003e Opponent loses 6 Health."
+      "ATTACK: -4 Shield -\u003e An Opponent or Foe loses 6 Health."
     ],
     [
       "Cannon TextTwo",
@@ -573,7 +573,7 @@
     ],
     [
       "Gladiator TextOne",
-      "ATTACK: -1 Action -\u003e A Foe with an Attack ability loses 3 Health."
+      "ATTACK: -2 Sword -\u003e A Foe with an Attack ability loses 3 Health."
     ],
     [
       "Raider",
@@ -581,7 +581,7 @@
     ],
     [
       "Raider TextOne",
-      "ATTACK: -1 Action -\u003e A Foe with a Defend ability loses 3 Health."
+      "ATTACK: -2 Shield -\u003e A Foe with a Defend ability loses 3 Health."
     ],
     [
       "Guardian",
@@ -670,6 +670,14 @@
     [
       "Berserker TextTwo",
       "PLAY: Next round, -1 Sword and -1 Shield."
+    ],
+    [
+      "Barbarian",
+      "Barbarian"
+    ],
+    [
+      "Barbarian TextOne",
+      "ATTACK: -1 Action -\u003e One Foe with 5 Health or more loses 4 Health."
     ]
   ]
 }

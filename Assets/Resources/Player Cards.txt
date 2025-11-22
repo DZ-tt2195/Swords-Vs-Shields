@@ -44,6 +44,17 @@
       "LoseSword, AttackPlayer, PerHand"
     ],
     [
+      "Barbarian",
+      "ATTACK: -1 Action -\u003e One Foe with 5 Health or more loses 4 Health.",
+      "#N/A",
+      "3",
+      "Attack",
+      "None",
+      "",
+      "LoseAction, AttackFoe",
+      "\"\""
+    ],
+    [
       "Bee",
       "ATTACK: -2 Shield -\u003e One Foe loses 2 Health and becomes Stunned next round.",
       "#N/A",
@@ -89,13 +100,13 @@
     ],
     [
       "Cannon",
-      "ATTACK: -4 Shield -\u003e Opponent loses 6 Health.",
+      "ATTACK: -4 Shield -\u003e An Opponent or Foe loses 6 Health.",
       "PLAY: This card becomes Stunned this round.",
       "5",
       "Attack",
       "Play",
       "Julian Kok Joon Wen|Dominaria United|(Artillery Blast)",
-      "LoseShield, AttackPlayer",
+      "LoseShield, AttackAny",
       "StunCard"
     ],
     [
@@ -133,13 +144,13 @@
     ],
     [
       "Gladiator",
-      "ATTACK: -1 Action -\u003e A Foe with an Attack ability loses 3 Health.",
+      "ATTACK: -2 Sword -\u003e A Foe with an Attack ability loses 3 Health.",
       "#N/A",
       "4",
       "Attack",
       "None",
       "Keli Stakenas|Dominion: Empires|(Gladiator)",
-      "LoseAction, AttackFoe, TargetAttackCard",
+      "LoseSword, AttackFoe, TargetAttackCard",
       "\"\""
     ],
     [
@@ -232,13 +243,13 @@
     ],
     [
       "Raider",
-      "ATTACK: -1 Action -\u003e A Foe with a Defend ability loses 3 Health.",
+      "ATTACK: -2 Shield -\u003e A Foe with a Defend ability loses 3 Health.",
       "#N/A",
       "4",
       "Attack",
       "None",
       "Jesse Mead|Dominion: Adventures|(Raid)",
-      "LoseAction, AttackFoe, TargetDefendCard",
+      "LoseShield, AttackFoe, TargetDefendCard",
       "\"\""
     ],
     [

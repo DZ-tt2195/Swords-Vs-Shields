@@ -19,11 +19,6 @@ public class Ninja : CardType
     protected override void DoAbilityOne(Player player, Card thisCard, int logged)
     {
         player.SwordRPC(-1, logged);
-        Log.inst.NewDecisionContainer(() => ChooseAttack(player, thisCard, logged), logged);
-    }
-
-    void ChooseAttack(Player player, Card thisCard, int logged)
-    {
         Player otherPlayer = CreateGame.inst.OtherPlayer(player.myPosition);
         List<MiniCardDisplay> availableTroops = otherPlayer.AliveTroops().Where(display => display.card.GetHealth() <= 3).ToList();
 

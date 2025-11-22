@@ -10,7 +10,7 @@ public class Gladiator : CardType
 
     protected override AbilityType CanUseAbiltyOne(Player player, Card thisCard)
     {
-        if (player.GetAction() >= 1)
+        if (player.GetSword() >= 2)
             return AbilityType.Attack;
         else
             return AbilityType.None;
@@ -18,7 +18,7 @@ public class Gladiator : CardType
 
     protected override void DoAbilityOne(Player player, Card thisCard, int logged)
     {
-        player.ActionRPC(-1, logged);
+        player.SwordRPC(-2, logged);
         Player otherPlayer = CreateGame.inst.OtherPlayer(player.myPosition);
         List<MiniCardDisplay> availableTroops = otherPlayer.AliveTroops().Where(display => IsAttack(display.card.thisCard.dataFile)).ToList();
 

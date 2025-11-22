@@ -2,15 +2,15 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class Raider : CardType
+public class Barbarian : CardType
 {
-    public Raider(CardData dataFile) : base(dataFile)
+    public Barbarian(CardData dataFile) : base(dataFile)
     {
     }
 
     protected override AbilityType CanUseAbiltyOne(Player player, Card thisCard)
     {
-        if (player.GetShield() >= 2)
+        if (player.GetAction() >= 1)
             return AbilityType.Attack;
         else
             return AbilityType.None;
@@ -18,14 +18,9 @@ public class Raider : CardType
 
     protected override void DoAbilityOne(Player player, Card thisCard, int logged)
     {
-        player.ShieldRPC(-2, logged);
+        player.ActionRPC(-1, logged);
         Player otherPlayer = CreateGame.inst.OtherPlayer(player.myPosition);
-        List<MiniCardDisplay> availableTroops = otherPlayer.AliveTroops().Where(display => IsDefend(display.card.thisCard.dataFile)).ToList();
-
-        bool IsDefend(CardData card)
-        {
-            return (card.typeOne == AbilityType.Defend || card.typeTwo == AbilityType.Defend);
-        }
+        List<MiniCardDisplay> availableTroops = otherPlayer.AliveTroops().Where(display => display.card.GetHealth() >= 5).ToList();
 
         if (availableTroops.Count == 0)
         {
@@ -38,7 +33,7 @@ public class Raider : CardType
 
         void Attack(Card card)
         {
-            card.HealthRPC(otherPlayer, -3, logged);
+            card.HealthRPC(otherPlayer, -4, logged);
         }
     }
 }
