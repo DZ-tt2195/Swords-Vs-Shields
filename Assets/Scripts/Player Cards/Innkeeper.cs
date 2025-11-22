@@ -7,9 +7,17 @@ public class Innkeeper : CardType
     {
     }
 
+    protected override AbilityType CanUseAbiltyOne(Player player, Card thisCard)
+    {
+        if (player.GetShield() >= 4)
+            return AbilityType.Defend;
+        else
+            return AbilityType.None;
+    }
+
     protected override void DoAbilityOne(Player player, Card thisCard, int logged)
     {
-        player.HealthRPC(-3, logged);
+        player.ShieldRPC(-4, logged);
         List<MiniCardDisplay> availableTroops = player.AliveTroops();
         if (availableTroops.Count == 0)
         {
@@ -21,7 +29,7 @@ public class Innkeeper : CardType
         }
         void Protect(Card card)
         {
-            card.HealthRPC(player, 5, logged);
+            card.HealthRPC(player, 4, logged);
             card.StunRPC(1, logged);
         }
     }

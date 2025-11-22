@@ -613,7 +613,7 @@
     ],
     [
       "Innkeeper TextOne",
-      "DEFEND: You lose 3 Health -\u003e An Ally gets +5 Health and becomes Stunned next round."
+      "DEFEND: -4 Shield -\u003e An Ally gets +4 Health and becomes Stunned next round."
     ],
     [
       "Bureaucrat",
@@ -678,6 +678,18 @@
     [
       "Barbarian TextOne",
       "ATTACK: -1 Action -\u003e One Foe with 5 Health or more loses 4 Health."
+    ],
+    [
+      "Recruiter",
+      "Recruiter"
+    ],
+    [
+      "Recruiter TextOne",
+      "DEFEND: +1 Action."
+    ],
+    [
+      "Recruiter TextTwo",
+      "ATTACK: -1 Card -\u003e Opponent loses 1 Health per Ally you have."
     ]
   ]
 }

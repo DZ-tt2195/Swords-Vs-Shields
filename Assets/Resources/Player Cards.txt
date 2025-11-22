@@ -50,7 +50,7 @@
       "3",
       "Attack",
       "None",
-      "",
+      "Julien Delval|Dominion: Allies|(Barbarian)",
       "LoseAction, AttackFoe",
       "\"\""
     ],
@@ -102,7 +102,7 @@
       "Cannon",
       "ATTACK: -4 Shield -\u003e An Opponent or Foe loses 6 Health.",
       "PLAY: This card becomes Stunned this round.",
-      "5",
+      "6",
       "Attack",
       "Play",
       "Julian Kok Joon Wen|Dominaria United|(Artillery Blast)",
@@ -166,13 +166,13 @@
     ],
     [
       "Innkeeper",
-      "DEFEND: You lose 3 Health -\u003e An Ally gets +5 Health and becomes Stunned next round.",
+      "DEFEND: -4 Shield -\u003e An Ally gets +4 Health and becomes Stunned next round.",
       "#N/A",
       "6",
       "Defend",
       "None",
       "Eric Deschamps|Adventures of the Forgotten Realm|(Prosperous Innkeeper)",
-      "HurtController, StunCard, HealAlly",
+      "LoseShield, StunCard, HealAlly",
       "\"\""
     ],
     [
@@ -251,6 +251,17 @@
       "Jesse Mead|Dominion: Adventures|(Raid)",
       "LoseShield, AttackFoe, TargetDefendCard",
       "\"\""
+    ],
+    [
+      "Recruiter",
+      "DEFEND: +1 Action.",
+      "ATTACK: -1 Card -\u003e Opponent loses 1 Health per Ally you have.",
+      "3",
+      "Defend",
+      "Attack",
+      "",
+      "AddAction",
+      "DiscardCard, AttackPlayer, Variable"
     ],
     [
       "Security",
