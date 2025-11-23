@@ -8,19 +8,10 @@ public class Ninja : CardType
     {
     }
 
-    protected override AbilityType CanUseAbiltyOne(Player player, Card thisCard)
-    {
-        if (player.GetSword() >= 1)
-            return AbilityType.Attack;
-        else
-            return AbilityType.None;
-    }
-
     protected override void DoAbilityOne(Player player, Card thisCard, int logged)
     {
-        player.SwordRPC(-1, logged);
         Player otherPlayer = CreateGame.inst.OtherPlayer(player.myPosition);
-        List<MiniCardDisplay> availableTroops = otherPlayer.AliveTroops().Where(display => display.card.GetHealth() <= 3).ToList();
+        List<MiniCardDisplay> availableTroops = otherPlayer.AliveTroops().Where(display => display.card.GetHealth() <= 2).ToList();
 
         if (availableTroops.Count == 0)
         {
@@ -33,7 +24,7 @@ public class Ninja : CardType
 
         void Attack(Card card)
         {
-            card.HealthRPC(otherPlayer, -3, logged);
+            card.HealthRPC(otherPlayer, -2, logged);
         }
     }
 }

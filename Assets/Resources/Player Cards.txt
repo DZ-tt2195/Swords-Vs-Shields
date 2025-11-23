@@ -88,6 +88,16 @@
       "\"\""
     ],
     [
+      "Bishop",
+      "DEFEND: -3 Shield -\u003e An Ally's Health is raised to 4.",
+      "#N/A",
+      "5",
+      "Defend",
+      "None",
+      "Tommy Arnold|Ixalan|(Bishop of Rebirth)",
+      "LoseShield, HealAlly"
+    ],
+    [
       "Bureaucrat",
       "ATTACK: -4 Shield -\u003e Opponent loses 2 Health, and next round they lose 1 Sword and 1 Shield.",
       "#N/A",
@@ -209,6 +219,17 @@
       "HurtController"
     ],
     [
+      "Mob",
+      "DEFEND: This gets +1 Health.",
+      "ATTACK: -1 Action -\u003e Opponent loses 1 Health per Health this has.",
+      "2",
+      "Defend",
+      "Attack",
+      "Ryan Pancoast|Innistrad: Midnight Hunt|(Unruly Mob)",
+      "HealAlly",
+      "LoseAction, AttackPlayer"
+    ],
+    [
       "Minstrel",
       "DEFEND: -1 Card -\u003e Next round, +1 Action.",
       "PLAY: +1 Action.",
@@ -221,13 +242,13 @@
     ],
     [
       "Ninja",
-      "ATTACK: -1 Sword -\u003e One Foe with 3 Health or less loses 3 Health.",
+      "ATTACK: One Foe with 2 Health or less loses 2 Health.",
       "#N/A",
       "3",
       "Attack",
       "None",
       "Elisa Cella|Dominion: Rising Sun|(Ninja)",
-      "LoseSword, AttackFoe, HealthOrLess",
+      "AttackFoe, HealthOrLess",
       "\"\""
     ],
     [
@@ -259,7 +280,7 @@
       "3",
       "Defend",
       "Attack",
-      "",
+      "Julien Delval|Dominion: Renaissance|(Recruiter)",
       "AddAction",
       "DiscardCard, AttackPlayer, Variable"
     ],

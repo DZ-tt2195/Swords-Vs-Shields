@@ -9,7 +9,7 @@
     ],
     [
       "Last Update",
-      "Last Updated: Nov 21, 2025"
+      "Last Updated: Nov 23, 2025"
     ],
     [
       "Translator Credit",
@@ -188,6 +188,50 @@
       "Waiting on $Num$ players..."
     ],
     [
+      "Confirm",
+      "Confirm"
+    ],
+    [
+      "Decline",
+      "Decline"
+    ],
+    [
+      "Choose One Instruction",
+      "Choose one."
+    ],
+    [
+      "Discard Instruction",
+      "Discard 1 Card."
+    ],
+    [
+      "Target Instruction",
+      "Choose one of $Player$'s Card."
+    ],
+    [
+      "Pick Player",
+      "$Player$"
+    ],
+    [
+      "Use Green Instruction",
+      "Use an Ally's Defend ability, or spend Action to play Card."
+    ],
+    [
+      "Use Red Instruction",
+      "Use an Ally's Attack ability."
+    ],
+    [
+      "Pause to Read",
+      "A pause to let you read Mobs."
+    ],
+    [
+      "Pause to Undo",
+      "Last chance to undo anyMob."
+    ],
+    [
+      "Done",
+      "Done"
+    ],
+    [
       "Card",
       "Card"
     ],
@@ -316,50 +360,6 @@
       "$Card$ is Protected on Round $Num$."
     ],
     [
-      "Confirm",
-      "Confirm"
-    ],
-    [
-      "Decline",
-      "Decline"
-    ],
-    [
-      "Choose One Instruction",
-      "Choose one."
-    ],
-    [
-      "Discard Instruction",
-      "Discard 1 Card."
-    ],
-    [
-      "Target Instruction",
-      "Choose one of $Player$'s Card."
-    ],
-    [
-      "Pick Player",
-      "$Player$"
-    ],
-    [
-      "Use Green Instruction",
-      "Use an Ally's Defend ability, or spend Action to play Card."
-    ],
-    [
-      "Use Red Instruction",
-      "Use an Ally's Attack ability."
-    ],
-    [
-      "Pause to Read",
-      "A pause to let you read things."
-    ],
-    [
-      "Pause to Undo",
-      "Last chance to undo anything."
-    ],
-    [
-      "Done",
-      "Done"
-    ],
-    [
       "Game Over",
       "Game Over"
     ],
@@ -445,7 +445,7 @@
     ],
     [
       "Ninja TextOne",
-      "ATTACK: -1 Sword -\u003e One Foe with 3 Health or less loses 3 Health."
+      "ATTACK: One Foe with 2 Health or less loses 2 Health."
     ],
     [
       "Squire",
@@ -690,6 +690,26 @@
     [
       "Recruiter TextTwo",
       "ATTACK: -1 Card -\u003e Opponent loses 1 Health per Ally you have."
+    ],
+    [
+      "Mob",
+      "Mob"
+    ],
+    [
+      "Mob TextOne",
+      "DEFEND: This gets +1 Health."
+    ],
+    [
+      "Mob TextTwo",
+      "ATTACK: -1 Action -\u003e Opponent loses 1 Health per Health this has."
+    ],
+    [
+      "Bishop",
+      "Bishop"
+    ],
+    [
+      "Bishop TextOne",
+      "DEFEND: -3 Shield -\u003e An Ally's Health is raised to 4."
     ]
   ]
 }
