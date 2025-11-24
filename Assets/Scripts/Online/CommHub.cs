@@ -41,11 +41,7 @@ public class CommHub : PhotonCompatible
     [PunRPC]
     void ShareMessage(string logText, bool translate)
     {
-        string targetText = "";
-        if (translate)
-            targetText = Translator.inst.SplitAndTranslate(-1, logText);
-        else
-            targetText = logText;
+        string targetText = (translate) ? Translator.inst.SplitAndTranslate(-1, logText) : logText;
         allTexts.text += $"{targetText}\n";
         ChangeScrolling();
     }
@@ -64,14 +60,14 @@ public class CommHub : PhotonCompatible
 
     public override void OnPlayerLeftRoom(Photon.Realtime.Player otherPlayer)
     {
-        if (PhotonNetwork.IsMasterClient && (int)GetPlayerProperty(otherPlayer, PlayerProp.Position.ToString()) >= 0)
+        if (PhotonNetwork.IsMasterClient && (int)GetPlayerProperty(otherPlayer, ConstantStrings.Position) >= 0)
         {
             if (otherPlayer.IsInactive)
             {
                 ShareMessageRPC($"Player Disconnected-Player-{otherPlayer.NickName}", true);
-                InstantChangePlayerProp(otherPlayer, PlayerProp.Waiting, false);
+                InstantChangePlayerProp(otherPlayer, ConstantStrings.Waiting, false);
             }
-            else if ((bool)GetRoomProperty(RoomProp.GameOver.ToString()))
+            else if ((bool)GetRoomProperty(ConstantStrings.GameOver.ToString()))
             {
                 ShareMessageRPC($"Player Quit-Player-{otherPlayer.NickName}", true);
             }

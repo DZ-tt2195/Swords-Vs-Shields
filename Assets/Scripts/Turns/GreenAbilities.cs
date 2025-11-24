@@ -72,7 +72,7 @@ public class GreenAbilities : Turn
     {
         List<Card> myHand = player.GetHand();
         List<Card> myTroops = player.GetTroops();
-        List<string> myCardsPlayed = TurnManager.inst.GetStringList(PlayerProp.AllCardsPlayed, player);
+        List<string> myCardsPlayed = TurnManager.inst.GetStringList(ConstantStrings.AllCardsPlayed, player);
 
         if (!Log.inst.forward)
         {
@@ -84,11 +84,11 @@ public class GreenAbilities : Turn
         {
             myHand.Remove(cardToPlay);
             myTroops.Add(cardToPlay);
-            int currentRound = (int)PhotonCompatible.GetRoomProperty(RoomProp.CurrentRound);
+            int currentRound = (int)PhotonCompatible.GetRoomProperty(ConstantStrings.CurrentRound);
             myCardsPlayed.Add($"Played Card Info-Card-{cardToPlay.name}-Num-{currentRound}");
         }
-        TurnManager.inst.WillChangePlayerProperty(player, PlayerProp.MyHand, TurnManager.inst.ConvertCardList(myHand));
-        TurnManager.inst.WillChangePlayerProperty(player, PlayerProp.MyTroops, TurnManager.inst.ConvertCardList(myTroops));
-        TurnManager.inst.WillChangePlayerProperty(player, PlayerProp.AllCardsPlayed, myCardsPlayed.ToArray());
+        TurnManager.inst.WillChangePlayerProperty(player, ConstantStrings.MyHand, TurnManager.inst.ConvertCardList(myHand));
+        TurnManager.inst.WillChangePlayerProperty(player, ConstantStrings.MyTroops, TurnManager.inst.ConvertCardList(myTroops));
+        TurnManager.inst.WillChangePlayerProperty(player, ConstantStrings.AllCardsPlayed, myCardsPlayed.ToArray());
     }
 }

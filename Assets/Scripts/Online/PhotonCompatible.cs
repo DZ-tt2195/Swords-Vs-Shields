@@ -133,7 +133,7 @@ public class PhotonCompatible : MonoBehaviourPunCallbacks
 
 #region Properties
 
-    public static void InstantChangePlayerProp(Photon.Realtime.Player player, PlayerProp propertyName, object changeToThis, object expected = null)
+    public static void InstantChangePlayerProp(Photon.Realtime.Player player, string propertyName, object changeToThis, object expected = null)
     {
         ExitGames.Client.Photon.Hashtable changeTable = new() { { propertyName.ToString(), changeToThis } };
         ExitGames.Client.Photon.Hashtable expectedTable = null;
@@ -149,7 +149,7 @@ public class PhotonCompatible : MonoBehaviourPunCallbacks
         }
     }
 
-    public static void InstantChangePlayerProp(Player playerObject, PlayerProp propertyName, object changeToThis, object expected = null)
+    public static void InstantChangePlayerProp(Player playerObject, string propertyName, object changeToThis, object expected = null)
         => InstantChangePlayerProp(playerObject.photonView.Controller, propertyName, changeToThis, expected);
 
     public static object GetPlayerProperty(Photon.Realtime.Player player, string propertyName)
@@ -170,7 +170,7 @@ public class PhotonCompatible : MonoBehaviourPunCallbacks
         }
     }
 
-    public static object GetPlayerProperty(Player player, PlayerProp propertyName) => GetPlayerProperty(player.photonView.Owner, propertyName.ToString());
+    public static object GetPlayerProperty(Player player, string propertyName) => GetPlayerProperty(player.photonView.Owner, propertyName);
 
     public static void InstantChangeRoomProp(string propertyName, object changeToThis, object expected = null)
     {
@@ -188,14 +188,8 @@ public class PhotonCompatible : MonoBehaviourPunCallbacks
         }
     }
 
-    public static void InstantChangeRoomProp(RoomProp propertyName, object changeToThis, object expected = null)
-        => InstantChangeRoomProp(propertyName.ToString(), changeToThis, expected);
-
     public static object GetRoomProperty(string propertyName)
         => PhotonNetwork.CurrentRoom.CustomProperties[propertyName];
-
-    public static object GetRoomProperty(RoomProp propertyName)
-        => GetRoomProperty(propertyName.ToString());
 
     #endregion
 
@@ -208,7 +202,7 @@ public class PhotonCompatible : MonoBehaviourPunCallbacks
 
         foreach (Photon.Realtime.Player nextPlayer in PhotonNetwork.CurrentRoom.Players.Values.OrderBy(p => p.ActorNumber))
         {
-            if ((int)GetPlayerProperty(nextPlayer, PlayerProp.Position.ToString()) == -1)
+            if ((int)GetPlayerProperty(nextPlayer, ConstantStrings.Position) == -1)
             {
                 spectators.Add(nextPlayer);
                 if (printLog)

@@ -20,9 +20,4 @@ public class Investor : CardType
         thisCard.HealthRPC(player, -2, logged);
         player.HealthRPC(3, logged);
     }
-
-    protected override void DoAbilityTwo(Player player, Card thisCard, int logged)
-    {
-        player.SwordRPC(-2, logged);
-    }
 }

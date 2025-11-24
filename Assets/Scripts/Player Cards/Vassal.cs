@@ -4,13 +4,17 @@ using System.Linq;
 
 public class Vassal : CardType
 {
+    List<MiniCardDisplay> canHurt = new();
+
     public Vassal(CardData dataFile) : base(dataFile)
     {
     }
 
     protected override AbilityType CanUseAbiltyOne(Player player, Card thisCard)
     {
-        if (player.GetTroops().Count >= 2)
+        canHurt = player.AliveTroops().Where(display => display.card != thisCard && display.card.GetHealth() >= 2).ToList();
+
+        if (canHurt.Count >= 1)
             return AbilityType.Defend;
         else
             return AbilityType.None;
@@ -18,8 +22,7 @@ public class Vassal : CardType
 
     protected override void DoAbilityOne(Player player, Card thisCard, int logged)
     {
-        List<MiniCardDisplay> availableTroops = player.AliveTroops().Where(display => display.card != thisCard).ToList();
-        MakeDecision.inst.ChooseDisplayOnScreen(availableTroops, $"Target Instruction-Player-{player.name}", HurtCard, true);
+        MakeDecision.inst.ChooseDisplayOnScreen(canHurt, $"Target Instruction-Player-{player.name}", HurtCard, true);
 
         void HurtCard(Card card)
         {

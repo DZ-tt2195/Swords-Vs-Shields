@@ -437,7 +437,7 @@
     ],
     [
       "Bee TextOne",
-      "ATTACK: -2 Shield -\u003e One Foe loses 2 Health and becomes Stunned next round."
+      "ATTACK: -2 Shield -\u003e One Foe loses 1 Health and becomes Stunned next round."
     ],
     [
       "Ninja",
@@ -469,7 +469,7 @@
     ],
     [
       "Cannon TextTwo",
-      "PLAY: This card becomes Stunned this round."
+      "PLAY: This becomes Stunned this round."
     ],
     [
       "Angel",
@@ -493,7 +493,7 @@
     ],
     [
       "Trickster TextOne",
-      "ATTACK: -2 Sword -\u003e Opponent loses 4 Health and gets +2 Sword next round."
+      "ATTACK: -1 Sword -\u003e Opponent loses 3 Health and gets +2 Sword next round."
     ],
     [
       "Minstrel",
@@ -501,7 +501,7 @@
     ],
     [
       "Minstrel TextOne",
-      "DEFEND: -1 Card -\u003e Next round, +1 Action."
+      "DEFEND: -2 Card -\u003e Next round, +1 Action."
     ],
     [
       "Minstrel TextTwo",
@@ -562,10 +562,6 @@
     [
       "Investor TextOne",
       "DEFEND: This loses 2 Health -\u003e You get +3 Health."
-    ],
-    [
-      "Investor TextTwo",
-      "PLAY: -2 Sword."
     ],
     [
       "Gladiator",
@@ -649,7 +645,7 @@
     ],
     [
       "Mercenary TextTwo",
-      "PLAY: You lose 3 Health."
+      "PLAY: Next round, -1 Sword and -1 Shield."
     ],
     [
       "Leprechaun",
@@ -669,7 +665,7 @@
     ],
     [
       "Berserker TextTwo",
-      "PLAY: Next round, -1 Sword and -1 Shield."
+      "PLAY: Next round, -1 Action."
     ],
     [
       "Barbarian",
@@ -689,7 +685,7 @@
     ],
     [
       "Recruiter TextTwo",
-      "ATTACK: -1 Card -\u003e Opponent loses 1 Health per Ally you have."
+      "ATTACK: -2 Card -\u003e Opponent loses 1 Health per Ally you have."
     ],
     [
       "Mob",
@@ -710,6 +706,26 @@
     [
       "Bishop TextOne",
       "DEFEND: -3 Shield -\u003e An Ally's Health is raised to 4."
+    ],
+    [
+      "Hunter",
+      "Hunter"
+    ],
+    [
+      "Hunter TextOne",
+      "ATTACK: Opponent loses 4 Health. A Foe becomes Protected this round and next round."
+    ],
+    [
+      "Researcher",
+      "Researcher"
+    ],
+    [
+      "Researcher TextOne",
+      "DEFEND: Next round, -1 Sword and -1 Shield."
+    ],
+    [
+      "Researcher TextTwo",
+      "PLAY: +2 Card."
     ]
   ]
 }

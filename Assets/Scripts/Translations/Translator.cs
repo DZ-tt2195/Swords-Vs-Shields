@@ -247,7 +247,7 @@ public class Translator : PhotonCompatible
             toTranslate.Add((first, second));
         }
 
-        if (TranslationExists($"{main} Others") && (int)PhotonNetwork.LocalPlayer.CustomProperties[PlayerProp.Position.ToString()] != owner)
+        if (TranslationExists($"{main} Others") && (int)PhotonNetwork.LocalPlayer.CustomProperties[ConstantStrings.Position] != owner)
             targetText += Translate($"{main} Others", toTranslate);
         else
             targetText += Translate($"{main}", toTranslate);

@@ -6,7 +6,7 @@ public class RedAbilities : Turn
 {
     public override void MasterStart()
     {
-        int currentRound = (int)PhotonCompatible.GetRoomProperty(RoomProp.CurrentRound);
+        int currentRound = (int)PhotonCompatible.GetRoomProperty(ConstantStrings.CurrentRound);
         Log.inst.MasterText($"Use Red-Num-{currentRound}");
     }
 

@@ -47,7 +47,7 @@
       "Barbarian",
       "ATTACK: -1 Action -\u003e One Foe with 5 Health or more loses 4 Health.",
       "#N/A",
-      "3",
+      "4",
       "Attack",
       "None",
       "Julien Delval|Dominion: Allies|(Barbarian)",
@@ -56,9 +56,9 @@
     ],
     [
       "Bee",
-      "ATTACK: -2 Shield -\u003e One Foe loses 2 Health and becomes Stunned next round.",
+      "ATTACK: -2 Shield -\u003e One Foe loses 1 Health and becomes Stunned next round.",
       "#N/A",
-      "3",
+      "4",
       "Attack",
       "None",
       "Tom Wanerstrand|Time Spiral|(Unyaro Bees)",
@@ -68,13 +68,13 @@
     [
       "Berserker",
       "ATTACK: An Opponent or Foe loses 3 Health.",
-      "PLAY: Next round, -1 Sword and -1 Shield.",
-      "4",
+      "PLAY: Next round, -1 Action.",
+      "5",
       "Attack",
       "Play",
       "Julien Delval|Dominion: Hinterlands|(Berserker)",
       "AttackAny",
-      "LoseNextSword, LoseNextShield"
+      "LoseNextAction"
     ],
     [
       "Blacksmith",
@@ -95,7 +95,19 @@
       "Defend",
       "None",
       "Tommy Arnold|Ixalan|(Bishop of Rebirth)",
-      "LoseShield, HealAlly"
+      "LoseShield, HealAlly",
+      "\"\""
+    ],
+    [
+      "Hunter",
+      "ATTACK: Opponent loses 4 Health. A Foe becomes Protected this round and next round.",
+      "#N/A",
+      "4",
+      "Attack",
+      "None",
+      "Julien Delval|Dominion: Allies|(Hunter)",
+      "AttackPlayer, ProtectCard",
+      "\"\""
     ],
     [
       "Bureaucrat",
@@ -111,7 +123,7 @@
     [
       "Cannon",
       "ATTACK: -4 Shield -\u003e An Opponent or Foe loses 6 Health.",
-      "PLAY: This card becomes Stunned this round.",
+      "PLAY: This becomes Stunned this round.",
       "6",
       "Attack",
       "Play",
@@ -134,7 +146,7 @@
       "Demon",
       "ATTACK: -5 Sword -\u003e Opponent loses 5 Health, and loses 1 Action next round.",
       "PLAY: An Ally loses 3 Health.",
-      "6",
+      "5",
       "Attack",
       "Play",
       "Vincent Proce|Guilds of Ravnica|(Doom Whisperer)",
@@ -145,7 +157,7 @@
       "Dragon",
       "ATTACK: -6 Sword -\u003e All Foes lose 2 Health.",
       "PLAY: -1 Card.",
-      "8",
+      "7",
       "Attack",
       "Play",
       "Josh Hass|Amonkhet: Invocations|(Omniscience)",
@@ -188,13 +200,13 @@
     [
       "Investor",
       "DEFEND: This loses 2 Health -\u003e You get +3 Health.",
-      "PLAY: -2 Sword.",
-      "6",
+      "#N/A",
+      "4",
       "Defend",
-      "Play",
+      "None",
       "Claus Stephan|Dominion: Renaissance|(Patron)",
       "HurtAlly, HealPlayer",
-      "LoseSword"
+      "\"\""
     ],
     [
       "Leprechaun",
@@ -210,13 +222,13 @@
     [
       "Mercenary",
       "ATTACK: -3 Sword -\u003e An Opponent or Foe loses 5 Health.",
-      "PLAY: You lose 3 Health.",
-      "6",
+      "PLAY: Next round, -1 Sword and -1 Shield.",
+      "5",
       "Attack",
       "Play",
       "Martin Hoffmann|Dominion: Dark Ages|(Mercenary)",
       "LoseSword, AttackAny",
-      "HurtController"
+      "LoseNextSword, LoseNextShield"
     ],
     [
       "Mob",
@@ -231,9 +243,9 @@
     ],
     [
       "Minstrel",
-      "DEFEND: -1 Card -\u003e Next round, +1 Action.",
+      "DEFEND: -2 Card -\u003e Next round, +1 Action.",
       "PLAY: +1 Action.",
-      "4",
+      "2",
       "Defend",
       "Play",
       "Guillaume Ducos|Dominion: Dark Ages|(Wandering Minstrel)",
@@ -276,13 +288,24 @@
     [
       "Recruiter",
       "DEFEND: +1 Action.",
-      "ATTACK: -1 Card -\u003e Opponent loses 1 Health per Ally you have.",
+      "ATTACK: -2 Card -\u003e Opponent loses 1 Health per Ally you have.",
       "3",
       "Defend",
       "Attack",
       "Julien Delval|Dominion: Renaissance|(Recruiter)",
       "AddAction",
       "DiscardCard, AttackPlayer, Variable"
+    ],
+    [
+      "Researcher",
+      "DEFEND: Next round, -1 Sword and -1 Shield.",
+      "PLAY: +2 Card.",
+      "3",
+      "Defend",
+      "Play",
+      "Lie Setiawan|Strixhaven: School of Mages|(Solve the Equation)",
+      "LoseNextSword, LoseNextShield",
+      "DrawCard"
     ],
     [
       "Security",
@@ -310,7 +333,7 @@
       "Squire",
       "DEFEND: -3 Shield -\u003e Next round, +2 Sword.",
       "PLAY: +1 Card.",
-      "3",
+      "4",
       "Defend",
       "Play",
       "Anthony Plumbo|Ixalan|(Seekers' Squire)",
@@ -321,7 +344,7 @@
       "Trader",
       "DEFEND: -1 Action -\u003e Choose one: +2 Sword or +2 Shield.",
       "#N/A",
-      "5",
+      "6",
       "Defend",
       "None",
       "Elisa Cella|Dominion: Renaissance|(Silk Merchant)",
@@ -330,7 +353,7 @@
     ],
     [
       "Trickster",
-      "ATTACK: -2 Sword -\u003e Opponent loses 4 Health and gets +2 Sword next round.",
+      "ATTACK: -1 Sword -\u003e Opponent loses 3 Health and gets +2 Sword next round.",
       "#N/A",
       "5",
       "Attack",

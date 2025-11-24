@@ -29,7 +29,6 @@ public class Berserker : CardType
 
     protected override void DoAbilityTwo(Player player, Card thisCard, int logged)
     {
-        player.NextRoundShield(-1);
-        player.NextRoundSword(-1);
+        player.NextRoundAction(-1);
     }
 }

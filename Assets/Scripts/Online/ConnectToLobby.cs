@@ -163,22 +163,23 @@ public class ConnectToLobby : MonoBehaviourPunCallbacks
         int counter = 0;
         foreach (RoomInfo room in roomList)
         {
-            if (room.CustomProperties.ContainsKey(RoomProp.GameName.ToString())
-                && room.CustomProperties.ContainsKey(RoomProp.CanPlay.ToString())
-                && room.CustomProperties.ContainsKey(RoomProp.JoinAsSpec.ToString())
-                && room.CustomProperties.ContainsKey(RoomProp.GameOver.ToString()))
+            if (room.CustomProperties.ContainsKey(ConstantStrings.GameName)
+                && room.CustomProperties.ContainsKey(ConstantStrings.CanPlay)
+                && room.CustomProperties.ContainsKey(ConstantStrings.JoinAsSpec)
+                && room.CustomProperties.ContainsKey(ConstantStrings.GameOver))
             {
-                if (room.CustomProperties[RoomProp.GameName.ToString()].Equals(Application.productName)
+                if (room.CustomProperties[ConstantStrings.GameName].Equals(Application.productName)
                     && room.PlayerCount < room.MaxPlayers && room.MaxPlayers >= 2 && room.IsVisible
-                    && counter < listOfJoinButtons.Count && !(bool)room.CustomProperties[RoomProp.GameOver.ToString()])
+                    && counter < listOfJoinButtons.Count && !(bool)room.CustomProperties[ConstantStrings.GameOver])
                 {
                     JoinRoomButton nextJoin = listOfJoinButtons[counter];
                     nextJoin.transform.SetParent(keepJoinButtons);
                     nextJoin.button.onClick.AddListener(() => JoinRoom(room.Name));
-                    nextJoin.button.image.color = ((bool)room.CustomProperties[RoomProp.JoinAsSpec.ToString()]) ? Color.yellow : Color.white;
+                    nextJoin.button.image.color = ((bool)room.CustomProperties[ConstantStrings.JoinAsSpec]) ? Color.yellow : Color.white;
 
                     nextJoin.thisName.text = room.Name;
-                    nextJoin.playerCount.text = Translator.inst.Translate($"Player Count", new() { ("Current", $"{room.PlayerCount}"), ("Max", $"{(int)room.CustomProperties[RoomProp.CanPlay.ToString()]}") });
+                    nextJoin.playerCount.text = Translator.inst.Translate($"Player Count", new()
+                    { ("Current", $"{room.PlayerCount}"), ("Max", $"{(int)room.CustomProperties[ConstantStrings.CanPlay]}") });
                     counter++;
                 }
             }
@@ -189,10 +190,10 @@ public class ConnectToLobby : MonoBehaviourPunCallbacks
     {
         ExitGames.Client.Photon.Hashtable customProps = new()
         {
-            { RoomProp.GameName.ToString(), Application.productName },
-            { RoomProp.CanPlay.ToString(), 2 },
-            { RoomProp.JoinAsSpec.ToString(), false },
-            { RoomProp.GameOver.ToString(), false },
+            { ConstantStrings.GameName, Application.productName },
+            { ConstantStrings.CanPlay, 2 },
+            { ConstantStrings.JoinAsSpec, false },
+            { ConstantStrings.GameOver, false },
         };
 
         RoomOptions options = new()
@@ -201,7 +202,7 @@ public class ConnectToLobby : MonoBehaviourPunCallbacks
             PlayerTtl = Application.isEditor ? 15000 : 120000,
             EmptyRoomTtl = 10000,
             CustomRoomProperties = customProps,
-            CustomRoomPropertiesForLobby = new string[] { RoomProp.GameName.ToString(), RoomProp.CanPlay.ToString(), RoomProp.JoinAsSpec.ToString(), RoomProp.GameOver.ToString() }
+            CustomRoomPropertiesForLobby = new string[] { ConstantStrings.GameName, ConstantStrings.CanPlay, ConstantStrings.JoinAsSpec, ConstantStrings.GameOver }
         };
 
         PhotonNetwork.CreateRoom(PlayerPrefs.GetString("Online Username"), options);

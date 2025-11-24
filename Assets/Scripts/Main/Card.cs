@@ -129,28 +129,28 @@ public class Card : PhotonCompatible
 
     public void StunRPC(int increment, int logged = 0)
     {
-        int roundNumber = (int)GetRoomProperty(RoomProp.CurrentRound) + increment;
+        int roundNumber = (int)GetRoomProperty(ConstantStrings.CurrentRound) + increment;
         Log.inst.AddMyText($"Stun Card-Card-{this.name}-Num-{roundNumber}", false, logged);
         Log.inst.NewRollback(() => AddToArray(roundNumber, StunString()));
     }
 
     public bool CanUseAbility()
     {
-        int currentRound = (int)GetRoomProperty(RoomProp.CurrentRound);
+        int currentRound = (int)GetRoomProperty(ConstantStrings.CurrentRound);
         int[] stunArray = (int[])GetRoomProperty(StunString());
         return !(stunArray.Contains(currentRound));
     }
 
     public void ProtectRPC(int increment, int logged = 0)
     {
-        int roundNumber = (int)GetRoomProperty(RoomProp.CurrentRound) + increment;
+        int roundNumber = (int)GetRoomProperty(ConstantStrings.CurrentRound) + increment;
         Log.inst.AddMyText($"Protect Card-Card-{this.name}-Num-{roundNumber}", false, logged);
         Log.inst.NewRollback(() => AddToArray(roundNumber, ProtectString()));
     }
 
     public bool CanTakeDamage()
     {
-        int currentRound = (int)GetRoomProperty(RoomProp.CurrentRound);
+        int currentRound = (int)GetRoomProperty(ConstantStrings.CurrentRound);
         int[] protectArray = (int[])GetRoomProperty(ProtectString());
         return !(protectArray.Contains(currentRound));
     }

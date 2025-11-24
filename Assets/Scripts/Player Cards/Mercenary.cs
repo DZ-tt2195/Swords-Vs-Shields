@@ -38,6 +38,7 @@ public class Mercenary : CardType
 
     protected override void DoAbilityTwo(Player player, Card thisCard, int logged)
     {
-        player.HealthRPC(-3, logged);
+        player.NextRoundSword(-1);
+        player.NextRoundShield(-1);
     }
 }

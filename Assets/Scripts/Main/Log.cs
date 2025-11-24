@@ -182,7 +182,7 @@ public class Log : PhotonCompatible
             LogText saveText = new(logText, indent, important);
             currentLogTexts.Add(saveText);
 
-            int currentPosition = (int)PhotonNetwork.LocalPlayer.CustomProperties[PlayerProp.Position.ToString()];
+            int currentPosition = (int)PhotonNetwork.LocalPlayer.CustomProperties[ConstantStrings.Position];
             string targetText = $"{Translator.inst.SplitAndTranslate(currentPosition, logText, indent)}\n";
 
             allCurrent.text += targetText;
@@ -217,7 +217,7 @@ public class Log : PhotonCompatible
     public void ShareTexts()
     {
         //Debug.Log($"sharing {currentLogTexts.Count} texts");
-        int currentPosition = (int)GetPlayerProperty(PhotonNetwork.LocalPlayer, PlayerProp.Position.ToString());
+        int currentPosition = (int)GetPlayerProperty(PhotonNetwork.LocalPlayer, ConstantStrings.Position);
         foreach (LogText nextLog in currentLogTexts)
         {
             DoFunction(() => AddToPast(currentPosition, nextLog.text, nextLog.indent, nextLog.important), RpcTarget.AllBuffered);

@@ -9,7 +9,7 @@ public class Minstrel : CardType
 
     protected override AbilityType CanUseAbiltyOne(Player player, Card thisCard)
     {
-        if (player.GetHand().Count >= 1)
+        if (player.GetHand().Count >= 2)
             return AbilityType.Defend;
         else
             return AbilityType.None;
@@ -17,13 +17,21 @@ public class Minstrel : CardType
 
     protected override void DoAbilityOne(Player player, Card thisCard, int logged)
     {
+        DiscardEffect(player, 0, logged);
+    }
+
+    void DiscardEffect(Player player, int logged, int counter)
+    {
         List<Card> handCards = player.GetHand();
         MakeDecision.inst.ChooseCardOnScreen(handCards, "Discard Instruction", Discard);
 
         void Discard(Card card)
         {
             player.DiscardRPC(card, logged);
-            player.NextRoundAction(1);
+            if (counter == 0)
+                Log.inst.NewDecisionContainer(() => DiscardEffect(player, logged, counter), logged);
+            else
+                player.NextRoundAction(1);
         }
     }
 
