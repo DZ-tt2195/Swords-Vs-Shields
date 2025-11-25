@@ -57,9 +57,9 @@ public class CreateGame : PhotonCompatible
 
         if (!PhotonNetwork.OfflineMode)
         {
-            string playerName = PlayerPrefs.GetString("Online Username");
+            string playerName = PlayerPrefs.GetString(ConstantStrings.MyUserName);
 
-            if (PlayerPrefs.GetString("LastRoom").Equals(PhotonNetwork.CurrentRoom.Name))
+            if (PlayerPrefs.GetString(ConstantStrings.LastRoom).Equals(PhotonNetwork.CurrentRoom.Name))
             {
                 CommHub.inst.ShareMessageRPC($"Player Reconnected-Player-{playerName}", true);
             }
@@ -78,14 +78,14 @@ public class CreateGame : PhotonCompatible
                 CommHub.inst.ShareMessageRPC($"Player Playing-Player-{playerName}", true);
                 CreatePlayer();
 
-                PlayerPrefs.SetString("LastRoom", PhotonNetwork.CurrentRoom.Name);
+                PlayerPrefs.SetString(ConstantStrings.LastRoom, PhotonNetwork.CurrentRoom.Name);
                 if (PhotonNetwork.CurrentRoom.Players.Count == (int)GetRoomProperty(ConstantStrings.CanPlay))
                     InstantChangeRoomProp(ConstantStrings.JoinAsSpec, true, false);
             }
         }
         else
         {
-            PlayerPrefs.DeleteKey("LastRoom");
+            PlayerPrefs.DeleteKey(ConstantStrings.LastRoom);
             InstantChangeRoomProp(ConstantStrings.CanPlay, 1);
             CreatePlayer();
         }

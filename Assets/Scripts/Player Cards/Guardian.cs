@@ -19,7 +19,7 @@ public class Guardian : CardType
     protected override void DoAbilityOne(Player player, Card thisCard, int logged)
     {
         player.ShieldRPC(-1, logged);
-        MakeDecision.inst.ChooseTextButton(new() { new($"Pick Player-Player-{player.name}", HealPlayer) }, "Choose One");
+        MakeDecision.inst.ChooseTextButton(new() { new($"Pick Player-Player-{player.name}", HealPlayer) }, "Choose One", false);
 
         List<MiniCardDisplay> availableTroops = player.AliveTroops();
         if (availableTroops.Count >= 1)

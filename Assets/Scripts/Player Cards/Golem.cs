@@ -1,15 +1,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Mercenary : CardType
+public class Golem : CardType
 {
-    public Mercenary(CardData dataFile) : base(dataFile)
+    public Golem(CardData dataFile) : base(dataFile)
     {
     }
 
     protected override AbilityType CanUseAbiltyOne(Player player, Card thisCard)
     {
-        if (player.GetSword() >= 3)
+        if (player.GetHealth() <= 10)
             return AbilityType.Attack;
         else
             return AbilityType.None;
@@ -17,7 +17,6 @@ public class Mercenary : CardType
 
     protected override void DoAbilityOne(Player player, Card thisCard, int logged)
     {
-        player.SwordRPC(-3, logged);
         Player otherPlayer = CreateGame.inst.OtherPlayer(player.myPosition);
         MakeDecision.inst.ChooseTextButton(new() { new($"Pick Player-Player-{otherPlayer.name}", AttackPlayer) }, "Choose One", false);
 
@@ -27,18 +26,17 @@ public class Mercenary : CardType
 
         void AttackCard(Card card)
         {
-            card.HealthRPC(otherPlayer, -4, logged);
+            card.HealthRPC(otherPlayer, -3, logged);
         }
 
         void AttackPlayer()
         {
-            otherPlayer.HealthRPC(-4, logged);
+            otherPlayer.HealthRPC(-3, logged);
         }
     }
 
     protected override void DoAbilityTwo(Player player, Card thisCard, int logged)
     {
-        player.NextRoundSword(-1);
-        player.NextRoundShield(-1);
+        player.HealthRPC(-2, logged);
     }
 }

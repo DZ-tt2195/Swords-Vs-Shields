@@ -53,7 +53,7 @@ public class Card : PhotonCompatible
 
             this.layout.FillInCards(dataFile, startingAlpha, 0);
             this.name = dataFile.cardName;
-            KeywordTooltip.instance.NewCardRC(dataFile.cardName, this.layout);
+            KeywordTooltip.instance.NewCardRC(Translator.inst.Translate(dataFile.cardName), this.layout);
         }
         catch
         {
@@ -89,7 +89,7 @@ public class Card : PhotonCompatible
 
     public void FlipCardRPC(float newAlpha, float totalTime, float rotation)
     {
-        if (!flipping || this.layout.GetAlpha() != newAlpha)
+        if (!flipping && this.layout.GetAlpha() != newAlpha)
             StartCoroutine(FlipCard(newAlpha, totalTime, rotation));
     }
 
@@ -167,11 +167,11 @@ public class Card : PhotonCompatible
 
     public void HealthRPC(Player player, int num, int logged = 0)
     {
-        if (num == 0 || !CanTakeDamage())
+        if (num == 0)
             return;
         if (num > 0)
             Log.inst.AddMyText($"Add Health Card-Player-{player.name}-Card-{this.name}-Num-{num}", false, logged);
-        else
+        else if (CanTakeDamage())
             Log.inst.AddMyText($"Lose Health Card-Player-{player.name}-Card-{this.name}-Num-{Mathf.Abs(num)}", false, logged);
         Log.inst.NewRollback(() => ChangeInt(num, HealthString()));
     }

@@ -12,7 +12,7 @@ public class Cannon : CardType
     protected override AbilityType CanUseAbiltyOne(Player player, Card thisCard)
     {
         otherPlayer = CreateGame.inst.OtherPlayer(player.myPosition);
-        if (player.GetShield() >= 4)
+        if (player.GetSword() >= 5)
             return AbilityType.Attack;
         else
             return AbilityType.None;
@@ -20,9 +20,9 @@ public class Cannon : CardType
 
     protected override void DoAbilityOne(Player player, Card thisCard, int logged)
     {
-        player.ShieldRPC(-4, logged);
+        player.SwordRPC(-5, logged);
         Player otherPlayer = CreateGame.inst.OtherPlayer(player.myPosition);
-        MakeDecision.inst.ChooseTextButton(new() { new($"Pick Player-Player-{otherPlayer.name}", AttackPlayer) }, "Choose One");
+        MakeDecision.inst.ChooseTextButton(new() { new($"Pick Player-Player-{otherPlayer.name}", AttackPlayer) }, "Choose One", false);
 
         List<MiniCardDisplay> availableTroops = otherPlayer.AliveTroops();
         if (availableTroops.Count >= 1)
@@ -30,12 +30,12 @@ public class Cannon : CardType
 
         void AttackCard(Card card)
         {
-            card.HealthRPC(otherPlayer, -6, logged);
+            card.HealthRPC(otherPlayer, -5, logged);
         }
 
         void AttackPlayer()
         {
-            otherPlayer.HealthRPC(-6, logged);
+            otherPlayer.HealthRPC(-5, logged);
         }
     }
 

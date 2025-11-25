@@ -10,7 +10,7 @@ public class Demon : CardType
 
     protected override AbilityType CanUseAbiltyOne(Player player, Card thisCard)
     {
-        if (player.GetSword() >= 5)
+        if (player.GetSword() >= 6)
             return AbilityType.Attack;
         else
             return AbilityType.None;
@@ -18,20 +18,19 @@ public class Demon : CardType
 
     protected override void DoAbilityOne(Player player, Card thisCard, int logged)
     {
-        player.SwordRPC(-5, logged);
+        player.SwordRPC(-6, logged);
         Player otherPlayer = CreateGame.inst.OtherPlayer(player.myPosition);
-        otherPlayer.HealthRPC(-5, logged);
+        otherPlayer.HealthRPC(-4, logged);
         otherPlayer.NextRoundAction(-1);
     }
 
     protected override void DoAbilityTwo(Player player, Card thisCard, int logged)
     {
         List<MiniCardDisplay> availableTroops = player.AliveTroops();
-            MakeDecision.inst.ChooseDisplayOnScreen(availableTroops, $"Target Instruction-Player-{player.name}", Damage, true);
-
-        void Damage(Card card)
+        foreach (MiniCardDisplay display in availableTroops)
         {
-            card.HealthRPC(player, -3, logged);
+            if (display.card != thisCard)
+                display.card.HealthRPC(player, -1, logged);
         }
     }
 }

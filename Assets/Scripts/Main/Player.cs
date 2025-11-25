@@ -34,7 +34,7 @@ public class Player : PhotonCompatible
         {
             if (!initialized)
             {
-                DoFunction(() => SendName(PlayerPrefs.GetString("Online Username")), RpcTarget.AllBuffered);
+                DoFunction(() => SendName(PlayerPrefs.GetString(ConstantStrings.MyUserName)), RpcTarget.AllBuffered);
             }
             Invoke(nameof(StartTurn), 1f);
         }
@@ -304,7 +304,7 @@ public class Player : PhotonCompatible
     public void UpdateUI()
     {
         List<Card> myHand = GetHand();
-        List<Vector2> handPositions = ObjectPositions(myHand.Count, -875, 475, 225, (onBottom ? -525 : 525), true);
+        List<Vector2> handPositions = ObjectPositions(myHand.Count, -700, 475, 225, (onBottom ? -525 : 525), true);
 
         int thisPlayerPosition = (int)GetPlayerProperty(PhotonNetwork.LocalPlayer, ConstantStrings.Position.ToString());
         for (int i = 0; i < myHand.Count; i++)
@@ -350,13 +350,13 @@ public class Player : PhotonCompatible
     {
         float midPoint = (start + end) / 2f;
         int maxFit = (int)((Mathf.Abs(start) + Mathf.Abs(end)) / gap);
-        int offByOne = objectAmount - 1;
+        float offByOne = objectAmount - 1;
 
         List<Vector2> toReturn = new();
         for (int i = 0; i<objectAmount; i++)
         {
             float starting = (objectAmount <= maxFit) ? midPoint - (gap * (offByOne / 2f)) : start;
-            float difference = (objectAmount <= maxFit) ? gap : gap * (maxFit / (float)offByOne);
+            float difference = (objectAmount <= maxFit) ? gap : gap * (maxFit / offByOne);
 
             if (useX)
                 toReturn.Add(new(starting + difference * i, fixedPosition));

@@ -44,6 +44,17 @@
       "LoseSword, AttackPlayer, PerHand"
     ],
     [
+      "Balancer",
+      "DEFEND: An Ally gets +3 Health. An Ally loses 3 Health.",
+      "ATTACK: A Foe gets +3 Health. A Foe loses 3 Health.",
+      "5",
+      "Defend",
+      "Attack",
+      "Bastien L. Deharme|Ixalan|(Axis of Mortality)",
+      "HurtAlly, HealAlly",
+      "AttackFoe"
+    ],
+    [
       "Barbarian",
       "ATTACK: -1 Action -\u003e One Foe with 5 Health or more loses 4 Health.",
       "#N/A",
@@ -56,13 +67,13 @@
     ],
     [
       "Bee",
-      "ATTACK: -2 Shield -\u003e One Foe loses 1 Health and becomes Stunned next round.",
+      "ATTACK: -2 Sword -\u003e One Foe loses 1 Health and becomes Stunned next round.",
       "#N/A",
       "4",
       "Attack",
       "None",
       "Tom Wanerstrand|Time Spiral|(Unyaro Bees)",
-      "LoseShield, StunCard, AttackFoe",
+      "LoseSword, StunCard, AttackFoe",
       "\"\""
     ],
     [
@@ -91,7 +102,7 @@
       "Bishop",
       "DEFEND: -3 Shield -\u003e An Ally's Health is raised to 4.",
       "#N/A",
-      "5",
+      "6",
       "Defend",
       "None",
       "Tommy Arnold|Ixalan|(Bishop of Rebirth)",
@@ -99,21 +110,10 @@
       "\"\""
     ],
     [
-      "Hunter",
-      "ATTACK: Opponent loses 4 Health. A Foe becomes Protected this round and next round.",
-      "#N/A",
-      "4",
-      "Attack",
-      "None",
-      "Julien Delval|Dominion: Allies|(Hunter)",
-      "AttackPlayer, ProtectCard",
-      "\"\""
-    ],
-    [
       "Bureaucrat",
       "ATTACK: -4 Shield -\u003e Opponent loses 2 Health, and next round they lose 1 Sword and 1 Shield.",
       "#N/A",
-      "4",
+      "3",
       "Attack",
       "None",
       "Aaron Miller|Ravnica Allegiance|(Tithe Taker)",
@@ -122,31 +122,31 @@
     ],
     [
       "Cannon",
-      "ATTACK: -4 Shield -\u003e An Opponent or Foe loses 6 Health.",
+      "ATTACK: -5 Sword -\u003e An Opponent or Foe loses 5 Health.",
       "PLAY: This becomes Stunned this round.",
-      "6",
+      "7",
       "Attack",
       "Play",
       "Julian Kok Joon Wen|Dominaria United|(Artillery Blast)",
-      "LoseShield, AttackAny",
+      "LoseSword, AttackAny",
       "StunCard"
     ],
     [
       "Coven",
-      "DEFEND: -3 Sword -\u003e 3 different Allies each get +1 Health.",
-      "ATTACK: -3 Shield -\u003e 3 different Foes each lose 1 Health.",
+      "DEFEND: -3 Shield -\u003e 3 different Allies each get +1 Health.",
+      "ATTACK: -3 Sword -\u003e 3 different Foes each lose 1 Health.",
       "5",
       "Defend",
       "Attack",
       "Claus Stephan|Dominion: Menagerie|(Coven)",
-      "LoseSword, HealAlly, Multiple",
-      "LoseShield, AttackFoe, Multiple"
+      "LoseShield, HealAlly, Multiple",
+      "LoseSword, AttackFoe, Multiple"
     ],
     [
       "Demon",
-      "ATTACK: -5 Sword -\u003e Opponent loses 5 Health, and loses 1 Action next round.",
-      "PLAY: An Ally loses 3 Health.",
-      "5",
+      "ATTACK: -6 Sword -\u003e Opponent loses 4 Health, and loses 1 Action next round.",
+      "PLAY: Each other Ally loses 1 Health.",
+      "7",
       "Attack",
       "Play",
       "Vincent Proce|Guilds of Ravnica|(Doom Whisperer)",
@@ -157,12 +157,34 @@
       "Dragon",
       "ATTACK: -6 Sword -\u003e All Foes lose 2 Health.",
       "PLAY: -1 Card.",
-      "7",
+      "6",
       "Attack",
       "Play",
       "Josh Hass|Amonkhet: Invocations|(Omniscience)",
-      "LoseSword, AttackFoe, MultipleCard",
+      "LoseSword, AttackFoe, Multiple",
       "DiscardCard"
+    ],
+    [
+      "Farmer",
+      "DEFEND: -4 Shield -\u003e Do twice: You or an Ally gets +2 Health.",
+      "#N/A",
+      "5",
+      "Defend",
+      "None",
+      "Sai Beppu|Dominion: Rising Sun|(Good Harvest)",
+      "LoseShield, HealAny",
+      "\"\""
+    ],
+    [
+      "Golem",
+      "ATTACK: If you have 10 Health or less, an Opponent or Foe loses 3 Health.",
+      "PLAY: You lose 2 Health.",
+      "6",
+      "Attack",
+      "Play",
+      "Svetlin Velinov|Rivals of Ixalan|(Golden Guardian)",
+      "HealthOrLess, AttackAny",
+      "HurtController"
     ],
     [
       "Gladiator",
@@ -187,8 +209,19 @@
       "ProtectCard"
     ],
     [
+      "Hunter",
+      "ATTACK: Opponent loses 3 Health. A Foe becomes Protected this round and next round.",
+      "#N/A",
+      "5",
+      "Attack",
+      "None",
+      "Julien Delval|Dominion: Allies|(Hunter)",
+      "AttackPlayer, ProtectCard",
+      "\"\""
+    ],
+    [
       "Innkeeper",
-      "DEFEND: -4 Shield -\u003e An Ally gets +4 Health and becomes Stunned next round.",
+      "DEFEND: -4 Shield -\u003e An Ally gets +4 Health and becomes Stunned this round.",
       "#N/A",
       "6",
       "Defend",
@@ -221,9 +254,9 @@
     ],
     [
       "Mercenary",
-      "ATTACK: -3 Sword -\u003e An Opponent or Foe loses 5 Health.",
+      "ATTACK: -3 Sword -\u003e An Opponent or Foe loses 4 Health.",
       "PLAY: Next round, -1 Sword and -1 Shield.",
-      "5",
+      "6",
       "Attack",
       "Play",
       "Martin Hoffmann|Dominion: Dark Ages|(Mercenary)",
@@ -232,14 +265,14 @@
     ],
     [
       "Mob",
-      "DEFEND: This gets +1 Health.",
       "ATTACK: -1 Action -\u003e Opponent loses 1 Health per Health this has.",
-      "2",
-      "Defend",
+      "#N/A",
+      "4",
       "Attack",
+      "None",
       "Ryan Pancoast|Innistrad: Midnight Hunt|(Unruly Mob)",
-      "HealAlly",
-      "LoseAction, AttackPlayer"
+      "LoseAction, AttackPlayer",
+      "\"\""
     ],
     [
       "Minstrel",
@@ -364,14 +397,14 @@
     ],
     [
       "Vampire",
-      "DEFEND: -3 Sword -\u003e You get +2 Health.",
-      "ATTACK: -3 Shield -\u003e Opponent loses 2 Health.",
+      "DEFEND: -3 Shield -\u003e You get +2 Health.",
+      "ATTACK: -3 Sword -\u003e Opponent loses 2 Health.",
       "7",
       "Defend",
       "Attack",
       "Martin Hoffmann|Dominion: Nocturne|(Vampire)",
-      "LoseSword, HealPlayer",
-      "LoseShield, AttackPlayer"
+      "LoseShield, HealPlayer",
+      "LoseSword, AttackPlayer"
     ],
     [
       "Vassal",

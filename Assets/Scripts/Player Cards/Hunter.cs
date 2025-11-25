@@ -11,7 +11,7 @@ public class Hunter : CardType
     protected override void DoAbilityOne(Player player, Card thisCard, int logged)
     {
         Player otherPlayer = CreateGame.inst.OtherPlayer(player.myPosition);
-        otherPlayer.HealthRPC(-4, logged);
+        otherPlayer.HealthRPC(-3, logged);
 
         List<MiniCardDisplay> availableTroops = otherPlayer.AliveTroops();
         if (availableTroops.Count == 0)

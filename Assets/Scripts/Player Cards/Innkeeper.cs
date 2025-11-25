@@ -30,7 +30,7 @@ public class Innkeeper : CardType
         void Protect(Card card)
         {
             card.HealthRPC(player, 4, logged);
-            card.StunRPC(1, logged);
+            card.StunRPC(0, logged);
         }
     }
 }

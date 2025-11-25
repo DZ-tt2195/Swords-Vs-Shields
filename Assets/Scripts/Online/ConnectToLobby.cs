@@ -1,15 +1,10 @@
 using UnityEngine;
 using Photon.Pun;
-using UnityEngine.SceneManagement;
 using TMPro;
 using System.Collections.Generic;
 using System.Collections;
 using Photon.Realtime;
 using UnityEngine.UI;
-using ExitGames.Client.Photon;
-using System.Diagnostics;
-using System;
-using System.Linq;
 using MyBox;
 
 public class ConnectToLobby : MonoBehaviourPunCallbacks
@@ -46,12 +41,12 @@ public class ConnectToLobby : MonoBehaviourPunCallbacks
         foreach (JoinRoomButton button in listOfJoinButtons)
             button.ClearInfo();
 
-        username.text = PlayerPrefs.GetString("Online Username");
+        username.text = PlayerPrefs.GetString(ConstantStrings.MyUserName);
         error.gameObject.SetActive(false);
         part1.gameObject.SetActive(true);
         part2.gameObject.SetActive(false);
 
-        reconnectButton.gameObject.SetActive(PlayerPrefs.HasKey("LastRoom"));
+        reconnectButton.gameObject.SetActive(PlayerPrefs.HasKey(ConstantStrings.LastRoom));
 
         regionAndCode = new()
         {
@@ -91,9 +86,9 @@ public class ConnectToLobby : MonoBehaviourPunCallbacks
         }
         else
         {
-            PlayerPrefs.SetString("Online Username", newName);
+            PlayerPrefs.SetString(ConstantStrings.MyUserName, newName);
             PlayerPrefs.Save();
-            PhotonNetwork.NickName = PlayerPrefs.GetString("Online Username");
+            PhotonNetwork.NickName = PlayerPrefs.GetString(ConstantStrings.MyUserName);
             return true;
         }
     }
@@ -128,7 +123,7 @@ public class ConnectToLobby : MonoBehaviourPunCallbacks
 
     public override void OnJoinedLobby()
     {
-        PlayerPrefs.DeleteKey("LastRoom");
+        PlayerPrefs.DeleteKey(ConstantStrings.LastRoom);
         PhotonNetwork.OfflineMode = false;
 
         error.gameObject.SetActive(false);
@@ -138,7 +133,7 @@ public class ConnectToLobby : MonoBehaviourPunCallbacks
 
     public void Reconnect()
     {
-        StartCoroutine(ErrorMessage("Attempt to reconnect", new() { ("Room", PlayerPrefs.GetString("LastRoom"))}));
+        StartCoroutine(ErrorMessage("Attempt to reconnect", new() { ("Room", PlayerPrefs.GetString(ConstantStrings.LastRoom))}));
         StartCoroutine(Delay());
 
         IEnumerator Delay()
@@ -147,7 +142,7 @@ public class ConnectToLobby : MonoBehaviourPunCallbacks
             bool tryReconnect = PhotonNetwork.ReconnectAndRejoin();
 
             if (!tryReconnect)
-                StartCoroutine(ErrorMessage("Failed to reconnect", new() { ("Room", PlayerPrefs.GetString("LastRoom")) }));
+                StartCoroutine(ErrorMessage("Failed to reconnect", new() { ("Room", PlayerPrefs.GetString(ConstantStrings.LastRoom)) }));
         }
     }
 
@@ -205,7 +200,7 @@ public class ConnectToLobby : MonoBehaviourPunCallbacks
             CustomRoomPropertiesForLobby = new string[] { ConstantStrings.GameName, ConstantStrings.CanPlay, ConstantStrings.JoinAsSpec, ConstantStrings.GameOver }
         };
 
-        PhotonNetwork.CreateRoom(PlayerPrefs.GetString("Online Username"), options);
+        PhotonNetwork.CreateRoom(PlayerPrefs.GetString(ConstantStrings.MyUserName), options);
     }
 
     public void JoinRoom(string roomName)
@@ -219,7 +214,7 @@ public class ConnectToLobby : MonoBehaviourPunCallbacks
 
     public override void OnJoinRoomFailed(short returnCode, string message)
     {
-        PlayerPrefs.DeleteKey("LastRoom");
+        PlayerPrefs.DeleteKey(ConstantStrings.LastRoom);
     }
 
     public override void OnJoinedRoom()

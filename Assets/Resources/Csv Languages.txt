@@ -9,7 +9,7 @@
     ],
     [
       "Last Update",
-      "Last Updated: Nov 23, 2025"
+      "Last Updated: Nov 25, 2025"
     ],
     [
       "Translator Credit",
@@ -221,11 +221,11 @@
     ],
     [
       "Pause to Read",
-      "A pause to let you read Mobs."
+      "A pause to let you read things."
     ],
     [
       "Pause to Undo",
-      "Last chance to undo anyMob."
+      "Last chance to undo anything."
     ],
     [
       "Done",
@@ -437,7 +437,7 @@
     ],
     [
       "Bee TextOne",
-      "ATTACK: -2 Shield -\u003e One Foe loses 1 Health and becomes Stunned next round."
+      "ATTACK: -2 Sword -\u003e One Foe loses 1 Health and becomes Stunned next round."
     ],
     [
       "Ninja",
@@ -465,7 +465,7 @@
     ],
     [
       "Cannon TextOne",
-      "ATTACK: -4 Shield -\u003e An Opponent or Foe loses 6 Health."
+      "ATTACK: -5 Sword -\u003e An Opponent or Foe loses 5 Health."
     ],
     [
       "Cannon TextTwo",
@@ -525,11 +525,11 @@
     ],
     [
       "Coven TextOne",
-      "DEFEND: -3 Sword -\u003e 3 different Allies each get +1 Health."
+      "DEFEND: -3 Shield -\u003e 3 different Allies each get +1 Health."
     ],
     [
       "Coven TextTwo",
-      "ATTACK: -3 Shield -\u003e 3 different Foes each lose 1 Health."
+      "ATTACK: -3 Sword -\u003e 3 different Foes each lose 1 Health."
     ],
     [
       "Demon",
@@ -537,11 +537,11 @@
     ],
     [
       "Demon TextOne",
-      "ATTACK: -5 Sword -\u003e Opponent loses 5 Health, and loses 1 Action next round."
+      "ATTACK: -6 Sword -\u003e Opponent loses 4 Health, and loses 1 Action next round."
     ],
     [
       "Demon TextTwo",
-      "PLAY: An Ally loses 3 Health."
+      "PLAY: Each other Ally loses 1 Health."
     ],
     [
       "Security",
@@ -597,11 +597,11 @@
     ],
     [
       "Vampire TextOne",
-      "DEFEND: -3 Sword -\u003e You get +2 Health."
+      "DEFEND: -3 Shield -\u003e You get +2 Health."
     ],
     [
       "Vampire TextTwo",
-      "ATTACK: -3 Shield -\u003e Opponent loses 2 Health."
+      "ATTACK: -3 Sword -\u003e Opponent loses 2 Health."
     ],
     [
       "Innkeeper",
@@ -609,7 +609,7 @@
     ],
     [
       "Innkeeper TextOne",
-      "DEFEND: -4 Shield -\u003e An Ally gets +4 Health and becomes Stunned next round."
+      "DEFEND: -4 Shield -\u003e An Ally gets +4 Health and becomes Stunned this round."
     ],
     [
       "Bureaucrat",
@@ -641,7 +641,7 @@
     ],
     [
       "Mercenary TextOne",
-      "ATTACK: -3 Sword -\u003e An Opponent or Foe loses 5 Health."
+      "ATTACK: -3 Sword -\u003e An Opponent or Foe loses 4 Health."
     ],
     [
       "Mercenary TextTwo",
@@ -693,10 +693,6 @@
     ],
     [
       "Mob TextOne",
-      "DEFEND: This gets +1 Health."
-    ],
-    [
-      "Mob TextTwo",
       "ATTACK: -1 Action -\u003e Opponent loses 1 Health per Health this has."
     ],
     [
@@ -713,7 +709,7 @@
     ],
     [
       "Hunter TextOne",
-      "ATTACK: Opponent loses 4 Health. A Foe becomes Protected this round and next round."
+      "ATTACK: Opponent loses 3 Health. A Foe becomes Protected this round and next round."
     ],
     [
       "Researcher",
@@ -726,6 +722,38 @@
     [
       "Researcher TextTwo",
       "PLAY: +2 Card."
+    ],
+    [
+      "Golem",
+      "Golem"
+    ],
+    [
+      "Golem TextOne",
+      "ATTACK: If you have 10 Health or less, an Opponent or Foe loses 3 Health."
+    ],
+    [
+      "Golem TextTwo",
+      "PLAY: You lose 2 Health."
+    ],
+    [
+      "Balancer",
+      "Balancer"
+    ],
+    [
+      "Balancer TextOne",
+      "DEFEND: An Ally gets +3 Health. An Ally loses 3 Health."
+    ],
+    [
+      "Balancer TextTwo",
+      "ATTACK: A Foe gets +3 Health. A Foe loses 3 Health."
+    ],
+    [
+      "Farmer",
+      "Farmer"
+    ],
+    [
+      "Farmer TextOne",
+      "DEFEND: -4 Shield -\u003e Do twice: You or an Ally gets +2 Health."
     ]
   ]
 }
