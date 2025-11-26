@@ -78,13 +78,13 @@
     ],
     [
       "Berserker",
-      "ATTACK: An Opponent or Foe loses 3 Health.",
+      "ATTACK: Opponent loses 3 Health.",
       "PLAY: Next round, -1 Action.",
       "5",
       "Attack",
       "Play",
       "Julien Delval|Dominion: Hinterlands|(Berserker)",
-      "AttackAny",
+      "AttackPlayer",
       "LoseNextAction"
     ],
     [
@@ -132,6 +132,17 @@
       "StunCard"
     ],
     [
+      "Captain",
+      "ATTACK: -3 Shield -\u003e An Opponent or Foe loses 1 Health per Ally you have with a Defend ability.",
+      "#N/A",
+      "5",
+      "Attack",
+      "None",
+      "Julien Delval|Dominion: Plunder|(First Mate)",
+      "LoseShield, AttackAny, PerTroop",
+      "\"\""
+    ],
+    [
       "Coven",
       "DEFEND: -3 Shield -\u003e 3 different Allies each get +1 Health.",
       "ATTACK: -3 Sword -\u003e 3 different Foes each lose 1 Health.",
@@ -166,7 +177,7 @@
     ],
     [
       "Farmer",
-      "DEFEND: -4 Shield -\u003e Do twice: You or an Ally gets +2 Health.",
+      "DEFEND: -4 Shield -\u003e Both you and an Ally get +2 Health.",
       "#N/A",
       "5",
       "Defend",
@@ -210,9 +221,9 @@
     ],
     [
       "Hunter",
-      "ATTACK: Opponent loses 3 Health. A Foe becomes Protected this round and next round.",
+      "ATTACK: Opponent loses 4 Health. A Foe becomes Protected this round and next round.",
       "#N/A",
-      "5",
+      "4",
       "Attack",
       "None",
       "Julien Delval|Dominion: Allies|(Hunter)",
@@ -265,13 +276,13 @@
     ],
     [
       "Mob",
-      "ATTACK: -1 Action -\u003e Opponent loses 1 Health per Health this has.",
+      "ATTACK: -1 Card -\u003e A Foe loses 1 Health per Health this has.",
       "#N/A",
-      "4",
+      "3",
       "Attack",
       "None",
       "Ryan Pancoast|Innistrad: Midnight Hunt|(Unruly Mob)",
-      "LoseAction, AttackPlayer",
+      "DiscardCard, AttackFoe",
       "\"\""
     ],
     [
@@ -327,7 +338,7 @@
       "Attack",
       "Julien Delval|Dominion: Renaissance|(Recruiter)",
       "AddAction",
-      "DiscardCard, AttackPlayer, Variable"
+      "DiscardCard, AttackPlayer, PerTroop"
     ],
     [
       "Researcher",
@@ -386,13 +397,13 @@
     ],
     [
       "Trickster",
-      "ATTACK: -1 Sword -\u003e Opponent loses 3 Health and gets +2 Sword next round.",
+      "ATTACK: -1 Sword -\u003e Opponent loses 3 Health. Next round, they get +1 Sword and +1 Shield.",
       "#N/A",
       "5",
       "Attack",
       "None",
       "Mila Pesic|Throne of Eldraine|(Bog Naughty)",
-      "LoseSword, AttackPlayer, AddNextSword",
+      "LoseSword, AttackPlayer, AddNextSword, AddNextShield",
       "\"\""
     ],
     [

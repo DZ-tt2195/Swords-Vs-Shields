@@ -9,7 +9,7 @@
     ],
     [
       "Last Update",
-      "Last Updated: Nov 25, 2025"
+      "Last Updated: Nov 27, 2025"
     ],
     [
       "Translator Credit",
@@ -197,15 +197,15 @@
     ],
     [
       "Choose One Instruction",
-      "Choose one."
+      "Choose one ($Card$)."
     ],
     [
       "Discard Instruction",
-      "Discard 1 Card."
+      "Discard 1 Card ($Card$)."
     ],
     [
       "Target Instruction",
-      "Choose one of $Player$'s Card."
+      "Choose one of $Player$'s Card ($Card$)."
     ],
     [
       "Pick Player",
@@ -493,7 +493,7 @@
     ],
     [
       "Trickster TextOne",
-      "ATTACK: -1 Sword -\u003e Opponent loses 3 Health and gets +2 Sword next round."
+      "ATTACK: -1 Sword -\u003e Opponent loses 3 Health. Next round, they get +1 Sword and +1 Shield."
     ],
     [
       "Minstrel",
@@ -661,7 +661,7 @@
     ],
     [
       "Berserker TextOne",
-      "ATTACK: An Opponent or Foe loses 3 Health."
+      "ATTACK: Opponent loses 3 Health."
     ],
     [
       "Berserker TextTwo",
@@ -693,7 +693,7 @@
     ],
     [
       "Mob TextOne",
-      "ATTACK: -1 Action -\u003e Opponent loses 1 Health per Health this has."
+      "ATTACK: -1 Card -\u003e A Foe loses 1 Health per Health this has."
     ],
     [
       "Bishop",
@@ -709,7 +709,7 @@
     ],
     [
       "Hunter TextOne",
-      "ATTACK: Opponent loses 3 Health. A Foe becomes Protected this round and next round."
+      "ATTACK: Opponent loses 4 Health. A Foe becomes Protected this round and next round."
     ],
     [
       "Researcher",
@@ -753,7 +753,15 @@
     ],
     [
       "Farmer TextOne",
-      "DEFEND: -4 Shield -\u003e Do twice: You or an Ally gets +2 Health."
+      "DEFEND: -4 Shield -\u003e Both you and an Ally get +2 Health."
+    ],
+    [
+      "Captain",
+      "Captain"
+    ],
+    [
+      "Captain TextOne",
+      "ATTACK: -3 Shield -\u003e An Opponent or Foe loses 1 Health per Ally you have with a Defend ability."
     ]
   ]
 }

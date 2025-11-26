@@ -18,11 +18,11 @@ public class Golem : CardType
     protected override void DoAbilityOne(Player player, Card thisCard, int logged)
     {
         Player otherPlayer = CreateGame.inst.OtherPlayer(player.myPosition);
-        MakeDecision.inst.ChooseTextButton(new() { new($"Pick Player-Player-{otherPlayer.name}", AttackPlayer) }, "Choose One", false);
+        MakeDecision.inst.ChooseTextButton(new() { new($"Pick Player-Player-{otherPlayer.name}", AttackPlayer) }, $"Choose One-Card-{thisCard.name}", false);
 
         List<MiniCardDisplay> availableTroops = otherPlayer.AliveTroops();
         if (availableTroops.Count >= 1)
-            MakeDecision.inst.ChooseDisplayOnScreen(availableTroops, $"Choose One", AttackCard, false);
+            MakeDecision.inst.ChooseDisplayOnScreen(availableTroops, $"Choose One-Card-{thisCard.name}", AttackCard, false);
 
         void AttackCard(Card card)
         {

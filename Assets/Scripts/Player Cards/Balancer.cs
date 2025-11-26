@@ -17,7 +17,7 @@ public class Balancer : CardType
         }
         else
         {
-            MakeDecision.inst.ChooseDisplayOnScreen(availableTroops, $"Target Instruction-Player-{chooseFrom.name}", Target, true);
+            MakeDecision.inst.ChooseDisplayOnScreen(availableTroops, $"Target Instruction-Player-{chooseFrom.name}-Card-{thisCard.name}", Target, true);
         }
 
         void Target(Card card)

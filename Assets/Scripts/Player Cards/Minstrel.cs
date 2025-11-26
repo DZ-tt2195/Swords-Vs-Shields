@@ -17,19 +17,19 @@ public class Minstrel : CardType
 
     protected override void DoAbilityOne(Player player, Card thisCard, int logged)
     {
-        DiscardEffect(player, 0, logged);
+        DiscardEffect(player, thisCard, 0, logged);
     }
 
-    void DiscardEffect(Player player, int logged, int counter)
+    void DiscardEffect(Player player, Card thisCard, int logged, int counter)
     {
         List<Card> handCards = player.GetHand();
-        MakeDecision.inst.ChooseCardOnScreen(handCards, "Discard Instruction", Discard);
+        MakeDecision.inst.ChooseCardOnScreen(handCards, $"Discard Instruction-Card-{thisCard.name}", Discard);
 
         void Discard(Card card)
         {
             player.DiscardRPC(card, logged);
-            if (counter == 0)
-                Log.inst.NewDecisionContainer(() => DiscardEffect(player, logged, counter), logged);
+            if (counter < 1)
+                Log.inst.NewDecisionContainer(() => DiscardEffect(player, thisCard, logged, counter), logged);
             else
                 player.NextRoundAction(1);
         }

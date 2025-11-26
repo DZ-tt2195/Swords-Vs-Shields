@@ -19,11 +19,11 @@ public class Acolyte : CardType
     protected override void DoAbilityOne(Player player, Card thisCard, int logged)
     {
         player.ShieldRPC(-2, logged);
-        MakeDecision.inst.ChooseTextButton(new() { new($"Pick Player-Player-{player.name}", HealPlayer) }, "Choose One", false);
+        MakeDecision.inst.ChooseTextButton(new() { new($"Pick Player-Player-{player.name}", HealPlayer) }, $"Choose One-Card-{thisCard.name}", false);
 
         List<MiniCardDisplay> availableTroops = player.AliveTroops();
         if (availableTroops.Count >= 1)
-            MakeDecision.inst.ChooseDisplayOnScreen(availableTroops, $"Choose One", HealCard, false);
+            MakeDecision.inst.ChooseDisplayOnScreen(availableTroops, $"Choose One-Card-{thisCard.name}", HealCard, false);
 
         void HealCard(Card card)
         {

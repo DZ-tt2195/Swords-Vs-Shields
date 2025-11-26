@@ -25,7 +25,7 @@ public class Gladiator : CardType
         if (availableTroops.Count == 0)
             Log.inst.AddMyText($"Card Failed-Card-{thisCard.name}", false, logged);
         else
-            MakeDecision.inst.ChooseDisplayOnScreen(availableTroops, $"Target Instruction-Player-{otherPlayer.name}", Attack, true);
+            MakeDecision.inst.ChooseDisplayOnScreen(availableTroops, $"Target Instruction-Player-{otherPlayer.name}-Card-{thisCard.name}", Attack, true);
 
         bool IsAttack(CardData card)
         {

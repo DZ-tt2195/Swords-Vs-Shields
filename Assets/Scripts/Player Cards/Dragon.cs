@@ -26,7 +26,7 @@ public class Dragon : CardType
     protected override void DoAbilityTwo(Player player, Card thisCard, int logged)
     {
         List<Card> handCards = player.GetHand();
-        MakeDecision.inst.ChooseCardOnScreen(handCards, "Discard Instruction", Discard);
+        MakeDecision.inst.ChooseCardOnScreen(handCards, $"Discard Instruction-Card-{thisCard.name}", Discard);
 
         void Discard(Card card)
         {

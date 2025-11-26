@@ -19,11 +19,11 @@ public class Guardian : CardType
     protected override void DoAbilityOne(Player player, Card thisCard, int logged)
     {
         player.ShieldRPC(-1, logged);
-        MakeDecision.inst.ChooseTextButton(new() { new($"Pick Player-Player-{player.name}", HealPlayer) }, "Choose One", false);
+        MakeDecision.inst.ChooseTextButton(new() { new($"Pick Player-Player-{player.name}", HealPlayer) }, $"Choose One-Card-{thisCard.name}", false);
 
         List<MiniCardDisplay> availableTroops = player.AliveTroops();
         if (availableTroops.Count >= 1)
-            MakeDecision.inst.ChooseDisplayOnScreen(availableTroops, $"Choose One", HealCard, false);
+            MakeDecision.inst.ChooseDisplayOnScreen(availableTroops, $"Choose One-Card-{thisCard.name}", HealCard, false);
 
         void HealCard(Card card)
         {
@@ -45,7 +45,7 @@ public class Guardian : CardType
         }
         else
         {
-            MakeDecision.inst.ChooseDisplayOnScreen(availableTroops, $"Target Instruction-Player-{player.name}", Protect, true);
+            MakeDecision.inst.ChooseDisplayOnScreen(availableTroops, $"Target Instruction-Player-{player.name}-Card-{thisCard.name}", Protect, true);
         }
         void Protect(Card card)
         {

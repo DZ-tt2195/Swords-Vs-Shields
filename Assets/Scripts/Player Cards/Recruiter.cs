@@ -22,19 +22,19 @@ public class Recruiter : CardType
 
     protected override void DoAbilityTwo(Player player, Card thisCard, int logged)
     {
-        DiscardEffect(player, logged, 0);
+        DiscardEffect(player, thisCard, logged, 0);
     }
 
-    void DiscardEffect(Player player, int logged, int counter)
+    void DiscardEffect(Player player, Card thisCard, int logged, int counter)
     {
         List<Card> handCards = player.GetHand();
-        MakeDecision.inst.ChooseCardOnScreen(handCards, "Discard Instruction", Discard);
+        MakeDecision.inst.ChooseCardOnScreen(handCards, $"Discard Instruction-Card-{thisCard.name}", Discard);
 
         void Discard(Card card)
         {
             player.DiscardRPC(card, logged);
             if (counter == 0)
-                Log.inst.NewDecisionContainer(() => DiscardEffect(player, logged, counter), logged);
+                Log.inst.NewDecisionContainer(() => DiscardEffect(player,thisCard, logged, counter), logged);
             else
                 CreateGame.inst.OtherPlayer(player.myPosition).HealthRPC(-1 * player.GetTroops().Count, logged);
         }

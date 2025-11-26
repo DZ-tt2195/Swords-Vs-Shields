@@ -50,6 +50,7 @@ public class Translator : PhotonCompatible
         TxtLanguages();
         CsvLanguages(ReadFile("Csv Languages"));
         playerCardFiles = GetCardData<CardData>(ReadFile("Player Cards"));
+
         KeywordTooltip.instance.SwitchLanguage();
         SceneManager.LoadScene(toLoad);
     }
@@ -90,7 +91,11 @@ public class Translator : PhotonCompatible
                     if (line != "")
                     {
                         string[] parts = line.Split('=');
-                        newDictionary[FixLine(parts[0])] = FixLine(parts[1]);
+                        string key = FixLine(parts[0]);
+                        if (newDictionary.ContainsKey(key))
+                            Debug.Log($"ignore duplicate: {key}");
+                        else
+                            newDictionary[FixLine(key)] = FixLine(parts[1]);
                     }
                 }
             }
@@ -131,7 +136,10 @@ public class Translator : PhotonCompatible
                 {
                     string language = data[1][j];
                     string key = data[i][0];
-                    keyTranslate[language][key] = data[i][j];
+                    if (keyTranslate[language].ContainsKey(key))
+                        Debug.Log($"ignore duplicate: {key}");
+                    else
+                        keyTranslate[language][key] = data[i][j];
                 }
             }
         }

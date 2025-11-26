@@ -11,13 +11,13 @@ public class Hunter : CardType
     protected override void DoAbilityOne(Player player, Card thisCard, int logged)
     {
         Player otherPlayer = CreateGame.inst.OtherPlayer(player.myPosition);
-        otherPlayer.HealthRPC(-3, logged);
+        otherPlayer.HealthRPC(-4, logged);
 
         List<MiniCardDisplay> availableTroops = otherPlayer.AliveTroops();
         if (availableTroops.Count == 0)
             Log.inst.AddMyText($"Card Failed-Card-{thisCard.name}", false, logged);
         else
-            MakeDecision.inst.ChooseDisplayOnScreen(availableTroops, $"Target Instruction-Player-{otherPlayer.name}", Attack, true);
+            MakeDecision.inst.ChooseDisplayOnScreen(availableTroops, $"Target Instruction-Player-{otherPlayer.name}-Card-{thisCard.name}", Attack, true);
 
         void Attack(Card card)
         {

@@ -17,8 +17,9 @@ public class Coven : CardType
             if (!toExclude.Contains(display.card))
                 canChoose.Add(display);
         }
+
         if (canChoose.Count >= 1)
-            MakeDecision.inst.ChooseDisplayOnScreen(canChoose, $"Target Instruction-Player-{toChooseFrom.name}", Effects, true);
+            MakeDecision.inst.ChooseDisplayOnScreen(canChoose, $"Target Instruction-Player-{toChooseFrom.name}-Card-{thisCard.name}", Effects, true);
         else
             Log.inst.AddMyText($"Card Failed-Card-{thisCard.name}", false, logged);
 
@@ -28,7 +29,7 @@ public class Coven : CardType
             HashSet<Card> newSet = new(toExclude);
             newSet.Add(card);
             if (newSet.Count < 3)
-            Log.inst.NewDecisionContainer(() => ChooseAnother(toChooseFrom, thisCard, newSet, action, logged), logged);
+                Log.inst.NewDecisionContainer(() => ChooseAnother(toChooseFrom, thisCard, newSet, action, logged), logged);
         }
     }
 

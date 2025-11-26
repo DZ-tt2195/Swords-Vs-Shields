@@ -10,21 +10,7 @@ public class Berserker : CardType
     protected override void DoAbilityOne(Player player, Card thisCard, int logged)
     {
         Player otherPlayer = CreateGame.inst.OtherPlayer(player.myPosition);
-        MakeDecision.inst.ChooseTextButton(new() { new($"Pick Player-Player-{otherPlayer.name}", AttackPlayer) }, "Choose One", false);
-
-        List<MiniCardDisplay> availableTroops = otherPlayer.AliveTroops();
-        if (availableTroops.Count >= 1)
-            MakeDecision.inst.ChooseDisplayOnScreen(availableTroops, $"Choose One", AttackCard, false);
-
-        void AttackCard(Card card)
-        {
-            card.HealthRPC(otherPlayer, -3, logged);
-        }
-
-        void AttackPlayer()
-        {
-            otherPlayer.HealthRPC(-3, logged);
-        }
+        otherPlayer.HealthRPC(-3, logged);
     }
 
     protected override void DoAbilityTwo(Player player, Card thisCard, int logged)

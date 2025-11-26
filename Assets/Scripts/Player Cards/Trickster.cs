@@ -22,6 +22,7 @@ public class Trickster : CardType
     {
         player.SwordRPC(-1, logged);
         otherPlayer.HealthRPC(-3, logged);
-        otherPlayer.NextRoundSword(2);
+        otherPlayer.NextRoundSword(1);
+        otherPlayer.NextRoundShield(1);
     }
 }
