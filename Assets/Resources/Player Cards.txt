@@ -88,17 +88,6 @@
       "LoseNextAction"
     ],
     [
-      "Blacksmith",
-      "DEFEND: -2 Sword and -2 Shield -\u003e +1 Card and +1 Action.",
-      "#N/A",
-      "4",
-      "Defend",
-      "None",
-      "Julien Delval|Dominion: Allies|(Blacksmith)",
-      "LoseShield, LoseSword, DrawCard, AddAction",
-      "\"\""
-    ],
-    [
       "Bishop",
       "DEFEND: -3 Shield -\u003e An Ally's Health is raised to 4.",
       "#N/A",
@@ -107,6 +96,17 @@
       "None",
       "Tommy Arnold|Ixalan|(Bishop of Rebirth)",
       "LoseShield, HealAlly",
+      "\"\""
+    ],
+    [
+      "Blacksmith",
+      "DEFEND: -2 Sword and -2 Shield -\u003e +1 Card and +1 Action.",
+      "#N/A",
+      "4",
+      "Defend",
+      "None",
+      "Julien Delval|Dominion: Allies|(Blacksmith)",
+      "LoseShield, LoseSword, DrawCard, AddAction",
       "\"\""
     ],
     [
@@ -187,17 +187,6 @@
       "\"\""
     ],
     [
-      "Golem",
-      "ATTACK: If you have 10 Health or less, an Opponent or Foe loses 3 Health.",
-      "PLAY: You lose 2 Health.",
-      "6",
-      "Attack",
-      "Play",
-      "Svetlin Velinov|Rivals of Ixalan|(Golden Guardian)",
-      "HealthOrLess, AttackAny",
-      "HurtController"
-    ],
-    [
       "Gladiator",
       "ATTACK: -2 Sword -\u003e A Foe with an Attack ability loses 3 Health.",
       "#N/A",
@@ -207,6 +196,17 @@
       "Keli Stakenas|Dominion: Empires|(Gladiator)",
       "LoseSword, AttackFoe, TargetAttackCard",
       "\"\""
+    ],
+    [
+      "Golem",
+      "ATTACK: If you have 10 Health or less, an Opponent or Foe loses 3 Health.",
+      "PLAY: You lose 2 Health.",
+      "6",
+      "Attack",
+      "Play",
+      "Svetlin Velinov|Rivals of Ixalan|(Golden Guardian)",
+      "HealthOrLess, AttackAny",
+      "HurtController"
     ],
     [
       "Guardian",
@@ -265,25 +265,14 @@
     ],
     [
       "Mercenary",
-      "ATTACK: -3 Sword -\u003e An Opponent or Foe loses 4 Health.",
+      "ATTACK: -1 Action -\u003e An Opponent or Foe loses 4 Health.",
       "PLAY: Next round, -1 Sword and -1 Shield.",
       "6",
       "Attack",
       "Play",
       "Martin Hoffmann|Dominion: Dark Ages|(Mercenary)",
-      "LoseSword, AttackAny",
+      "LoseAction, AttackAny",
       "LoseNextSword, LoseNextShield"
-    ],
-    [
-      "Mob",
-      "ATTACK: -1 Card -\u003e A Foe loses 1 Health per Health this has.",
-      "#N/A",
-      "3",
-      "Attack",
-      "None",
-      "Ryan Pancoast|Innistrad: Midnight Hunt|(Unruly Mob)",
-      "DiscardCard, AttackFoe",
-      "\"\""
     ],
     [
       "Minstrel",
@@ -295,6 +284,17 @@
       "Guillaume Ducos|Dominion: Dark Ages|(Wandering Minstrel)",
       "DiscardCard, AddNextAction",
       "AddAction"
+    ],
+    [
+      "Mob",
+      "ATTACK: -1 Card -\u003e A Foe loses 1 Health per Health this has.",
+      "#N/A",
+      "3",
+      "Attack",
+      "None",
+      "Ryan Pancoast|Innistrad: Midnight Hunt|(Unruly Mob)",
+      "DiscardCard, AttackFoe",
+      "\"\""
     ],
     [
       "Ninja",
@@ -309,14 +309,14 @@
     ],
     [
       "Partier",
-      "DEFEND: -4 Shield -\u003e You get +1 Health per Ally you have.",
-      "#N/A",
-      "5",
+      "DEFEND: -5 Shield -\u003e You get +1 Health per Ally you have.",
+      "ATTACK: -5 Sword -\u003e Opponent loses 1 Health per Foe they have.",
+      "6",
       "Defend",
-      "None",
+      "Attack",
       "Jesper Ejsing|Innistrad: Crimson Vow|(Gluttonous Guest)",
-      "LoseShield, HealPlayer",
-      "\"\""
+      "LoseShield, HealPlayer, PerTroop",
+      "LoseSword, AttackPlayer, PerTroop"
     ],
     [
       "Raider",
@@ -352,6 +352,17 @@
       "DrawCard"
     ],
     [
+      "Royalty",
+      "DEFEND: -2 Shield -\u003e Choose an Ally; you get +1 Health per 2 Health it has (round down).",
+      "#N/A",
+      "4",
+      "Defend",
+      "None",
+      "Kieran Yanner|Throne of Eldraine|(Kenrith, the Returned King)",
+      "LoseShield, HealPlayer",
+      "\"\""
+    ],
+    [
       "Security",
       "DEFEND: -3 Sword -\u003e Next round, +2 Shield.",
       "PLAY: You get +3 Health.",
@@ -385,15 +396,26 @@
       "DrawCard"
     ],
     [
-      "Trader",
-      "DEFEND: -1 Action -\u003e Choose one: +2 Sword or +2 Shield.",
+      "Storyteller",
+      "DEFEND: -3 Sword -\u003e You or an Ally gets +1 Health per Ally you have with an Attack ability.",
       "#N/A",
-      "6",
+      "5",
       "Defend",
       "None",
+      "Claus Stephan|Dominion: Adventures|(Storyteller)",
+      "LoseSword, HealAny, PerTroop",
+      "\"\""
+    ],
+    [
+      "Trader",
+      "DEFEND: -1 Action -\u003e Choose one: +2 Sword or +2 Shield.",
+      "PLAY: -1 Card for +1 Card.",
+      "6",
+      "Defend",
+      "Play",
       "Elisa Cella|Dominion: Renaissance|(Silk Merchant)",
       "LoseAction, AddSword, AddShield",
-      "\"\""
+      "DiscardCard, DrawCard"
     ],
     [
       "Trickster",

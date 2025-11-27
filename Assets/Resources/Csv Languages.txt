@@ -408,6 +408,10 @@
       "DEFEND: -1 Action -\u003e Choose one: +2 Sword or +2 Shield."
     ],
     [
+      "Trader TextTwo",
+      "PLAY: -1 Card for +1 Card."
+    ],
+    [
       "Archer",
       "Archer"
     ],
@@ -485,7 +489,11 @@
     ],
     [
       "Partier TextOne",
-      "DEFEND: -4 Shield -\u003e You get +1 Health per Ally you have."
+      "DEFEND: -5 Shield -\u003e You get +1 Health per Ally you have."
+    ],
+    [
+      "Partier TextTwo",
+      "ATTACK: -5 Sword -\u003e Opponent loses 1 Health per Foe they have."
     ],
     [
       "Trickster",
@@ -641,7 +649,7 @@
     ],
     [
       "Mercenary TextOne",
-      "ATTACK: -3 Sword -\u003e An Opponent or Foe loses 4 Health."
+      "ATTACK: -1 Action -\u003e An Opponent or Foe loses 4 Health."
     ],
     [
       "Mercenary TextTwo",
@@ -762,6 +770,22 @@
     [
       "Captain TextOne",
       "ATTACK: -3 Shield -\u003e An Opponent or Foe loses 1 Health per Ally you have with a Defend ability."
+    ],
+    [
+      "Storyteller",
+      "Storyteller"
+    ],
+    [
+      "Storyteller TextOne",
+      "DEFEND: -3 Sword -\u003e You or an Ally gets +1 Health per Ally you have with an Attack ability."
+    ],
+    [
+      "Royalty",
+      "Royalty"
+    ],
+    [
+      "Royalty TextOne",
+      "DEFEND: -2 Shield -\u003e Choose an Ally; you get +1 Health per 2 Health it has (round down)."
     ]
   ]
 }

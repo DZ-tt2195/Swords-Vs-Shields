@@ -9,7 +9,7 @@ public class Mercenary : CardType
 
     protected override AbilityType CanUseAbiltyOne(Player player, Card thisCard)
     {
-        if (player.GetSword() >= 3)
+        if (player.GetAction() >= 1)
             return AbilityType.Attack;
         else
             return AbilityType.None;
@@ -17,7 +17,7 @@ public class Mercenary : CardType
 
     protected override void DoAbilityOne(Player player, Card thisCard, int logged)
     {
-        player.SwordRPC(-3, logged);
+        player.ActionRPC(-1, logged);
         Player otherPlayer = CreateGame.inst.OtherPlayer(player.myPosition);
         MakeDecision.inst.ChooseTextButton(new() { new($"Pick Player-Player-{otherPlayer.name}", AttackPlayer) }, "Choose One-Card-{thisCard.name}", false);
 

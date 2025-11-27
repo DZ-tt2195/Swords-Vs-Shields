@@ -96,7 +96,7 @@ MonoBehaviour:
     m_GlyphRect:
       m_X: 0
       m_Y: 0
-      m_Width: 337
+      m_Width: 275
       m_Height: 512
     m_Scale: 1
     m_AtlasIndex: 0

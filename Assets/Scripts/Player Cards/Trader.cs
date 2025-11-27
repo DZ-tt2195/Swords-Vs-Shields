@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Trader : CardType
@@ -26,6 +27,18 @@ public class Trader : CardType
         void Shield()
         {
             player.ShieldRPC(2, logged);
+        }
+    }
+
+    protected override void DoAbilityTwo(Player player, Card thisCard, int logged)
+    {
+        List<Card> handCards = player.GetHand();
+        MakeDecision.inst.ChooseCardOnScreen(handCards, $"Discard Instruction-Card-{thisCard.name}", Discard);
+
+        void Discard(Card card)
+        {
+            player.DiscardRPC(card, logged);
+            player.DrawCardRPC(1, logged);
         }
     }
 }
