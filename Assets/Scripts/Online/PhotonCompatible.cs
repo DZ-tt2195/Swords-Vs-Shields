@@ -156,7 +156,7 @@ public class PhotonCompatible : MonoBehaviourPunCallbacks
     {
         if (player == null)
         {
-            Debug.Log("failed to get player");
+            Debug.LogError("failed to get player");
             return null;
         }
         else if (player.CustomProperties.ContainsKey(propertyName))
@@ -165,7 +165,7 @@ public class PhotonCompatible : MonoBehaviourPunCallbacks
         }
         else
         {
-            Debug.Log($"property {propertyName} doesn't exist for {player.NickName}");
+            Debug.LogError($"property {propertyName} doesn't exist for {player.NickName}");
             return null;
         }
     }
@@ -202,7 +202,7 @@ public class PhotonCompatible : MonoBehaviourPunCallbacks
 
         foreach (Photon.Realtime.Player nextPlayer in PhotonNetwork.CurrentRoom.Players.Values.OrderBy(p => p.ActorNumber))
         {
-            if ((int)GetPlayerProperty(nextPlayer, ConstantStrings.Position) == -1)
+            if ((int)GetPlayerProperty(nextPlayer, ConstantStrings.MyPosition) == -1)
             {
                 spectators.Add(nextPlayer);
                 if (printLog)

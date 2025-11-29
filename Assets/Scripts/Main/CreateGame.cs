@@ -52,9 +52,6 @@ public class CreateGame : PhotonCompatible
 
     void Setup()
     {
-        if (!PhotonNetwork.CurrentRoom.CustomProperties.ContainsKey(ConstantStrings.MasterDeck))
-            CreateRoom();
-
         if (!PhotonNetwork.OfflineMode)
         {
             string playerName = PlayerPrefs.GetString(ConstantStrings.MyUserName);
@@ -69,16 +66,43 @@ public class CreateGame : PhotonCompatible
                 ExitGames.Client.Photon.Hashtable playerProps = new()
                 {
                     [ConstantStrings.Waiting] = true,
-                    [ConstantStrings.Position] = -1,
+                    [ConstantStrings.MyPosition] = -1,
                 };
                 PhotonNetwork.LocalPlayer.SetCustomProperties(playerProps);
             }
             else
             {
                 CommHub.inst.ShareMessageRPC($"Player Playing-Player-{playerName}", true);
-                CreatePlayer();
-
                 PlayerPrefs.SetString(ConstantStrings.LastRoom, PhotonNetwork.CurrentRoom.Name);
+
+                int nextPlayerPosition = (int)GetRoomProperty(ConstantStrings.NextPlayerPosition);
+                ExitGames.Client.Photon.Hashtable playerProps = new()
+                {
+                    [ConstantStrings.Waiting] = false,
+                    [ConstantStrings.MyPosition] = nextPlayerPosition,
+                };
+                InstantChangeRoomProp(ConstantStrings.NextPlayerPosition, nextPlayerPosition + 1);
+
+                List<int> startingDeck = new();
+                List<int> cardID = new();
+
+                for (int i = 0; i < Translator.inst.playerCardFiles.Count; i++)
+                {
+                    for (int j = 0; j < 1; j++)
+                    {
+                        GameObject nextCard = MakeObject(cardPrefab.gameObject);
+                        PhotonView cardPV = nextCard.GetComponent<PhotonView>();
+
+                        startingDeck.Add(cardPV.ViewID);
+                        cardID.Add(i);
+                    }
+                }
+                DoFunction(() => CreateCards(startingDeck.ToArray(), cardID.ToArray()));
+                startingDeck = startingDeck.Shuffle();
+                playerProps.Add(ConstantStrings.MyDeck, startingDeck.ToArray());
+                PhotonNetwork.LocalPlayer.SetCustomProperties(playerProps);
+
+                MakeObject(playerPrefab.gameObject);
                 if (PhotonNetwork.CurrentRoom.Players.Count == (int)GetRoomProperty(ConstantStrings.CanPlay))
                     InstantChangeRoomProp(ConstantStrings.JoinAsSpec, true, false);
             }
@@ -87,7 +111,7 @@ public class CreateGame : PhotonCompatible
         {
             PlayerPrefs.DeleteKey(ConstantStrings.LastRoom);
             InstantChangeRoomProp(ConstantStrings.CanPlay, 1);
-            CreatePlayer();
+            MakeObject(playerPrefab.gameObject);
         }
     }
 
@@ -135,63 +159,6 @@ public class CreateGame : PhotonCompatible
             decrease = !decrease;
     }
 
-    void CreateRoom()
-    {
-        ExitGames.Client.Photon.Hashtable initialProps = new()
-        {
-            [ConstantStrings.GameOver] = false,
-            [ConstantStrings.MasterDiscard] = new int[0],
-            [ConstantStrings.CurrentPhase] = 0,
-            [ConstantStrings.CurrentRound] = 0,
-        };
-        List<int> startingDeck = new();
-        List<int> cardID = new();
-
-        for (int i = 0; i < Translator.inst.playerCardFiles.Count; i++)
-        {
-            for (int j = 0; j < 1; j++)
-            {
-                GameObject nextCard = MakeObject(cardPrefab.gameObject);
-                PhotonView cardPV = nextCard.GetComponent<PhotonView>();
-
-                startingDeck.Add(cardPV.ViewID);
-                cardID.Add(i);
-            }
-        }
-        DoFunction(() => CreateCards(startingDeck.ToArray(), cardID.ToArray()));
-
-        startingDeck = startingDeck.Shuffle();
-        initialProps.Add(ConstantStrings.MasterDeck, startingDeck.ToArray());
-        PhotonNetwork.CurrentRoom.SetCustomProperties(initialProps);
-    }
-
-    void CreatePlayer()
-    {
-        int count = listOfPlayers.Count;
-        ExitGames.Client.Photon.Hashtable playerProps = new()
-        {
-            [ConstantStrings.Waiting] = false,
-            [ConstantStrings.Position] = count,
-            [ConstantStrings.MyHealth] = 20,
-
-            [ConstantStrings.Shield] = 0,
-            [ConstantStrings.Sword] = 0,
-            [ConstantStrings.Action] = 0,
-
-            [ConstantStrings.NextRoundSword] = 0,
-            [ConstantStrings.NextRoundShield] = 0,
-            [ConstantStrings.NextRoundAction] = 0,
-
-            [ConstantStrings.MyHand] = new int[0],
-            [ConstantStrings.MyDeck] = new int[0],
-            [ConstantStrings.MyDiscard] = new int[0],
-            [ConstantStrings.MyTroops] = new int[0],
-            [ConstantStrings.AllCardsPlayed] = new string[0],
-        };
-        PhotonNetwork.LocalPlayer.SetCustomProperties(playerProps);
-        MakeObject(playerPrefab.gameObject);
-    }
-
     public Player OtherPlayer(int playerPosition)
     {
         if (playerPosition == 0)
@@ -202,7 +169,7 @@ public class CreateGame : PhotonCompatible
 
     public PlayerUI GetUI(int playerPosition)
     {
-        int myPosition = (int)GetPlayerProperty(PhotonNetwork.LocalPlayer, ConstantStrings.Position);
+        int myPosition = (int)GetPlayerProperty(PhotonNetwork.LocalPlayer, ConstantStrings.MyPosition);
         if (myPosition == playerPosition)
             return allUI[0];
         else if (myPosition == -1)

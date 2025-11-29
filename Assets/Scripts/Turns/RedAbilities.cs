@@ -35,7 +35,7 @@ public class RedAbilities : Turn
 
         if (redCards.Count >= 1)
         {
-            MakeDecision.inst.ChooseDisplayOnScreen(redCards, "Red Instruction", ChooseToUse, false);
+            MakeDecision.inst.ChooseDisplayOnScreen(redCards, "Use Red Instruction", ChooseToUse, false);
 
             void ChooseToUse(Card card)
             {

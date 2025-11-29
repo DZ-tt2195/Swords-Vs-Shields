@@ -31,7 +31,7 @@ public class Mob : CardType
     void AttackFoe(Player player, Card thisCard, int logged)
     {
         Player otherPlayer = CreateGame.inst.OtherPlayer(player.myPosition);
-        List<MiniCardDisplay> availableTroops = otherPlayer.AliveTroops().Where(display => display.card.GetHealth() <= 2).ToList();
+        List<MiniCardDisplay> availableTroops = otherPlayer.AliveTroops();
 
         if (availableTroops.Count == 0)
         {

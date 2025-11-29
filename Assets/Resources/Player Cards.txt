@@ -333,7 +333,7 @@
       "Recruiter",
       "DEFEND: +1 Action.",
       "ATTACK: -2 Card -\u003e Opponent loses 1 Health per Ally you have.",
-      "3",
+      "2",
       "Defend",
       "Attack",
       "Julien Delval|Dominion: Renaissance|(Recruiter)",

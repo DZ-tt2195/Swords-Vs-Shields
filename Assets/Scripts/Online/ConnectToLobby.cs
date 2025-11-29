@@ -186,9 +186,12 @@ public class ConnectToLobby : MonoBehaviourPunCallbacks
         ExitGames.Client.Photon.Hashtable customProps = new()
         {
             { ConstantStrings.GameName, Application.productName },
+            { ConstantStrings.CurrentPhase, 0 },
+            { ConstantStrings.CurrentRound, 0 },
             { ConstantStrings.CanPlay, 2 },
             { ConstantStrings.JoinAsSpec, false },
             { ConstantStrings.GameOver, false },
+            { ConstantStrings.NextPlayerPosition, 0 },
         };
 
         RoomOptions options = new()
@@ -199,12 +202,37 @@ public class ConnectToLobby : MonoBehaviourPunCallbacks
             CustomRoomProperties = customProps,
             CustomRoomPropertiesForLobby = new string[] { ConstantStrings.GameName, ConstantStrings.CanPlay, ConstantStrings.JoinAsSpec, ConstantStrings.GameOver }
         };
-
+        SetInitialPlayerProps();
         PhotonNetwork.CreateRoom(PlayerPrefs.GetString(ConstantStrings.MyUserName), options);
+    }
+
+    void SetInitialPlayerProps()
+    {
+        ExitGames.Client.Photon.Hashtable playerProps = new()
+        {
+            [ConstantStrings.Waiting] = false,
+            [ConstantStrings.MyHealth] = 20,
+
+            [ConstantStrings.Shield] = 0,
+            [ConstantStrings.Sword] = 0,
+            [ConstantStrings.Action] = 0,
+
+            [ConstantStrings.NextRoundSword] = 0,
+            [ConstantStrings.NextRoundShield] = 0,
+            [ConstantStrings.NextRoundAction] = 0,
+
+            [ConstantStrings.MyHand] = new int[0],
+            [ConstantStrings.MyDeck] = new int[0],
+            [ConstantStrings.MyDiscard] = new int[0],
+            [ConstantStrings.MyTroops] = new int[0],
+            [ConstantStrings.AllCardsPlayed] = new string[0],
+        };
+        PhotonNetwork.LocalPlayer.SetCustomProperties(playerProps);
     }
 
     public void JoinRoom(string roomName)
     {
+        SetInitialPlayerProps();
         PhotonNetwork.JoinRoom(roomName);
     }
 

@@ -48,6 +48,7 @@ public class TurnManager : PhotonCompatible
     public (int, Action) GetTurnAction(Player player)
     {
         int phase = GetCurrentPhase();
+        Debug.Log($"phase {phase}");
         return (phase, () => turnsInOrder[phase].ForPlayer(player));
     }
 
@@ -55,8 +56,6 @@ public class TurnManager : PhotonCompatible
     {
         if (HasPropertyAndValue(changedProps, ConstantStrings.Waiting, true))
         {
-            int waiting = WaitingOnPlayers();
-
             int WaitingOnPlayers()
             {
                 (List<Photon.Realtime.Player> players, List<Photon.Realtime.Player> spectators) = GetPlayers(false);
@@ -78,7 +77,7 @@ public class TurnManager : PhotonCompatible
                 return playersWaiting;
             }
 
-            if (PhotonNetwork.IsMasterClient && waiting == 0 && !(bool)GetRoomProperty(ConstantStrings.GameOver))
+            if (PhotonNetwork.IsMasterClient && WaitingOnPlayers() == 0 && !(bool)GetRoomProperty(ConstantStrings.GameOver))
                 AllPlayersDone();
         }
     }
@@ -105,12 +104,13 @@ public class TurnManager : PhotonCompatible
 
     void NextPhase()
     {
+        Debug.Log("next phase");
         PutInDiscard();
         void PutInDiscard()
         {
-            List<Card> masterDiscard = GetCardList(ConstantStrings.MasterDiscard);
             foreach (Player player in CreateGame.inst.listOfPlayers)
             {
+                List<Card> playerDiscard = GetCardList(ConstantStrings.MyDiscard, player);
                 List<Card> myTroops = player.GetTroops();
                 for (int i = myTroops.Count - 1; i >= 0; i--)
                 {
@@ -119,13 +119,13 @@ public class TurnManager : PhotonCompatible
                     {
                         InstantChangeRoomProp(card.HealthString(), 0);
                         myTroops.RemoveAt(i);
-                        masterDiscard.Add(card);
+                        playerDiscard.Add(card);
                     }
                 }
                 InstantChangePlayerProp(player, ConstantStrings.MyTroops, ConvertCardList(myTroops));
+                InstantChangePlayerProp(player, ConstantStrings.MyDiscard, ConvertCardList(playerDiscard));
+                DoFunction(() => DiscardToNull(ConvertCardList(playerDiscard)), RpcTarget.All);
             }
-            InstantChangeRoomProp(ConstantStrings.MasterDiscard, ConvertCardList(masterDiscard));
-            DoFunction(() => DiscardToNull(), RpcTarget.All);
         }
 
         (Player, int) leastHealth = (null, 1000);
@@ -180,9 +180,9 @@ public class TurnManager : PhotonCompatible
     }
 
     [PunRPC]
-    void DiscardToNull()
+    void DiscardToNull(int[] toDiscard)
     {
-        List<Card> masterDiscard = GetCardList(ConstantStrings.MasterDiscard.ToString());
+        List<Card> masterDiscard = ConvertIntArray(toDiscard);
         foreach (Card card in masterDiscard)
             card.transform.SetParent(null);
     }
@@ -272,7 +272,7 @@ public class TurnManager : PhotonCompatible
     void SharePropertyChanges()
     {
         Log.inst.ShareTexts();
-        int currentPosition = (int)PhotonNetwork.LocalPlayer.CustomProperties[ConstantStrings.Position.ToString()];
+        int currentPosition = (int)GetPlayerProperty(PhotonNetwork.LocalPlayer, ConstantStrings.MyPosition);
 
         foreach (var KVP in playerPropertyToChange)
         {
@@ -281,13 +281,6 @@ public class TurnManager : PhotonCompatible
         }
         PhotonNetwork.CurrentRoom.SetCustomProperties(masterPropertyToChange);
         masterPropertyToChange.Clear();
-
-        //send away discarded cards
-        List<Card> masterDiscard = GetCardList(ConstantStrings.MasterDiscard.ToString());
-        masterDiscard.AddRange(GetCardList(ConstantStrings.MyDiscard, CreateGame.inst.listOfPlayers[currentPosition]));
-
-        InstantChangePlayerProp(PhotonNetwork.LocalPlayer, ConstantStrings.MyDiscard, new int[0]);
-        InstantChangeRoomProp(ConstantStrings.MasterDiscard, ConvertCardList(masterDiscard));
     }
 
     #endregion

@@ -26,18 +26,13 @@ public class Player : PhotonCompatible
         base.Awake();
         this.bottomType = this.GetType();
         resignButton = GameObject.Find("Resign Button").GetComponent<Button>();
+        Invoke(nameof(Beginning), 1.5f);
     }
 
-    private void Start()
+    void Beginning()
     {
-        if (photonView.AmOwner)
-        {
-            if (!initialized)
-            {
-                DoFunction(() => SendName(PlayerPrefs.GetString(ConstantStrings.MyUserName)), RpcTarget.AllBuffered);
-            }
-            Invoke(nameof(StartTurn), 1f);
-        }
+        if (photonView.AmOwner && !initialized)
+            DoFunction(() => SendName(PlayerPrefs.GetString(ConstantStrings.MyUserName)), RpcTarget.AllBuffered);
     }
 
     [PunRPC]
@@ -49,17 +44,15 @@ public class Player : PhotonCompatible
 
         initialized = true;
         this.name = username;
-        myPosition = (int)GetPlayerProperty(this, ConstantStrings.Position);
+        myPosition = (int)GetPlayerProperty(this, ConstantStrings.MyPosition);
         CreateGame.inst.listOfPlayers.Insert(myPosition, this);
-
-        myUI = CreateGame.inst.GetUI(myPosition);
-        myUI.image.color = (myPosition == 0) ? Color.blue : Color.red;
-        onBottom = myUI.image.transform.parent.name.Equals("Bottom Player");
-        UpdateUI();
 
         resignButton = GameObject.Find("Resign Button").GetComponent<Button>();
         if (photonView.AmOwner)
+        {
             resignButton.onClick.AddListener(() => TurnManager.inst.TextForEnding($"Player Resigned-Player-{this.name}", myPosition));
+            StartTurn();
+        }
     }
 
     #endregion
@@ -73,27 +66,23 @@ public class Player : PhotonCompatible
         if (amount <= 0)
             return;
 
-        Log.inst.groupToWait.StartCoroutine(WaitToDraw());
-        AskForCards(amount);
-
-        IEnumerator WaitToDraw()
+        List<Card> myDeck = TurnManager.inst.GetCardList(ConstantStrings.MyDeck, this);
+        while (myDeck.Count < amount)
         {
-            List<Card> myDeck = TurnManager.inst.GetCardList(ConstantStrings.MyDeck, this);
-            while (myDeck.Count < amount)
-            {
-                myDeck = TurnManager.inst.GetCardList(ConstantStrings.MyDeck, this);
-                yield return null;
-            }
-
-            List<Card> toDraw = new();
-            for (int i = 0; i < amount; i++)
-            {
-                Card card = myDeck[i];
-                Log.inst.AddMyText($"Draw Card-Player-{this.name}-Card-{card.name}", false, logged);
-                toDraw.Add(card);
-            }
-            Log.inst.NewRollback(() => AddToHand(toDraw));
+            List<Card> myDiscard = TurnManager.inst.GetCardList(ConstantStrings.MyDiscard);
+            myDiscard = myDiscard.Shuffle();
+            myDeck.AddRange(myDiscard);
+            TurnManager.inst.WillChangePlayerProperty(this, ConstantStrings.MyDiscard, new int[0]);
         }
+
+        List<Card> toDraw = new();
+        for (int i = 0; i < amount; i++)
+        {
+            Card card = myDeck[i];
+            Log.inst.AddMyText($"Draw Card-Player-{this.name}-Card-{card.name}", false, logged);
+            toDraw.Add(card);
+        }
+        Log.inst.NewRollback(() => AddToHand(toDraw));
     }
 
     void AddToHand(List<Card> cardsToAdd)
@@ -117,41 +106,11 @@ public class Player : PhotonCompatible
             {
                 Card card = cardsToAdd[i];
                 myHand.Add(card);
-                myDeck.RemoveAt(0);
+                myDeck.Remove(card);
             }
         }
         TurnManager.inst.WillChangePlayerProperty(this, ConstantStrings.MyHand, TurnManager.inst.ConvertCardList(myHand));
         TurnManager.inst.WillChangePlayerProperty(this, ConstantStrings.MyDeck, TurnManager.inst.ConvertCardList(myDeck));
-    }
-
-    void AskForCards(int amount)
-    {
-        if (amount <= 0)
-            return;
-
-        List<Card> myDeck = TurnManager.inst.GetCardList(ConstantStrings.MyDeck, this);
-        int needToGet = amount - myDeck.Count;
-        List<Card> masterDeck = TurnManager.inst.GetCardList(ConstantStrings.MasterDeck.ToString());
-
-        if (needToGet >= 1)
-        {
-            if (masterDeck.Count < needToGet)
-            {
-                List<Card> masterDiscard = TurnManager.inst.GetCardList(ConstantStrings.MasterDiscard.ToString());
-                masterDiscard = masterDiscard.Shuffle();
-                masterDeck.AddRange(masterDiscard);
-                InstantChangeRoomProp(ConstantStrings.MasterDiscard, new int[0]);
-            }
-
-            for (int i = 0; i<needToGet; i++)
-            {
-                Card card = masterDeck[0];
-                myDeck.Add(card);
-                masterDeck.RemoveAt(0);
-            }
-            InstantChangeRoomProp(ConstantStrings.MasterDeck, TurnManager.inst.ConvertCardList(masterDeck));
-            TurnManager.inst.WillChangePlayerProperty(this, ConstantStrings.MyDeck, TurnManager.inst.ConvertCardList(myDeck));
-        }
     }
 
     public void DiscardRPC(Card card, int logged)
@@ -303,10 +262,14 @@ public class Player : PhotonCompatible
 
     public void UpdateUI()
     {
-        List<Card> myHand = GetHand();
-        List<Vector2> handPositions = ObjectPositions(myHand.Count, -700, 475, 225, (onBottom ? -525 : 525), true);
+        myUI = CreateGame.inst.GetUI(myPosition);
+        myUI.image.color = (myPosition == 0) ? Color.blue : Color.red;
+        onBottom = myUI.image.transform.parent.name.Equals("Bottom Player");
 
-        int thisPlayerPosition = (int)GetPlayerProperty(PhotonNetwork.LocalPlayer, ConstantStrings.Position.ToString());
+        List<Card> myHand = GetHand();
+        List<Vector2> handPositions = ObjectPositions(myHand.Count, -700, 475, 225, (onBottom ? -550 : 550), true);
+
+        int thisPlayerPosition = (int)GetPlayerProperty(PhotonNetwork.LocalPlayer, ConstantStrings.MyPosition.ToString());
         for (int i = 0; i < myHand.Count; i++)
         {
             Card nextCard = myHand[i];

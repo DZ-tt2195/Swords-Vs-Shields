@@ -7,7 +7,7 @@ public static class ConstantStrings
     public const string LastRoom = nameof(LastRoom);
 
     //player properties
-    public const string Position = nameof(Position);
+    public const string MyPosition = nameof(MyPosition);
     public const string Waiting = nameof(Waiting);
     public const string MyHealth = nameof(MyHealth);
     public const string MyHand = nameof(MyHand);
@@ -27,8 +27,7 @@ public static class ConstantStrings
     public const string CanPlay = nameof(CanPlay);
     public const string GameOver = nameof(GameOver);
     public const string JoinAsSpec = nameof(JoinAsSpec);
-    public const string MasterDeck = nameof(MasterDeck);
-    public const string MasterDiscard = nameof(MasterDiscard);
     public const string CurrentPhase = nameof(CurrentPhase);
     public const string CurrentRound = nameof(CurrentRound);
+    public const string NextPlayerPosition = nameof(NextPlayerPosition);
 }

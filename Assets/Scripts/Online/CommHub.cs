@@ -29,7 +29,7 @@ public class CommHub : PhotonCompatible
         if (textToSend != "")
         {
             inputMessage.text = "";
-            ShareMessageRPC(textToSend, false);
+            ShareMessageRPC($"{PhotonNetwork.LocalPlayer.NickName}: {textToSend}", false);
         }
     }
 
@@ -60,7 +60,7 @@ public class CommHub : PhotonCompatible
 
     public override void OnPlayerLeftRoom(Photon.Realtime.Player otherPlayer)
     {
-        if (PhotonNetwork.IsMasterClient && (int)GetPlayerProperty(otherPlayer, ConstantStrings.Position) >= 0)
+        if (PhotonNetwork.IsMasterClient && (int)GetPlayerProperty(otherPlayer, ConstantStrings.MyPosition) >= 0)
         {
             if (otherPlayer.IsInactive)
             {
@@ -70,6 +70,7 @@ public class CommHub : PhotonCompatible
             else if ((bool)GetRoomProperty(ConstantStrings.GameOver.ToString()))
             {
                 ShareMessageRPC($"Player Quit-Player-{otherPlayer.NickName}", true);
+                TurnManager.inst.TextForEnding($"Player Resigned-Player-{otherPlayer.NickName}", (int)GetPlayerProperty(otherPlayer, ConstantStrings.MyPosition));
             }
         }
     }
