@@ -54,7 +54,10 @@ public class PermaUI : MonoBehaviour
         rightClickBackground.gameObject.SetActive(true);
         rightClickCard.gameObject.SetActive(true);
         rightClickCard.FillInCards(dataFile, visible ? 1f : 0f, rotation);
-        artistCredit.text = dataFile.artCredit;
+        if (visible)
+            artistCredit.text = dataFile.artCredit;
+        else
+            artistCredit.text = "";
     }
 
     #endregion

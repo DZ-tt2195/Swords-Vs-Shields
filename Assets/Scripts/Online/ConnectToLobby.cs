@@ -212,6 +212,7 @@ public class ConnectToLobby : MonoBehaviourPunCallbacks
         {
             [ConstantStrings.Waiting] = false,
             [ConstantStrings.MyHealth] = 20,
+            [ConstantStrings.MyPosition] = -1,
 
             [ConstantStrings.Shield] = 0,
             [ConstantStrings.Sword] = 0,

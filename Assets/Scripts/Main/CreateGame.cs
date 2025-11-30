@@ -47,11 +47,7 @@ public class CreateGame : PhotonCompatible
             foreach (MiniCardDisplay display in ui.cardDisplays)
                 display.gameObject.SetActive(false);
         }
-        Invoke(nameof(Setup), 0.25f);
-    }
 
-    void Setup()
-    {
         if (!PhotonNetwork.OfflineMode)
         {
             string playerName = PlayerPrefs.GetString(ConstantStrings.MyUserName);
@@ -113,6 +109,7 @@ public class CreateGame : PhotonCompatible
             InstantChangeRoomProp(ConstantStrings.CanPlay, 1);
             MakeObject(playerPrefab.gameObject);
         }
+        Invoke(nameof(RefreshUI), 1f);
     }
 
     [PunRPC]
@@ -123,6 +120,13 @@ public class CreateGame : PhotonCompatible
             GameObject obj = PhotonView.Find(arrayOfPVs[i]).gameObject;
             obj.GetComponent<Card>().AssignCard(Translator.inst.playerCardFiles[cardNames[i]], 0f);
         }
+    }
+
+    public void RefreshUI()
+    {
+        Log.inst.ChangeScrolling();
+        foreach (Player player in listOfPlayers)
+            player.UpdateUI();
     }
 
     #endregion

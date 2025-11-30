@@ -26,7 +26,7 @@ public class Player : PhotonCompatible
         base.Awake();
         this.bottomType = this.GetType();
         resignButton = GameObject.Find("Resign Button").GetComponent<Button>();
-        Invoke(nameof(Beginning), 1.5f);
+        Invoke(nameof(Beginning), 1f);
     }
 
     void Beginning()
@@ -226,6 +226,7 @@ public class Player : PhotonCompatible
     public void StartTurn()
     {
         //this.DoFunction(() => this.ChangeButtonColor(false));
+        DoFunction(() => UpdateUI(), RpcTarget.All);
         InstantChangePlayerProp(this, ConstantStrings.Waiting, false);
         endPause = true;
 
@@ -260,6 +261,7 @@ public class Player : PhotonCompatible
 
     public List<Card> GetTroops() => TurnManager.inst.GetCardList(ConstantStrings.MyTroops, this);
 
+    [PunRPC]
     public void UpdateUI()
     {
         myUI = CreateGame.inst.GetUI(myPosition);
@@ -292,21 +294,7 @@ public class Player : PhotonCompatible
             $"{GetShield()} {Translator.inst.Translate("Shield")} " +
             $"{GetSword()} {Translator.inst.Translate("Sword")}");
 
-        List<Card> myTroops = GetTroops();
-        foreach (Card card in myTroops)
-            card.transform.SetParent(null);
-        for (int i = 0; i < myUI.cardDisplays.Count; i++)
-        {
-            if (i < myTroops.Count)
-            {
-                myUI.cardDisplays[i].gameObject.SetActive(true);
-                myUI.cardDisplays[i].NewCard(myTroops[i]);
-            }
-            else
-            {
-                myUI.cardDisplays[i].gameObject.SetActive(false);
-            }
-        }
+        AliveTroops();
     }
 
     List<Vector2> ObjectPositions(int objectAmount, float start, float end, float gap, float fixedPosition, bool useX)
@@ -333,12 +321,26 @@ public class Player : PhotonCompatible
     {
         List<MiniCardDisplay> toReturn = new();
         List<Card> myTroops = GetTroops();
-        for (int i = 0; i<myTroops.Count; i++)
+        foreach (Card card in myTroops)
         {
-            Card card = myTroops[i];
-            if (card.GetHealth() >= 1)
-                toReturn.Add(myUI.cardDisplays[i]);
+            card.transform.SetParent(null);
         }
+        for (int i = 0; i < myUI.cardDisplays.Count; i++)
+        {
+            if (i < myTroops.Count)
+            {
+                myUI.cardDisplays[i].gameObject.SetActive(true);
+                myUI.cardDisplays[i].NewCard(myTroops[i]);
+
+                if (myTroops[i].GetHealth() >= 1)
+                    toReturn.Add(myUI.cardDisplays[i]);
+            }
+            else
+            {
+                myUI.cardDisplays[i].gameObject.SetActive(false);
+            }
+        }
+
         return toReturn;
     }
 

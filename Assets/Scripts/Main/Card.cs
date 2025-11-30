@@ -169,10 +169,12 @@ public class Card : PhotonCompatible
     {
         if (num == 0)
             return;
-        if (num > 0)
+        else if (num > 0)
             Log.inst.AddMyText($"Add Health Card-Player-{player.name}-Card-{this.name}-Num-{num}", false, logged);
-        else if (CanTakeDamage())
+        else if (num < 0 && CanTakeDamage())
             Log.inst.AddMyText($"Lose Health Card-Player-{player.name}-Card-{this.name}-Num-{Mathf.Abs(num)}", false, logged);
+        else
+            return;
         Log.inst.NewRollback(() => ChangeInt(num, HealthString()));
     }
 

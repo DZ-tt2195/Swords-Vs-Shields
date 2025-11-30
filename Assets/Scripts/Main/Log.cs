@@ -123,8 +123,9 @@ public class Log : PhotonCompatible
         undoButton.onClick.AddListener(() => InvokeUndo());
         undoButton.gameObject.SetActive(false);
         groupToWait = new(this);
-        logTypeSlider.onValueChanged.AddListener(LogToggle);
         forward = true;
+
+        logTypeSlider.onValueChanged.AddListener(LogToggle);
         void LogToggle(float value)
         {
             ChangeScrolling();
@@ -236,7 +237,7 @@ public class Log : PhotonCompatible
             importantPast.text += targetText;
     }
 
-    void ChangeScrolling()
+    public void ChangeScrolling()
     {
         allPast.gameObject.SetActive(logTypeSlider.value == 1);
         allCurrent.gameObject.SetActive(logTypeSlider.value == 1);
@@ -292,7 +293,7 @@ public class Log : PhotonCompatible
 
     void ClearCurrentDecision()
     {
-        ChangeScrolling();
+        CreateGame.inst.RefreshUI();
         scroll.value = 0;
         storeUndoPoint = false;
         inReaction.Clear();
@@ -422,9 +423,6 @@ public class Log : PhotonCompatible
 
         ClearCurrentDecision();
         currentContainer = null;
-
-        foreach (Player player in CreateGame.inst.listOfPlayers)
-            player.UpdateUI();
 
         foreach (DecisionContainer container in initialContainers)
             Iterate(container);

@@ -67,7 +67,7 @@ public class CommHub : PhotonCompatible
                 ShareMessageRPC($"Player Disconnected-Player-{otherPlayer.NickName}", true);
                 InstantChangePlayerProp(otherPlayer, ConstantStrings.Waiting, false);
             }
-            else if ((bool)GetRoomProperty(ConstantStrings.GameOver.ToString()))
+            else if (!(bool)GetRoomProperty(ConstantStrings.GameOver.ToString()))
             {
                 ShareMessageRPC($"Player Quit-Player-{otherPlayer.NickName}", true);
                 TurnManager.inst.TextForEnding($"Player Resigned-Player-{otherPlayer.NickName}", (int)GetPlayerProperty(otherPlayer, ConstantStrings.MyPosition));

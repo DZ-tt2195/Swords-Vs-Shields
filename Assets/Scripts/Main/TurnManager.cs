@@ -48,19 +48,23 @@ public class TurnManager : PhotonCompatible
     public (int, Action) GetTurnAction(Player player)
     {
         int phase = GetCurrentPhase();
-        Debug.Log($"phase {phase}");
+        //Debug.Log($"phase {phase}");
         return (phase, () => turnsInOrder[phase].ForPlayer(player));
     }
 
     public override void OnPlayerPropertiesUpdate(Photon.Realtime.Player targetPlayer, ExitGames.Client.Photon.Hashtable changedProps)
     {
+        bool HasPropertyAndValue(ExitGames.Client.Photon.Hashtable changedProps, string propertyName, object expected)
+        {
+            return (changedProps.ContainsKey(propertyName.ToString()) && changedProps[propertyName.ToString()].Equals(expected));
+        }
+
         if (HasPropertyAndValue(changedProps, ConstantStrings.Waiting, true))
         {
+            (List<Photon.Realtime.Player> players, List<Photon.Realtime.Player> spectators) = GetPlayers(false);
             int WaitingOnPlayers()
             {
-                (List<Photon.Realtime.Player> players, List<Photon.Realtime.Player> spectators) = GetPlayers(false);
                 int playersWaiting = (int)GetRoomProperty(ConstantStrings.CanPlay);
-
                 List<Photon.Realtime.Player> isWaiting = new();
                 isWaiting.AddRange(spectators);
 
@@ -78,7 +82,17 @@ public class TurnManager : PhotonCompatible
             }
 
             if (PhotonNetwork.IsMasterClient && WaitingOnPlayers() == 0 && !(bool)GetRoomProperty(ConstantStrings.GameOver))
-                AllPlayersDone();
+            {
+                foreach (Photon.Realtime.Player nextPlayer in players)
+                {
+                    DoFunction(() => SharePropertyChanges(), nextPlayer);
+                }
+
+                turnsInOrder[GetCurrentPhase()].MasterEnd();
+                UpdateWaitingText(spectators, players.Count);
+
+                Invoke(nameof(NextPhase), 0.5f);
+            }
         }
     }
 
@@ -88,23 +102,9 @@ public class TurnManager : PhotonCompatible
             MakeDecision.inst.DoFunction(() => MakeDecision.inst.Instructions($"Waiting on Players-Num-{playersWaiting}"), player);
     }
 
-    void AllPlayersDone()
-    {
-        (List<Photon.Realtime.Player> players, List<Photon.Realtime.Player> spectators) = GetPlayers(false);
-        foreach (Photon.Realtime.Player nextPlayer in players)
-        {
-            DoFunction(() => SharePropertyChanges(), nextPlayer);
-        }
-
-        turnsInOrder[GetCurrentPhase()].MasterEnd();
-        UpdateWaitingText(spectators, players.Count);
-
-        Invoke(nameof(NextPhase), 0.5f);
-    }
-
     void NextPhase()
     {
-        Debug.Log("next phase");
+        //Debug.Log("next phase");
         PutInDiscard();
         void PutInDiscard()
         {
@@ -171,6 +171,7 @@ public class TurnManager : PhotonCompatible
             {
                 turnsInOrder[GetCurrentPhase()].MasterStart();
             }
+            Log.inst.ChangeScrolling();
             foreach (Player player in CreateGame.inst.listOfPlayers)
             {
                 if (player.photonView.AmOwner)
@@ -185,11 +186,6 @@ public class TurnManager : PhotonCompatible
         List<Card> masterDiscard = ConvertIntArray(toDiscard);
         foreach (Card card in masterDiscard)
             card.transform.SetParent(null);
-    }
-
-    bool HasPropertyAndValue(ExitGames.Client.Photon.Hashtable changedProps, string propertyName, object expected)
-    {
-        return (changedProps.ContainsKey(propertyName.ToString()) && changedProps[propertyName.ToString()].Equals(expected));
     }
 
     #endregion
