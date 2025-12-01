@@ -1,15 +1,15 @@
 {
     [
-      "ec",
+      "key",
       "English"
     ],
     [
-      "Designer",
+      "Game Designer",
       "by Thomas Tang (DZ)"
     ],
     [
       "Last Update",
-      "Last Updated: Nov 27, 2025"
+      "Last Updated: Dec 01, 2025"
     ],
     [
       "Translator Credit",

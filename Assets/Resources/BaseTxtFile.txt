@@ -1,5 +1,5 @@
-Designer=by Thomas Tang (DZ)
-Last Update=Last Updated: Nov 27, 2025
+Game Designer=by Thomas Tang (DZ)
+Last Update=Last Updated: Dec 01, 2025
 Translator Credit=
 Language=Language
 Loading=Loading
