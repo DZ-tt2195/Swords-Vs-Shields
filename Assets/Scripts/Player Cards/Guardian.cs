@@ -49,7 +49,7 @@ public class Guardian : CardType
         }
         void Protect(Card card)
         {
-            card.ProtectRPC(0, logged);
+            card.ProtectRPC(player, 0, logged);
         }
     }
 }

@@ -38,7 +38,7 @@ public class Vassal : CardType
 
         void ProtectCard(Card card)
         {
-            card.ProtectRPC(0, logged);
+            card.ProtectRPC(player, 0, logged);
         }
     }
 }

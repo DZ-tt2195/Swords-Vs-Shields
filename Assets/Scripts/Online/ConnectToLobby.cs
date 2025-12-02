@@ -111,8 +111,17 @@ public class ConnectToLobby : MonoBehaviourPunCallbacks
         if (CheckUsername())
         { 
             PhotonNetwork.OfflineMode = true;
-            PhotonNetwork.CreateRoom("");
-            PhotonNetwork.LoadLevel("2. Game");
+            PhotonNetwork.LocalPlayer.SetCustomProperties(InitialPlayerProps());
+
+            RoomOptions options = new()
+            {
+                MaxPlayers = 1,
+                PlayerTtl = 0,
+                EmptyRoomTtl = 0,
+                CustomRoomProperties = InitialRoomProps(),
+            };
+            PhotonNetwork.CreateRoom(PlayerPrefs.GetString(ConstantStrings.MyUserName), options);
+            //PhotonNetwork.LoadLevel("2. Game");
         }
     }
 
@@ -183,7 +192,21 @@ public class ConnectToLobby : MonoBehaviourPunCallbacks
 
     public void CreateRoom()
     {
-        ExitGames.Client.Photon.Hashtable customProps = new()
+        PhotonNetwork.LocalPlayer.SetCustomProperties(InitialPlayerProps());
+        RoomOptions options = new()
+        {
+            MaxPlayers = 10,
+            PlayerTtl = Application.isEditor ? 15000 : 120000,
+            EmptyRoomTtl = 10000,
+            CustomRoomProperties = InitialRoomProps(),
+            CustomRoomPropertiesForLobby = new string[] { ConstantStrings.GameName, ConstantStrings.CanPlay, ConstantStrings.JoinAsSpec, ConstantStrings.GameOver }
+        };
+        PhotonNetwork.CreateRoom(PlayerPrefs.GetString(ConstantStrings.MyUserName), options);
+    }
+
+    ExitGames.Client.Photon.Hashtable InitialRoomProps()
+    {
+        ExitGames.Client.Photon.Hashtable roomProps = new()
         {
             { ConstantStrings.GameName, Application.productName },
             { ConstantStrings.CurrentPhase, 0 },
@@ -193,20 +216,10 @@ public class ConnectToLobby : MonoBehaviourPunCallbacks
             { ConstantStrings.GameOver, false },
             { ConstantStrings.NextPlayerPosition, 0 },
         };
-
-        RoomOptions options = new()
-        {
-            MaxPlayers = 10,
-            PlayerTtl = Application.isEditor ? 15000 : 120000,
-            EmptyRoomTtl = 10000,
-            CustomRoomProperties = customProps,
-            CustomRoomPropertiesForLobby = new string[] { ConstantStrings.GameName, ConstantStrings.CanPlay, ConstantStrings.JoinAsSpec, ConstantStrings.GameOver }
-        };
-        SetInitialPlayerProps();
-        PhotonNetwork.CreateRoom(PlayerPrefs.GetString(ConstantStrings.MyUserName), options);
+        return roomProps;
     }
 
-    void SetInitialPlayerProps()
+    ExitGames.Client.Photon.Hashtable InitialPlayerProps()
     {
         ExitGames.Client.Photon.Hashtable playerProps = new()
         {
@@ -228,12 +241,12 @@ public class ConnectToLobby : MonoBehaviourPunCallbacks
             [ConstantStrings.MyTroops] = new int[0],
             [ConstantStrings.AllCardsPlayed] = new string[0],
         };
-        PhotonNetwork.LocalPlayer.SetCustomProperties(playerProps);
+        return playerProps;
     }
 
     public void JoinRoom(string roomName)
     {
-        SetInitialPlayerProps();
+        InitialPlayerProps();
         PhotonNetwork.JoinRoom(roomName);
     }
 

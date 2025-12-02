@@ -87,8 +87,8 @@ public class GreenAbilities : Turn
             int currentRound = (int)PhotonCompatible.GetRoomProperty(ConstantStrings.CurrentRound);
             myCardsPlayed.Add($"Played Card Info-Card-{cardToPlay.name}-Num-{currentRound}");
         }
-        TurnManager.inst.WillChangePlayerProperty(player, ConstantStrings.MyHand, TurnManager.inst.ConvertCardList(myHand));
-        TurnManager.inst.WillChangePlayerProperty(player, ConstantStrings.MyTroops, TurnManager.inst.ConvertCardList(myTroops));
+        TurnManager.inst.WillChangePlayerProperty(player, ConstantStrings.MyHand, TurnManager.inst.ConvertCardList(myHand)); player.uiDictionary[ConstantStrings.MyHand] = true;
+        TurnManager.inst.WillChangePlayerProperty(player, ConstantStrings.MyTroops, TurnManager.inst.ConvertCardList(myTroops)); player.uiDictionary[ConstantStrings.MyTroops] = true;
         TurnManager.inst.WillChangePlayerProperty(player, ConstantStrings.AllCardsPlayed, myCardsPlayed.ToArray());
     }
 }

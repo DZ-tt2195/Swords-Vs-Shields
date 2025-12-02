@@ -127,11 +127,11 @@ public class Card : PhotonCompatible
 
 #region Properties
 
-    public void StunRPC(int increment, int logged = 0)
+    public void StunRPC(Player player, int increment, int logged = 0)
     {
         int roundNumber = (int)GetRoomProperty(ConstantStrings.CurrentRound) + increment;
         Log.inst.AddMyText($"Stun Card-Card-{this.name}-Num-{roundNumber}", false, logged);
-        Log.inst.NewRollback(() => AddToArray(roundNumber, StunString()));
+        Log.inst.NewRollback(() => AddToArray(player, roundNumber, StunString()));
     }
 
     public bool CanUseAbility()
@@ -141,11 +141,11 @@ public class Card : PhotonCompatible
         return !(stunArray.Contains(currentRound));
     }
 
-    public void ProtectRPC(int increment, int logged = 0)
+    public void ProtectRPC(Player player, int increment, int logged = 0)
     {
         int roundNumber = (int)GetRoomProperty(ConstantStrings.CurrentRound) + increment;
         Log.inst.AddMyText($"Protect Card-Card-{this.name}-Num-{roundNumber}", false, logged);
-        Log.inst.NewRollback(() => AddToArray(roundNumber, ProtectString()));
+        Log.inst.NewRollback(() => AddToArray(player, roundNumber, ProtectString()));
     }
 
     public bool CanTakeDamage()
@@ -155,14 +155,14 @@ public class Card : PhotonCompatible
         return !(protectArray.Contains(currentRound));
     }
 
-    void AddToArray(int round, string list)
+    void AddToArray(Player player, int round, string list)
     {
         List<int> convertedList = ((int[])GetRoomProperty(list)).ToList();
         if (Log.inst.forward)
             convertedList.Add(round);
         else
             convertedList.Remove(round);
-        TurnManager.inst.WillChangeMasterProperty(list, convertedList.ToArray());
+        TurnManager.inst.WillChangeMasterProperty(list, convertedList.ToArray()); player.uiDictionary[ConstantStrings.MyTroops] = true;
     }
 
     public void HealthRPC(Player player, int num, int logged = 0)
@@ -175,16 +175,16 @@ public class Card : PhotonCompatible
             Log.inst.AddMyText($"Lose Health Card-Player-{player.name}-Card-{this.name}-Num-{Mathf.Abs(num)}", false, logged);
         else
             return;
-        Log.inst.NewRollback(() => ChangeInt(num, HealthString()));
+        Log.inst.NewRollback(() => ChangeInt(player, num, HealthString()));
     }
 
     public int GetHealth() => TurnManager.inst.GetInt(this.HealthString());
 
-    void ChangeInt(int num, string property)
+    void ChangeInt(Player player, int num, string property)
     {
         int total = TurnManager.inst.GetInt(property);
         total += (!Log.inst.forward) ? -num : num;
-        TurnManager.inst.WillChangeMasterProperty(property, total);
+        TurnManager.inst.WillChangeMasterProperty(property, total); player.uiDictionary[ConstantStrings.MyTroops] = true;
     }
 
     #endregion

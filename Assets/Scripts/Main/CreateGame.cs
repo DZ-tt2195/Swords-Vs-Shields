@@ -65,40 +65,14 @@ public class CreateGame : PhotonCompatible
                     [ConstantStrings.MyPosition] = -1,
                 };
                 PhotonNetwork.LocalPlayer.SetCustomProperties(playerProps);
+                StartCoroutine(Wait());
             }
             else
             {
                 CommHub.inst.ShareMessageRPC($"Player Playing-Player-{playerName}", true);
                 PlayerPrefs.SetString(ConstantStrings.LastRoom, PhotonNetwork.CurrentRoom.Name);
+                MakePlayerAndCards();
 
-                int nextPlayerPosition = (int)GetRoomProperty(ConstantStrings.NextPlayerPosition);
-                ExitGames.Client.Photon.Hashtable playerProps = new()
-                {
-                    [ConstantStrings.Waiting] = false,
-                    [ConstantStrings.MyPosition] = nextPlayerPosition,
-                };
-                InstantChangeRoomProp(ConstantStrings.NextPlayerPosition, nextPlayerPosition + 1);
-
-                List<int> startingDeck = new();
-                List<int> cardID = new();
-
-                for (int i = 0; i < Translator.inst.playerCardFiles.Count; i++)
-                {
-                    for (int j = 0; j < 1; j++)
-                    {
-                        GameObject nextCard = MakeObject(cardPrefab.gameObject);
-                        PhotonView cardPV = nextCard.GetComponent<PhotonView>();
-
-                        startingDeck.Add(cardPV.ViewID);
-                        cardID.Add(i);
-                    }
-                }
-                DoFunction(() => CreateCards(startingDeck.ToArray(), cardID.ToArray()));
-                startingDeck = startingDeck.Shuffle();
-                playerProps.Add(ConstantStrings.MyDeck, startingDeck.ToArray());
-                PhotonNetwork.LocalPlayer.SetCustomProperties(playerProps);
-
-                MakeObject(playerPrefab.gameObject);
                 if (PhotonNetwork.CurrentRoom.Players.Count == (int)GetRoomProperty(ConstantStrings.CanPlay))
                     InstantChangeRoomProp(ConstantStrings.JoinAsSpec, true, false);
             }
@@ -107,9 +81,46 @@ public class CreateGame : PhotonCompatible
         {
             PlayerPrefs.DeleteKey(ConstantStrings.LastRoom);
             InstantChangeRoomProp(ConstantStrings.CanPlay, 1);
+            MakePlayerAndCards();
+        }
+
+        IEnumerator Wait()
+        {
+            yield return new WaitForSeconds(1.5f);
+            RefreshUI(true);
+        }
+
+        void MakePlayerAndCards()
+        {
+            int nextPlayerPosition = (int)GetRoomProperty(ConstantStrings.NextPlayerPosition);
+            ExitGames.Client.Photon.Hashtable playerProps = new()
+            {
+                [ConstantStrings.Waiting] = false,
+                [ConstantStrings.MyPosition] = nextPlayerPosition,
+            };
+            InstantChangeRoomProp(ConstantStrings.NextPlayerPosition, nextPlayerPosition + 1);
+
+            List<int> startingDeck = new();
+            List<int> cardID = new();
+
+            for (int i = 0; i < Translator.inst.playerCardFiles.Count; i++)
+            {
+                for (int j = 0; j < 1; j++)
+                {
+                    GameObject nextCard = MakeObject(cardPrefab.gameObject);
+                    PhotonView cardPV = nextCard.GetComponent<PhotonView>();
+
+                    startingDeck.Add(cardPV.ViewID);
+                    cardID.Add(i);
+                }
+            }
+            DoFunction(() => CreateCards(startingDeck.ToArray(), cardID.ToArray()));
+            startingDeck = startingDeck.Shuffle();
+            playerProps.Add(ConstantStrings.MyDeck, startingDeck.ToArray());
+            PhotonNetwork.LocalPlayer.SetCustomProperties(playerProps);
+
             MakeObject(playerPrefab.gameObject);
         }
-        Invoke(nameof(RefreshUI), 1f);
     }
 
     [PunRPC]
@@ -122,11 +133,11 @@ public class CreateGame : PhotonCompatible
         }
     }
 
-    public void RefreshUI()
+    public void RefreshUI(bool forced)
     {
         Log.inst.ChangeScrolling();
         foreach (Player player in listOfPlayers)
-            player.UpdateUI();
+            player.UpdateUI(forced);
     }
 
     #endregion

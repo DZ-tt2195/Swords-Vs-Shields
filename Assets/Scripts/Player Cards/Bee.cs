@@ -37,7 +37,7 @@ public class Bee : CardType
         void Attack(Card card)
         {
             card.HealthRPC(otherPlayer, -1, logged);
-            card.StunRPC(1, logged);
+            card.StunRPC(otherPlayer, 1, logged);
         }
     }
 }

@@ -17,12 +17,12 @@ public class Hunter : CardType
         if (availableTroops.Count == 0)
             Log.inst.AddMyText($"Card Failed-Card-{thisCard.name}", false, logged);
         else
-            MakeDecision.inst.ChooseDisplayOnScreen(availableTroops, $"Target Instruction-Player-{otherPlayer.name}-Card-{thisCard.name}", Attack, true);
+            MakeDecision.inst.ChooseDisplayOnScreen(availableTroops, $"Target Instruction-Player-{otherPlayer.name}-Card-{thisCard.name}", Protected, true);
 
-        void Attack(Card card)
+        void Protected(Card card)
         {
-            card.StunRPC(0, logged);
-            card.StunRPC(1, logged);
+            card.ProtectRPC(otherPlayer, 0, logged);
+            card.ProtectRPC(otherPlayer, 1, logged);
         }
     }
 }

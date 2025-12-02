@@ -3,15 +3,12 @@ using UnityEngine;
 
 public class Cannon : CardType
 {
-    Player otherPlayer;
-
     public Cannon(CardData dataFile) : base(dataFile)
     {
     }
 
     protected override AbilityType CanUseAbiltyOne(Player player, Card thisCard)
     {
-        otherPlayer = CreateGame.inst.OtherPlayer(player.myPosition);
         if (player.GetSword() >= 5)
             return AbilityType.Attack;
         else
@@ -41,6 +38,6 @@ public class Cannon : CardType
 
     protected override void DoAbilityTwo(Player player, Card thisCard, int logged)
     {
-        thisCard.StunRPC(0, logged);
+        thisCard.StunRPC(player, 0, logged);
     }
 }

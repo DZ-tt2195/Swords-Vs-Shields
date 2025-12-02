@@ -293,7 +293,7 @@ public class Log : PhotonCompatible
 
     void ClearCurrentDecision()
     {
-        CreateGame.inst.RefreshUI();
+        CreateGame.inst.RefreshUI(false);
         scroll.value = 0;
         storeUndoPoint = false;
         inReaction.Clear();

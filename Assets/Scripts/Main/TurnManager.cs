@@ -124,7 +124,6 @@ public class TurnManager : PhotonCompatible
                 }
                 InstantChangePlayerProp(player, ConstantStrings.MyTroops, ConvertCardList(myTroops));
                 InstantChangePlayerProp(player, ConstantStrings.MyDiscard, ConvertCardList(playerDiscard));
-                DoFunction(() => DiscardToNull(ConvertCardList(playerDiscard)), RpcTarget.All);
             }
         }
 
@@ -168,24 +167,15 @@ public class TurnManager : PhotonCompatible
         if (propertiesThatChanged.ContainsKey(ConstantStrings.CurrentPhase.ToString()))
         {
             if (PhotonNetwork.IsMasterClient)
-            {
                 turnsInOrder[GetCurrentPhase()].MasterStart();
-            }
-            Log.inst.ChangeScrolling();
+
+            CreateGame.inst.RefreshUI(true);
             foreach (Player player in CreateGame.inst.listOfPlayers)
             {
                 if (player.photonView.AmOwner)
                     player.StartTurn();
             }
         }
-    }
-
-    [PunRPC]
-    void DiscardToNull(int[] toDiscard)
-    {
-        List<Card> masterDiscard = ConvertIntArray(toDiscard);
-        foreach (Card card in masterDiscard)
-            card.transform.SetParent(null);
     }
 
     #endregion
