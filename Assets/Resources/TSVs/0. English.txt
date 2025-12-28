@@ -1,0 +1,201 @@
+Game_Designer	by Thomas Tang (DZ)
+Last_Update	Last Updated: Dec 28, 2025
+Translator_Credit	Original Language
+Language	Language
+Loading	Loading
+Select_Region	Select Region
+US_West_Coast	US West Coast
+US_East_Coast	US East Coast
+Europe	Europe
+Asia	Asia
+Offline	Play Offline
+Connect	Connect
+Enter_username	Enter username
+Disconnect	Disconnect
+Disconnected_from_server	Disconnected from the server.
+Failed_to_connect_to_server	Failed to connect to the server.
+Reconnect	Reconnect
+Online_Tutorial_1	To play multiplayer: Have 1 person create a room, then their room should be displayed below. Everyone also must have joined the same server region.
+Online_Tutorial_2	Click a button below to join a room, or manually type in the host's username (yellow rooms are spectator only)
+Create	Create
+Create_Room_with_players	Create a room with how many players?
+Enter_hostname	Enter host's username
+Join	Join
+Player_Count	$Current$ / $Max$ Players
+Type_in_username	You have to type in a username.
+Attempt_to_reconnect	Attempting to reconnect to $Room$'s room...
+Failed_to_reconnect	Failed to reconnect to $Room$'s room.
+Encyclopedia	Encyclopedia
+Close	Close
+Starting_Health	Starting Health
+Type_1	Type 1
+Type_2	Type 2
+Any	Any
+Defend	Defend
+Attack	Attack
+Play	Play
+Type_into_chat	Type into chat
+Undo	Undo
+Short	Short
+Long	Long
+Player_Playing	$Player$ is playing.
+Player_Spectating	$Player$ is spectating.
+Player_Reconnected	$Player$ reconnected.
+Player_Disconnected	$Player$ has disconnected.
+Player_Quit	$Player$ has quit the room.
+Waiting_on_Players	Waiting on $Num$ players...
+Confirm	Confirm
+Decline	Decline
+Choose_One_Instruction	Choose one ($Card$).
+Discard_Instruction	Discard 1 Card ($Card$).
+Target_Instruction	Choose one of $Player$'s Card ($Card$).
+Pick_Player	$Player$
+Use_Green_Instruction	Use an Ally's Defend ability, or spend Action to play Card.
+Use_Red_Instruction	Use an Ally's Attack ability.
+Pause_to_Read	A pause to let you read things.
+Pause_to_Undo	Last chance to undo anything.
+Done	Done
+Card	Card
+Draw_Card	$Player$ draws $Card$.
+Draw_Card_Others	$Player$ draws 1 Card.
+Discard_Card	$Player$ discards $Card$.
+Discard_Card_Others	$Player$ discards 1 Card.
+Sword	Sword
+Add_Sword	$Player$ gets +$Num$ Sword.
+Lose_Sword	$Player$ loses $Num$ Sword.
+Shield	Shield
+Add_Shield	$Player$ gets +$Num$ Shield.
+Lose_Shield	$Player$ loses $Num$ Shield.
+Action	Action
+Add_Action	$Player$ gets +$Num$ Action.
+Lose_Action	$Player$ loses $Num$ Action.
+Health	Health
+Add_Health_Player	$Player$ gets +$Num$ Health.
+Lose_Health_Player	$Player$ loses $Num$ Health.
+Add_Health_Card	$Player$'s $Card$ gets +$Num$ Health.
+Lose_Health_Card	$Player$'s $Card$ loses $Num$ Health.
+Blank	
+Use_Green	Round $Num$ - Defend
+Use_Red	Round $Num$ - Attack
+Play_Card	$Player$ plays $Card$.
+Resolve_Card	$Player$ resolves $Card$.
+Card_Failed	$Card$ has no targets.
+End_Turn	$Player$ ends their turn.
+Stunned	Stunned
+Stunned_Text	Abilities can't be used.
+Stun_Card	$Card$ is Stunned on Round $Num$.
+Protected	Protected
+Protected_Text	Can't lose Health.
+Protect_Card	$Card$ is Protected on Round $Num$.
+Game_Over	Game Over
+Played_Card_Info	$Card$ ($Num$)
+Leave	Leave
+Tie_Game	The game is a tie.
+Player_Resigned	$Player$ has resigned.
+Player_Lost	$Player$ has lost.
+Resigned	(Resigned)
+Skirmisher	Skirmisher
+Skirmisher_TextOne	ATTACK: -2 Sword -> An Opponent or Foe loses 2 Health.
+Skirmisher_TextTwo	PLAY: +1 Sword.
+Trader	Trader
+Trader_TextOne	DEFEND: -1 Action -> Choose one: +2 Sword or +2 Shield.
+Trader_TextTwo	PLAY: -1 Card for +1 Card.
+Archer	Archer
+Archer_TextOne	DEFEND: -1 Action -> +1 Card.
+Archer_TextTwo	ATTACK: -4 Sword -> Opponent loses 1 Health per Card you have in hand.
+Dragon	Dragon
+Dragon_TextOne	ATTACK: -6 Sword -> All Foes lose 2 Health.
+Dragon_TextTwo	PLAY: -1 Card.
+Bee	Bee
+Bee_TextOne	ATTACK: -2 Sword -> One Foe loses 1 Health and becomes Stunned next round.
+Ninja	Ninja
+Ninja_TextOne	ATTACK: One Foe with 2 Health or less loses 2 Health.
+Squire	Squire
+Squire_TextOne	DEFEND: -3 Shield -> Next round, +2 Sword.
+Squire_TextTwo	PLAY: +1 Card.
+Cannon	Cannon
+Cannon_TextOne	ATTACK: -5 Sword -> An Opponent or Foe loses 5 Health.
+Cannon_TextTwo	PLAY: This becomes Stunned this round.
+Angel	Angel
+Angel_TextOne	DEFEND: You lose 2 Health -> All Allies get +1 Health.
+Partier	Partier
+Partier_TextOne	DEFEND: -5 Shield -> You get +1 Health per Ally you have.
+Partier_TextTwo	ATTACK: -5 Sword -> Opponent loses 1 Health per Foe they have.
+Trickster	Trickster
+Trickster_TextOne	ATTACK: -1 Sword -> Opponent loses 3 Health. Next round, they get +1 Sword and +1 Shield.
+Minstrel	Minstrel
+Minstrel_TextOne	DEFEND: -2 Card -> Next round, +1 Action.
+Minstrel_TextTwo	PLAY: +1 Action.
+Acolyte	Acolyte
+Acolyte_TextOne	DEFEND: -2 Shield -> You or an Ally gets +2 Health.
+Acolyte_TextTwo	PLAY: +1 Shield.
+Coven	Coven
+Coven_TextOne	DEFEND: -3 Shield -> 3 different Allies each get +1 Health.
+Coven_TextTwo	ATTACK: -3 Sword -> 3 different Foes each lose 1 Health.
+Demon	Demon
+Demon_TextOne	ATTACK: -6 Sword -> Opponent loses 4 Health, and loses 1 Action next round.
+Demon_TextTwo	PLAY: Each other Ally loses 1 Health.
+Security	Security
+Security_TextOne	DEFEND: -3 Sword -> Next round, +2 Shield.
+Security_TextTwo	PLAY: You get +3 Health.
+Investor	Investor
+Investor_TextOne	DEFEND: This loses 2 Health -> You get +3 Health.
+Gladiator	Gladiator
+Gladiator_TextOne	ATTACK: -2 Sword -> A Foe with an Attack ability loses 3 Health.
+Raider	Raider
+Raider_TextOne	ATTACK: -2 Shield -> A Foe with a Defend ability loses 3 Health.
+Guardian	Guardian
+Guardian_TextOne	DEFEND: -1 Shield -> You or an Ally gets +1 Health.
+Guardian_TextTwo	PLAY: An Ally becomes Protected this round.
+Vampire	Vampire
+Vampire_TextOne	DEFEND: -3 Shield -> You get +2 Health.
+Vampire_TextTwo	ATTACK: -3 Sword -> Opponent loses 2 Health.
+Innkeeper	Innkeeper
+Innkeeper_TextOne	DEFEND: -4 Shield -> An Ally gets +4 Health and becomes Stunned this round.
+Bureaucrat	Bureaucrat
+Bureaucrat_TextOne	ATTACK: -4 Shield -> Opponent loses 2 Health, and next round they lose 1 Sword and 1 Shield.
+Blacksmith	Blacksmith
+Blacksmith_TextOne	DEFEND: -2 Sword and -2 Shield -> +1 Card and +1 Action.
+Vassal	Vassal
+Vassal_TextOne	DEFEND: Another Ally loses 3 Health -> An Ally becomes Protected this round.
+Mercenary	Mercenary
+Mercenary_TextOne	ATTACK: -1 Action -> An Opponent or Foe loses 4 Health.
+Mercenary_TextTwo	PLAY: Next round, -1 Sword and -1 Shield.
+Leprechaun	Leprechaun
+Leprechaun_TextOne	DEFEND: If you have exactly 7 Allies, +2 Sword and +2 Shield; otherwise you lose 2 Health.
+Berserker	Berserker
+Berserker_TextOne	ATTACK: Opponent loses 3 Health.
+Berserker_TextTwo	PLAY: Next round, -1 Action.
+Barbarian	Barbarian
+Barbarian_TextOne	ATTACK: -1 Action -> One Foe with 5 Health or more loses 4 Health.
+Recruiter	Recruiter
+Recruiter_TextOne	DEFEND: +1 Action.
+Recruiter_TextTwo	ATTACK: -2 Card -> Opponent loses 1 Health per Ally you have.
+Mob	Mob
+Mob_TextOne	ATTACK: -1 Card -> A Foe loses 1 Health per Health this has.
+Bishop	Bishop
+Bishop_TextOne	DEFEND: -3 Shield -> An Ally's Health is raised to 4.
+Hunter	Hunter
+Hunter_TextOne	ATTACK: Opponent loses 4 Health. A Foe becomes Protected this round and next round.
+Researcher	Researcher
+Researcher_TextOne	DEFEND: Next round, -1 Sword and -1 Shield.
+Researcher_TextTwo	PLAY: +2 Card.
+Golem	Golem
+Golem_TextOne	ATTACK: If you have 10 Health or less, an Opponent or Foe loses 3 Health.
+Golem_TextTwo	PLAY: You lose 2 Health.
+Balancer	Balancer
+Balancer_TextOne	DEFEND: An Ally gets +3 Health. An Ally loses 3 Health.
+Balancer_TextTwo	ATTACK: A Foe gets +3 Health. A Foe loses 3 Health.
+Farmer	Farmer
+Farmer_TextOne	DEFEND: -4 Shield -> Both you and an Ally get +2 Health.
+Captain	Captain
+Captain_TextOne	ATTACK: -3 Shield -> An Opponent or Foe loses 1 Health per Ally you have with a Defend ability.
+Storyteller	Storyteller
+Storyteller_TextOne	DEFEND: -3 Sword -> You or an Ally gets +1 Health per Ally you have with an Attack ability.
+Royalty	Royalty
+Royalty_TextOne	DEFEND: -2 Shield -> Choose an Ally; you get +1 Health per 2 Health it has (round down).
+Update_0	Dec 28, 2025
+Update_0_Text	New translation features - you can download the English translation file and upload your own translation
+Update_History	Update History
+Upload_Translation	Upload Translation
+Download_English	Download English

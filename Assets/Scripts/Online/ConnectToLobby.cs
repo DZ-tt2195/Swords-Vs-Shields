@@ -50,18 +50,18 @@ public class ConnectToLobby : MonoBehaviourPunCallbacks
 
         regionAndCode = new()
         {
-            (Translator.inst.Translate("US West Coast"), "usw"),
-            (Translator.inst.Translate("US East Coast"), "us"),
-            (Translator.inst.Translate("Europe"), "eu"),
-            (Translator.inst.Translate("Asia"), "asia")
+            (AutoTranslate.DoEnum(ToTranslate.US_West_Coast), "usw"),
+            (AutoTranslate.DoEnum(ToTranslate.US_East_Coast), "us"),
+            (AutoTranslate.DoEnum(ToTranslate.Europe), "eu"),
+            (AutoTranslate.DoEnum(ToTranslate.Asia), "asia")
         };
         foreach ((string, string) var in regionAndCode)
             regionDropdown.AddOptions(new List<string>() { var.Item1 });
     }
 
-    IEnumerator ErrorMessage(string text, List<(string, string)> toReplace = null)
+    IEnumerator ErrorMessage(string text)
     {
-        error.text = Translator.inst.Translate(text, toReplace);
+        error.text = text;
         float elapsedTime = 0f;
         while (elapsedTime < 3f)
         {
@@ -81,7 +81,7 @@ public class ConnectToLobby : MonoBehaviourPunCallbacks
         string newName = username.text.Trim();
         if (newName == "")
         {
-            StartCoroutine(ErrorMessage("Type in username"));
+            StartCoroutine(ErrorMessage(AutoTranslate.DoEnum(ToTranslate.Type_in_username)));
             return false;
         }
         else
@@ -142,7 +142,7 @@ public class ConnectToLobby : MonoBehaviourPunCallbacks
 
     public void Reconnect()
     {
-        StartCoroutine(ErrorMessage("Attempt to reconnect", new() { ("Room", PlayerPrefs.GetString(ConstantStrings.LastRoom))}));
+        StartCoroutine(ErrorMessage(AutoTranslate.Attempt_to_reconnect(PlayerPrefs.GetString(ConstantStrings.LastRoom))));
         StartCoroutine(Delay());
 
         IEnumerator Delay()
@@ -151,7 +151,7 @@ public class ConnectToLobby : MonoBehaviourPunCallbacks
             bool tryReconnect = PhotonNetwork.ReconnectAndRejoin();
 
             if (!tryReconnect)
-                StartCoroutine(ErrorMessage("Failed to reconnect", new() { ("Room", PlayerPrefs.GetString(ConstantStrings.LastRoom)) }));
+                StartCoroutine(ErrorMessage(AutoTranslate.Failed_to_reconnect(PlayerPrefs.GetString(ConstantStrings.LastRoom))));
         }
     }
 
@@ -182,8 +182,7 @@ public class ConnectToLobby : MonoBehaviourPunCallbacks
                     nextJoin.button.image.color = ((bool)room.CustomProperties[ConstantStrings.JoinAsSpec]) ? Color.yellow : Color.white;
 
                     nextJoin.thisName.text = room.Name;
-                    nextJoin.playerCount.text = Translator.inst.Translate($"Player Count", new()
-                    { ("Current", $"{room.PlayerCount}"), ("Max", $"{(int)room.CustomProperties[ConstantStrings.CanPlay]}") });
+                    nextJoin.playerCount.text = AutoTranslate.Player_Count(room.PlayerCount.ToString(), $"{(int)room.CustomProperties[ConstantStrings.CanPlay]}");
                     counter++;
                 }
             }
@@ -206,6 +205,7 @@ public class ConnectToLobby : MonoBehaviourPunCallbacks
 
     ExitGames.Client.Photon.Hashtable InitialRoomProps()
     {
+        Debug.Log("assigned room props");
         ExitGames.Client.Photon.Hashtable roomProps = new()
         {
             { ConstantStrings.GameName, Application.productName },
@@ -221,6 +221,7 @@ public class ConnectToLobby : MonoBehaviourPunCallbacks
 
     ExitGames.Client.Photon.Hashtable InitialPlayerProps()
     {
+        Debug.Log("assigned player props");
         ExitGames.Client.Photon.Hashtable playerProps = new()
         {
             [ConstantStrings.Waiting] = false,
@@ -246,7 +247,7 @@ public class ConnectToLobby : MonoBehaviourPunCallbacks
 
     public void JoinRoom(string roomName)
     {
-        InitialPlayerProps();
+        PhotonNetwork.LocalPlayer.SetCustomProperties(InitialPlayerProps());
         PhotonNetwork.JoinRoom(roomName);
     }
 
@@ -267,9 +268,9 @@ public class ConnectToLobby : MonoBehaviourPunCallbacks
     public override void OnDisconnected(DisconnectCause cause)
     {
         if (part1.gameObject.activeSelf)
-            StartCoroutine(ErrorMessage("Failed to connect to server"));
+            StartCoroutine(ErrorMessage(AutoTranslate.DoEnum(ToTranslate.Failed_to_connect_to_server)));
         else
-            StartCoroutine(ErrorMessage("Disconnected from server"));
+            StartCoroutine(ErrorMessage(AutoTranslate.DoEnum(ToTranslate.Disconnected_from_server)));
 
         part1.gameObject.SetActive(true);
         part2.gameObject.SetActive(false);

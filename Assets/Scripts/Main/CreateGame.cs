@@ -54,11 +54,11 @@ public class CreateGame : PhotonCompatible
 
             if (PlayerPrefs.GetString(ConstantStrings.LastRoom).Equals(PhotonNetwork.CurrentRoom.Name))
             {
-                CommHub.inst.ShareMessageRPC($"Player Reconnected-Player-{playerName}", true);
+                CommHub.inst.ShareMessageRPC("Player_Reconnected", playerName, "", "", true);
             }
             else if ((bool)GetRoomProperty(ConstantStrings.JoinAsSpec))
             {
-                CommHub.inst.ShareMessageRPC($"Player Spectating-Player-{playerName}", true);
+                CommHub.inst.ShareMessageRPC("Player_Spectating", playerName, "", "", true);
                 ExitGames.Client.Photon.Hashtable playerProps = new()
                 {
                     [ConstantStrings.Waiting] = true,
@@ -69,7 +69,7 @@ public class CreateGame : PhotonCompatible
             }
             else
             {
-                CommHub.inst.ShareMessageRPC($"Player Playing-Player-{playerName}", true);
+                CommHub.inst.ShareMessageRPC("Player_Playing", playerName, "", "", true);
                 PlayerPrefs.SetString(ConstantStrings.LastRoom, PhotonNetwork.CurrentRoom.Name);
                 MakePlayerAndCards();
 
@@ -103,7 +103,7 @@ public class CreateGame : PhotonCompatible
             List<int> startingDeck = new();
             List<int> cardID = new();
 
-            for (int i = 0; i < Translator.inst.playerCardFiles.Count; i++)
+            for (int i = 0; i < GameFiles.inst.playerCardFiles.Count; i++)
             {
                 for (int j = 0; j < 1; j++)
                 {
@@ -129,7 +129,7 @@ public class CreateGame : PhotonCompatible
         for (int i = 0; i<arrayOfPVs.Length; i++)
         {
             GameObject obj = PhotonView.Find(arrayOfPVs[i]).gameObject;
-            obj.GetComponent<Card>().AssignCard(Translator.inst.playerCardFiles[cardNames[i]], 0f);
+            obj.GetComponent<Card>().AssignCard(GameFiles.inst.playerCardFiles[cardNames[i]], 0f);
         }
     }
 

@@ -22,7 +22,7 @@ public class Vassal : CardType
 
     protected override void DoAbilityOne(Player player, Card thisCard, int logged)
     {
-        MakeDecision.inst.ChooseDisplayOnScreen(canHurt, $"Target Instruction-Player-{player.name}-Card-{thisCard.name}", HurtCard, true);
+        MakeDecision.inst.ChooseDisplayOnScreen(canHurt, "Target_Instruction", player.name, thisCard.name, "", HurtCard, true);
 
         void HurtCard(Card card)
         {
@@ -34,7 +34,7 @@ public class Vassal : CardType
     void PartTwo(Player player, Card thisCard, int logged)
     {
         List<MiniCardDisplay> availableTroops = player.AliveTroops();
-        MakeDecision.inst.ChooseDisplayOnScreen(availableTroops, $"Target Instruction-Player-{player.name}-Card-{thisCard.name}", ProtectCard, true);
+        MakeDecision.inst.ChooseDisplayOnScreen(availableTroops, "Target_Instruction", player.name, thisCard.name, "", ProtectCard, true);
 
         void ProtectCard(Card card)
         {

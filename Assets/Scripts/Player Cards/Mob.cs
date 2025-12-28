@@ -19,7 +19,7 @@ public class Mob : CardType
     protected override void DoAbilityOne(Player player, Card thisCard, int logged)
     {
         List<Card> handCards = player.GetHand();
-        MakeDecision.inst.ChooseCardOnScreen(handCards, $"Discard Instruction-Card-{thisCard.name}", Discard);
+        MakeDecision.inst.ChooseCardOnScreen(handCards, "Discard_Instruction", player.name, thisCard.name, "", Discard);
 
         void Discard(Card card)
         {
@@ -35,11 +35,11 @@ public class Mob : CardType
 
         if (availableTroops.Count == 0)
         {
-            Log.inst.AddMyText($"Card Failed-Card-{thisCard.name}", false, logged);
+            Log.inst.AddMyText(false, "Card_Failed", "", thisCard.name, "", logged);
         }
         else
         {
-            MakeDecision.inst.ChooseDisplayOnScreen(availableTroops, $"Target Instruction-Player-{otherPlayer.name}-Card-{thisCard.name}", Attack, true);
+            MakeDecision.inst.ChooseDisplayOnScreen(availableTroops, "Target_Instruction", player.name, thisCard.name, "", Attack, true);
         }
 
         void Attack(Card card)

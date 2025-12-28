@@ -4,14 +4,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using System.Text.RegularExpressions;
-using System.Linq;
 using MyBox;
 
 [Serializable]
 public class KeywordHover
 {
-    public string englishString;
-    [ReadOnly] public string translatedString;
+    public string original;
+    [ReadOnly] public string translated;
     [ReadOnly] public string description;
     public Color color = Color.white;
 }
@@ -21,39 +20,31 @@ public class KeywordTooltip : MonoBehaviour
     public static KeywordTooltip instance;
     float XCap;
     float Ydisplace;
-    [SerializeField] TMP_Text tooltipText;
 
     [SerializeField] List<KeywordHover> linkedKeywords = new();
     [SerializeField] List<KeywordHover> spriteKeywords = new();
+    [SerializeField] TMP_Text tooltipText;
     Dictionary<string, CardLayout> listOfCardRC = new();
+
 
     private void Awake()
     {
-        if (instance == null)
-        {
-            instance = this;
-            XCap = tooltipText.rectTransform.sizeDelta.x / 2f;
-            Ydisplace = tooltipText.rectTransform.sizeDelta.y * 1.25f;
-        }
-        else
-        {
-            Destroy(this.gameObject);
-        }
+        instance = this;
+        XCap = tooltipText.rectTransform.sizeDelta.x / 2f;
+        Ydisplace = tooltipText.rectTransform.sizeDelta.y * 1.25f;
     }
 
     public void SwitchLanguage()
     {
         foreach (KeywordHover hover in linkedKeywords)
         {
-            hover.translatedString = Translator.inst.Translate(hover.englishString);
-            if (Translator.inst.TranslationExists($"{hover.englishString} Text"))
-                hover.description = Translator.inst.Translate($"{hover.englishString} Text");
+            hover.translated = AutoTranslate.DoEnum((ToTranslate)Enum.Parse(typeof(ToTranslate), hover.original));
+            hover.description = Translator.inst.Translate($"{hover.original}_Text");
         }
         foreach (KeywordHover hover in spriteKeywords)
         {
-            hover.translatedString = Translator.inst.Translate(hover.englishString);
-            if (Translator.inst.TranslationExists($"{hover.englishString} Text"))
-            hover.description = Translator.inst.Translate($"{hover.englishString} Text");
+            hover.translated = AutoTranslate.DoEnum((ToTranslate)Enum.Parse(typeof(ToTranslate), hover.original));
+            hover.description = Translator.inst.Translate($"{hover.original}_Text");
         }
 
         foreach (KeywordHover hover in linkedKeywords)
@@ -64,7 +55,7 @@ public class KeywordTooltip : MonoBehaviour
 
     public string EditText(string text)
     {
-        if (text.Equals(""))
+        if (text.Length == 0)
             return "";
 
         string answer = Regex.Replace(text, "(?<=[a-z])(?=[A-Z])", " ");
@@ -72,23 +63,35 @@ public class KeywordTooltip : MonoBehaviour
         answer = Regex.Replace(answer, @"-(\s*(\n|$))", "$1");
         answer = answer.Replace("-u003e", "->");
 
+        answer = text;
         foreach (KeywordHover link in linkedKeywords)
         {
-            string toReplace = link.translatedString;
-            answer = answer.Replace(toReplace, $"<link=\"{toReplace}\"><u>" +
-                $"<color=#{ColorUtility.ToHtmlStringRGB(link.color)}>{toReplace}<color=#FFFFFF></u></link>");
+            string toReplace = link.translated;
+            answer = answer.Replace(toReplace, $"<link=\"{link.translated}\"><u>" +
+                $"<color=#{ColorUtility.ToHtmlStringRGB(link.color)}>{link.translated}<color=#FFFFFF></u></link>");
         }
         foreach (KeywordHover link in spriteKeywords)
         {
-            string toReplace = link.translatedString;
-            answer = answer.Replace(toReplace, $"<link=\"{link.englishString}\"><sprite=\"{link.englishString}\" name=\"{link.englishString}\"></link>");
-        }
-        foreach (var next in listOfCardRC)
-        {
-            string toReplace = next.Key;
-            answer = answer.Replace(toReplace, $"<link=\"{toReplace}\"><i>{toReplace}</i></link>");
+            string toReplace = link.translated;
+            answer = answer.Replace(toReplace, $"<link=\"{link.original}\"><sprite=\"{link.original}\" name=\"{link.original}\"></link>");
         }
         return answer;
+    }
+
+    public KeywordHover SearchForKeyword(string target)
+    {
+        foreach (KeywordHover link in linkedKeywords)
+        {
+            if (link.translated.Equals(target))
+                return link;
+        }
+        foreach (KeywordHover link in spriteKeywords)
+        {
+            if (link.translated.Equals(target))
+                return link;
+        }
+        Debug.LogError($"{target} couldn't be found");
+        return null;
     }
 
     private void Update()
@@ -104,47 +107,29 @@ public class KeywordTooltip : MonoBehaviour
             0);
     }
 
-    public KeywordHover SearchForKeyword(string target)
-    {
-        foreach (KeywordHover link in linkedKeywords)
-        {
-            if (link.translatedString.Equals(target))
-                return link;
-        }
-        foreach (KeywordHover link in spriteKeywords)
-        {
-            if (link.translatedString.Equals(target))
-                return link;
-        }
-        Debug.LogError($"{target} couldn't be found");
-        return null;
-    }
-
     public void ActivateTextBox(string target, Vector3 mousePosition)
     {
         this.transform.SetAsLastSibling();
 
         foreach (KeywordHover entry in linkedKeywords)
         {
-            if (Display(entry))
+            if (entry.original.Equals(target))
+            {
+                tooltipText.text = entry.description;
+                tooltipText.transform.parent.position = CalculatePosition(mousePosition);
+                tooltipText.transform.parent.gameObject.SetActive(true);
                 return;
+            }
         }
         foreach (KeywordHover entry in spriteKeywords)
         {
-            if (Display(entry))
-                return;
-        }
-
-        bool Display(KeywordHover keyword)
-        {
-            if (keyword.englishString.Equals(target) && !keyword.description.Equals(""))
+            if (entry.original.Equals(target))
             {
-                tooltipText.text = keyword.description;
+                tooltipText.text = entry.description;
                 tooltipText.transform.parent.position = CalculatePosition(mousePosition);
                 tooltipText.transform.parent.gameObject.SetActive(true);
-                return true;
+                return;
             }
-            return false;
         }
     }
 
@@ -157,4 +142,5 @@ public class KeywordTooltip : MonoBehaviour
     {
         return listOfCardRC[cardName];
     }
+
 }

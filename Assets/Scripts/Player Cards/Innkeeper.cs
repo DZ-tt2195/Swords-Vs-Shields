@@ -21,12 +21,13 @@ public class Innkeeper : CardType
         List<MiniCardDisplay> availableTroops = player.AliveTroops();
         if (availableTroops.Count == 0)
         {
-            Log.inst.AddMyText($"Card Failed-Card-{thisCard.name}", false, logged);
+            Log.inst.AddMyText(false, "Card_Failed", "", thisCard.name, "", logged);
         }
         else
         {
-            MakeDecision.inst.ChooseDisplayOnScreen(availableTroops, $"Target Instruction-Player-{player.name}-Card-{thisCard.name}", Protect, true);
+            MakeDecision.inst.ChooseDisplayOnScreen(availableTroops, "Target_Instruction", player.name, thisCard.name, "", Protect, true);
         }
+
         void Protect(Card card)
         {
             card.HealthRPC(player, 4, logged);

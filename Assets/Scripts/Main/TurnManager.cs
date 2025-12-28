@@ -99,7 +99,7 @@ public class TurnManager : PhotonCompatible
     void UpdateWaitingText(List<Photon.Realtime.Player> toSend, int playersWaiting)
     {
         foreach (Photon.Realtime.Player player in toSend)
-            MakeDecision.inst.DoFunction(() => MakeDecision.inst.Instructions($"Waiting on Players-Num-{playersWaiting}"), player);
+            MakeDecision.inst.DoFunction(() => MakeDecision.inst.Instructions("Waiting_on_Players", "", "", playersWaiting.ToString()), player);
     }
 
     void NextPhase()
@@ -140,9 +140,9 @@ public class TurnManager : PhotonCompatible
         if (leastHealth.Item2 <= 0)
         {
             if (leastHealth.Item1 != null)
-                TextForEnding($"Player Lost-Player-{leastHealth.Item1.name}", -1);
+                TextForEnding("Player_Lost", leastHealth.Item1.name, "", "", -1);
             else
-                TextForEnding($"Tie Game", -1);
+                TextForEnding("Tie_Game", "", "", "", -1);
             InstantChangeRoomProp(ConstantStrings.CurrentPhase, turnsInOrder.Count - 1);
         }
         else
@@ -273,10 +273,10 @@ public class TurnManager : PhotonCompatible
 
 #region Ending
 
-    public void TextForEnding(string logText, int resignPosition)
+    public void TextForEnding(string toFind, string playerName, string cardName, string number, int resignPosition)
     {
-        Log.inst.MasterText("Blank");
-        Log.inst.MasterText(logText);
+        Log.inst.MasterText(true, toFind, playerName, cardName, number);
+        Log.inst.MasterText(true, toFind, playerName, cardName, number);
         InstantChangeRoomProp(ConstantStrings.GameOver, true);
         DoFunction(() => ShowEnding(resignPosition), RpcTarget.All);
     }
@@ -289,15 +289,17 @@ public class TurnManager : PhotonCompatible
 
         foreach (Player player in CreateGame.inst.listOfPlayers)
         {
-            text += $"{player.name} - {player.GetHealth()} {Translator.inst.Translate("Health")} ";
+            text += $"{player.name} - {player.GetHealth()} {AutoTranslate.DoEnum(ToTranslate.Health)} ";
             if (player.myPosition == resignPosition)
-                text += Translator.inst.Translate("Resigned");
+                text += AutoTranslate.DoEnum(ToTranslate.Resigned);
             text += "\n";
 
             List<string> cardsPlayed = GetStringList(ConstantStrings.AllCardsPlayed, player);
             for (int i = 0; i<cardsPlayed.Count; i++)
             {
-                text += Translator.inst.SplitAndTranslate(-1, cardsPlayed[i]);
+                string[] splitUp = cardsPlayed[i].Split('-');
+
+                text += Translator.inst.Packaging("Played_Card_Info", "", splitUp[0], splitUp[1]);
                 text += ",";
             }
             text += "\n\n";

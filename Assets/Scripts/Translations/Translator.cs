@@ -6,17 +6,7 @@ using MyBox;
 using System;
 using System.Reflection;
 using Photon.Pun;
-
-[Serializable]
-public class CardData
-{
-    public string cardName;
-    public int startingHealth;
-    public AbilityType typeOne;
-    public AbilityType typeTwo;
-    public string artCredit;
-    public Sprite sprite;
-}
+using UnityEngine.UIElements;
 
 public class Translator : PhotonCompatible
 {
@@ -25,7 +15,6 @@ public class Translator : PhotonCompatible
 
     public static Translator inst;
     Dictionary<string, Dictionary<string, string>> keyTranslate = new();
-    public List<CardData> playerCardFiles { get; private set; }
     [Scene][SerializeField] string toLoad;
 
     protected override void Awake()
@@ -44,186 +33,45 @@ public class Translator : PhotonCompatible
 
     private void Start()
     {
-        if (!PlayerPrefs.HasKey("Language"))
-            PlayerPrefs.SetString("Language", "English");
+        TextAsset[] languageFiles = Resources.LoadAll<TextAsset>("TSVs");
+        foreach (TextAsset language in languageFiles)
+        {
+            string fileName = ConvertName(language);
 
-        TxtLanguages();
-        CsvLanguages(ReadFile("Csv Languages"));
-        playerCardFiles = GetCardData<CardData>(ReadFile("Player Cards"));
+            string ConvertName(TextAsset asset)
+            {
+                //pattern: "0. English"
+                string pattern = @"^\d+\.\s*(.+)$";
+                Match match = Regex.Match(asset.name, pattern);
+                if (match.Success)
+                    return match.Groups[1].Value;
+                else
+                    return asset.name;
+            }
+
+            Dictionary<string, string> newDictionary = ReadLanguageFile(language.text);
+            keyTranslate.Add(fileName, newDictionary);
+        }
+
+        if (!PlayerPrefs.HasKey("English") || !keyTranslate.ContainsKey(PlayerPrefs.GetString("Language")))
+            PlayerPrefs.SetString("Language", "English");
 
         KeywordTooltip.instance.SwitchLanguage();
         SceneManager.LoadScene(toLoad);
     }
 
-    #endregion
-
-#region Reading Files
-
-    public static string[][] ReadFile(string range)
+    public static Dictionary<string, string> ReadLanguageFile(string textToConvert)
     {
-        TextAsset data = Resources.Load($"{range}") as TextAsset;
+        string[] splitUp = textToConvert.Split('\n');
+        Dictionary<string, string> toReturn = new();
 
-        string editData = data.text;
-        editData = editData.Replace("],", "").Replace("{", "").Replace("}", "");
-
-        string[] numLines = editData.Split("[");
-        string[][] list = new string[numLines.Length][];
-
-        for (int i = 0; i < numLines.Length; i++)
-            list[i] = numLines[i].Split("\",");
-        return list;
-    }
-
-    void TxtLanguages()
-    {
-        TextAsset[] languageFiles = Resources.LoadAll<TextAsset>("Txt Languages");
-        foreach (TextAsset language in languageFiles)
+        foreach (string line in splitUp)
         {
-            (bool success, string converted) = ConvertTxtName(language);
-            if (success)
-            {
-                Dictionary<string, string> newDictionary = new();
-                keyTranslate.Add(converted, newDictionary);
-                string[] lines = language.text.Split('\n');
-
-                foreach (string line in lines)
-                {
-                    if (line != "")
-                    {
-                        string[] parts = line.Split('=');
-                        string key = FixLine(parts[0]);
-                        if (newDictionary.ContainsKey(key))
-                            Debug.Log($"ignore duplicate: {key}");
-                        else
-                            newDictionary[FixLine(key)] = FixLine(parts[1]);
-                    }
-                }
-            }
+            int index = line.IndexOf('\t');
+            string partOne = line[..index].Trim();
+            string partTwo = /*partOne.Equals("Blank") ? "" :*/ line[(index + 1)..].Trim();
+            toReturn.Add(partOne, partTwo);
         }
-
-        (bool, string) ConvertTxtName(TextAsset asset)
-        {
-            //pattern: "0. English"
-            string pattern = @"^\d+\.\s*(.+)$";
-            Match match = Regex.Match(asset.name, pattern);
-            if (match.Success)
-                return (true, match.Groups[1].Value);
-            else
-                return (false, "");
-        }
-    }
-
-    public static string FixLine(string line)
-    {
-        return line.Replace("\"", "").Replace("\\", "").Replace("]", "").Replace("|", "\n").Trim();
-    }
-
-    void CsvLanguages(string[][] data)
-    {
-        for (int i = 1; i < data[1].Length; i++)
-        {
-            data[1][i] = data[1][i].Replace("\"", "").Trim();
-            Dictionary<string, string> newDictionary = new();
-            keyTranslate.Add(data[1][i], newDictionary);
-        }
-
-        for (int i = 2; i < data.Length; i++)
-        {
-            for (int j = 0; j < data[i].Length; j++)
-            {
-                data[i][j] = FixLine(data[i][j]);
-                if (j > 0)
-                {
-                    string language = data[1][j];
-                    string key = data[i][0];
-                    if (keyTranslate[language].ContainsKey(key))
-                        Debug.Log($"ignore duplicate: {key}");
-                    else
-                        keyTranslate[language][key] = data[i][j];
-                }
-            }
-        }
-    }
-
-    List<T> GetCardData<T>(string[][] data) where T : new()
-    {
-        Dictionary<string, int> columnIndex = new();
-        List<T> toReturn = new();
-
-        for (int i = 0; i < data[1].Length; i++)
-        {
-            string nextLine = data[1][i].Trim().Replace("\"", "");
-            if (!columnIndex.ContainsKey(nextLine))
-            {
-                columnIndex.Add(nextLine, i);
-            }
-        }
-
-        for (int i = 2; i < data.Length; i++)
-        {
-            for (int j = 0; j < data[i].Length; j++)
-                data[i][j] = FixLine(data[i][j]);
-
-            if (data[i][0].IsNullOrEmpty())
-                continue;
-
-            T nextData = new();
-            toReturn.Add(nextData);
-
-            foreach (FieldInfo field in typeof(T).GetFields(BindingFlags.Public | BindingFlags.Instance))
-            {
-                if (columnIndex.TryGetValue(field.Name, out int index))
-                {
-                    string sheetValue = data[i][index];
-                    if (field.FieldType == typeof(int))
-                        field.SetValue(nextData, StringToInt(sheetValue));
-                    else if (field.FieldType == typeof(bool))
-                        field.SetValue(nextData, StringToBool(sheetValue));
-                    else if (field.FieldType == typeof(string))
-                        field.SetValue(nextData, sheetValue.Replace("|", "\n"));
-                    else if (field.FieldType == typeof(AbilityType))
-                        field.SetValue(nextData, StringToAbilityType(sheetValue));
-
-                    int StringToInt(string line)
-                    {
-                        line = line.Trim();
-                        try
-                        {
-                            return (line.Equals("")) ? -1 : int.Parse(line);
-                        }
-                        catch (FormatException)
-                        {
-                            return -1;
-                        }
-                    }
-
-                    AbilityType StringToAbilityType(string line)
-                    {
-                        line = line.Trim();
-                        try
-                        {
-                            return (AbilityType)Enum.Parse(typeof(AbilityType), line);
-                        }
-                        catch (FormatException)
-                        {
-                            return AbilityType.None;
-                        }
-                    }
-
-                    bool StringToBool(string line)
-                    {
-                        line = line.Trim();
-                        return line == "TRUE";
-                    }
-                }
-                else
-                {
-                    if (field.FieldType == typeof(Sprite))
-                        field.SetValue(nextData, Resources.Load<Sprite>($"Card Art/{data[i][0]}"));
-                }
-            }
-        }
-
         return toReturn;
     }
 
@@ -236,37 +84,8 @@ public class Translator : PhotonCompatible
         return keyTranslate["English"].ContainsKey(key);
     }
 
-    public string SplitAndTranslate(int owner, string logText, int indent = 0)
-    {
-        string targetText = "";
-        for (int i = 0; i < indent; i++)
-            targetText += "     ";
-
-        string[] splitUp = logText.Split('-');
-        string main = splitUp[0];
-        List<(string, string)> toTranslate = new();
-
-        for (int i = 1; i < splitUp.Length; i += 2)
-        {
-            string first = splitUp[i];
-            string second = splitUp[i + 1];
-            if (first.Equals("Card") || first.Equals("Area"))
-                second = Translate(second);
-            toTranslate.Add((first, second));
-        }
-
-        if (TranslationExists($"{main} Others") && (int)PhotonNetwork.LocalPlayer.CustomProperties[ConstantStrings.MyPosition] != owner)
-            targetText += Translate($"{main} Others", toTranslate);
-        else
-            targetText += Translate($"{main}", toTranslate);
-        return KeywordTooltip.instance.EditText(targetText);
-    }
-
     public string Translate(string key, List<(string, string)> toReplace = null)
     {
-        if (key == "" || int.TryParse(key, out _))
-            return key;
-
         string answer;
         try
         {
@@ -299,16 +118,60 @@ public class Translator : PhotonCompatible
         return keyTranslate;
     }
 
-    public void ChangeLanguage(string newLanguage)
+    public void ChangeLanguage(string newLanguage, Dictionary<string, string> addedTranslation)
     {
+        if (addedTranslation != null)
+        {
+            keyTranslate.Add(newLanguage, addedTranslation);
+        }
         if (!PlayerPrefs.GetString("Language").Equals(newLanguage))
         {
             PlayerPrefs.SetString("Language", newLanguage);
             KeywordTooltip.instance.SwitchLanguage();
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            SceneManager.LoadScene(toLoad);
         }
     }
 
-    #endregion
+    public string Packaging(string toFind, string playerName, string cardName, string number, int owner = -1)
+    {
+        string targetText;
+        if (TranslationExists($"{toFind}_Others") && (int)PhotonNetwork.LocalPlayer.CustomProperties[ConstantStrings.MyPosition] != owner)
+            targetText = $"{toFind}_Others";
+        else
+            targetText = toFind;
+
+        try
+        {
+            MethodInfo method = typeof(AutoTranslate).GetMethod(targetText, BindingFlags.Static | BindingFlags.Public);
+            ParameterInfo[] parameters = method.GetParameters();
+            object[] args = new object[parameters.Length];
+
+            for (int i = 0; i<parameters.Length; i++)
+            {
+                switch (parameters[i].Name)
+                {
+                    case "Player":
+                        args[i] = playerName;
+                        break;
+                    case "Card":
+                        args[i] = Translate(cardName);
+                        break;
+                    case "Num":
+                        args[i] = number;
+                        break;
+                }
+            }
+            object result = method.Invoke(null, args);
+            //Debug.Log($"{targetText} {(string)result}");
+            return KeywordTooltip.instance.EditText((string)result);
+        }
+        catch
+        {
+            //Debug.Log($"{targetText} (no subs)");
+            return KeywordTooltip.instance.EditText(Translate(targetText, null));
+        }        
+    }
+
+#endregion
 
 }

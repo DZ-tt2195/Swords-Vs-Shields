@@ -19,9 +19,9 @@ public class Coven : CardType
         }
 
         if (canChoose.Count >= 1)
-            MakeDecision.inst.ChooseDisplayOnScreen(canChoose, $"Target Instruction-Player-{toChooseFrom.name}-Card-{thisCard.name}", Effects, true);
+            MakeDecision.inst.ChooseDisplayOnScreen(canChoose, "Target_Instruction", toChooseFrom.name, thisCard.name, "", Effects, true);
         else
-            Log.inst.AddMyText($"Card Failed-Card-{thisCard.name}", false, logged);
+            Log.inst.AddMyText(false, "Card_Failed", "", thisCard.name, "", logged);
 
         void Effects(Card card)
         {

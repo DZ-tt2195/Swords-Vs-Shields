@@ -19,33 +19,35 @@ public class Storyteller : CardType
     protected override void DoAbilityOne(Player player, Card thisCard, int logged)
     {
         player.SwordRPC(-3, logged);
-        int damage = -1 * player.AliveTroops().Where(display => IsAttack(display.card.thisCard.dataFile)).Count();
+        int healing = -1 * player.AliveTroops().Where(display => IsAttack(display.card.thisCard.dataFile)).Count();
 
         bool IsAttack(CardData card)
         {
             return (card.typeOne == AbilityType.Attack || card.typeTwo == AbilityType.Attack);
         }
 
-        if (damage == 0)
+        if (healing == 0)
         {
-            Log.inst.AddMyText($"Card Failed-Card-{thisCard.name}", false, logged);
+            Log.inst.AddMyText(false, "Card_Failed", "", thisCard.name, "", logged);
         }
         else
         {
-            MakeDecision.inst.ChooseTextButton(new() { new($"Pick Player-Player-{player.name}", HealPlayer) }, $"Choose One-Card-{thisCard.name}", false);
+            MakeDecision.inst.ChooseTextButton(new() { 
+            new("Pick_Player", player.name, thisCard.name, "", HealPlayer) 
+            }, $"Choose_One", player.name, thisCard.name, "", false);
 
             List<MiniCardDisplay> availableTroops = player.AliveTroops();
             if (availableTroops.Count >= 1)
-                MakeDecision.inst.ChooseDisplayOnScreen(availableTroops, $"Choose One-Card-{thisCard.name}", HealCard, false);
+                MakeDecision.inst.ChooseDisplayOnScreen(availableTroops, $"Choose_One", player.name, thisCard.name, "", HealCard, false);
 
             void HealCard(Card card)
             {
-                card.HealthRPC(player, -damage, logged);
+                card.HealthRPC(player, healing, logged);
             }
 
             void HealPlayer()
             {
-                player.HealthRPC(-damage, logged);
+                player.HealthRPC(healing, logged);
             }
         }
     }

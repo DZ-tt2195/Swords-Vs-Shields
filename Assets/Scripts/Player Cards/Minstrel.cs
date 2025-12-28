@@ -23,7 +23,7 @@ public class Minstrel : CardType
     void DiscardEffect(Player player, Card thisCard, int logged, int counter)
     {
         List<Card> handCards = player.GetHand();
-        MakeDecision.inst.ChooseCardOnScreen(handCards, $"Discard Instruction-Card-{thisCard.name}", Discard);
+        MakeDecision.inst.ChooseCardOnScreen(handCards, "Discard_Instruction", player.name, thisCard.name, "", Discard);
 
         void Discard(Card card)
         {
