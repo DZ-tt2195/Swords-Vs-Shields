@@ -31,11 +31,11 @@ public class MiniCardDisplay : MonoBehaviour, IPointerClickHandler
         int currentHealth = card.GetHealth();
         drawX.gameObject.SetActive(currentHealth <= 0);
 
-        string text = $"{currentHealth} {Translator.inst.Translate("Health")}";
+        string text = $"{currentHealth} {AutoTranslate.DoEnum(ToTranslate.Health)}";
         if (!card.CanUseAbility())
-            text += $" {Translator.inst.Translate("Stunned")}";
+            text += $" {AutoTranslate.DoEnum(ToTranslate.Stunned)}";
         if (!card.CanTakeDamage())
-            text += $" {Translator.inst.Translate("Protected")}";
+            text += $" {AutoTranslate.DoEnum(ToTranslate.Protected)}";
 
         description.text = KeywordTooltip.instance.EditText(text);
     }

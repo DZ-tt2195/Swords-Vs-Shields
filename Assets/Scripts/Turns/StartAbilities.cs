@@ -7,7 +7,7 @@ public class StartAbilities : Turn
     public override void MasterStart()
     {
         int currentRound = (int)PhotonCompatible.GetRoomProperty(ConstantStrings.CurrentRound);
-        Log.inst.MasterText($"Use Green-Num-{currentRound}");
+        Log.inst.MasterText(true, "Use_Green", "", "", currentRound.ToString());
     }
 
     public override void ForPlayer(Player player)

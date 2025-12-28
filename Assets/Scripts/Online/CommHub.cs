@@ -29,19 +29,19 @@ public class CommHub : PhotonCompatible
         if (textToSend != "")
         {
             inputMessage.text = "";
-            ShareMessageRPC($"{PhotonNetwork.LocalPlayer.NickName}: {textToSend}", false);
+            ShareMessageRPC($"{PhotonNetwork.LocalPlayer.NickName}: {textToSend}", "", "", "", false);
         }
     }
 
-    public void ShareMessageRPC(string logText, bool translate)
+    public void ShareMessageRPC(string toFind, string playerName, string cardName, string number, bool translate)
     {
-        DoFunction(() => ShareMessage(logText, translate), RpcTarget.All);
+        DoFunction(() => ShareMessage(toFind, playerName, cardName, number, translate), RpcTarget.All);
     }
 
     [PunRPC]
-    void ShareMessage(string logText, bool translate)
+    void ShareMessage(string toFind, string playerName, string cardName, string number, bool translate)
     {
-        string targetText = (translate) ? Translator.inst.SplitAndTranslate(-1, logText) : logText;
+        string targetText = (translate) ? Translator.inst.Packaging(toFind, playerName, cardName, number) : toFind;
         allTexts.text += $"{targetText}\n";
         ChangeScrolling();
     }
@@ -60,17 +60,18 @@ public class CommHub : PhotonCompatible
 
     public override void OnPlayerLeftRoom(Photon.Realtime.Player otherPlayer)
     {
-        if (PhotonNetwork.IsMasterClient && (int)GetPlayerProperty(otherPlayer, ConstantStrings.MyPosition) >= 0)
+        int playerPosition = (int)GetPlayerProperty(otherPlayer, ConstantStrings.MyPosition);
+        if (PhotonNetwork.IsMasterClient && playerPosition >= 0)
         {
             if (otherPlayer.IsInactive)
             {
-                ShareMessageRPC($"Player Disconnected-Player-{otherPlayer.NickName}", true);
+                ShareMessageRPC("Player_Disconnected", otherPlayer.NickName, "", "", true);
                 InstantChangePlayerProp(otherPlayer, ConstantStrings.Waiting, false);
             }
             else if (!(bool)GetRoomProperty(ConstantStrings.GameOver.ToString()))
             {
-                ShareMessageRPC($"Player Quit-Player-{otherPlayer.NickName}", true);
-                TurnManager.inst.TextForEnding($"Player Resigned-Player-{otherPlayer.NickName}", (int)GetPlayerProperty(otherPlayer, ConstantStrings.MyPosition));
+                ShareMessageRPC("Player_Quit", otherPlayer.NickName, "", "", true);
+                TurnManager.inst.TextForEnding("Player_Resigned", otherPlayer.NickName, "", "", playerPosition); 
             }
         }
     }

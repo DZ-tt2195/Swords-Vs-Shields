@@ -30,15 +30,17 @@ public class Captain : CardType
 
         if (damage == 0)
         {
-            Log.inst.AddMyText($"Card Failed-Card-{thisCard.name}", false, logged);
+            Log.inst.AddMyText(false, "Card_Failed", "", thisCard.name, "", logged);
         }
         else
         {
-            MakeDecision.inst.ChooseTextButton(new() { new($"Pick Player-Player-{otherPlayer.name}", AttackPlayer) }, $"Choose One-Card-{thisCard.name}", false);
+        MakeDecision.inst.ChooseTextButton(new() { 
+            new("Pick_Player", player.name, thisCard.name, "", AttackPlayer) 
+            }, $"Choose_One", player.name, thisCard.name, "", false);
 
             List<MiniCardDisplay> availableTroops = otherPlayer.AliveTroops();
             if (availableTroops.Count >= 1)
-                MakeDecision.inst.ChooseDisplayOnScreen(availableTroops, $"Choose One-Card-{thisCard.name}", AttackCard, false);
+                MakeDecision.inst.ChooseDisplayOnScreen(availableTroops, $"Choose_One", player.name, thisCard.name, "", AttackCard, false);
 
             void AttackCard(Card card)
             {

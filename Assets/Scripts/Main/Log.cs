@@ -64,14 +64,21 @@ public class RollBack
 
 public class LogText
 {
-    public string text { get; private set; }
+    public string toFind { get; private set; }
+    public string playerName { get; private set; }
+    public string cardName { get; private set; }
+    public string number { get; private set; }
+
     public int indent { get; private set; }
     public bool important { get; private set; }
     public DecisionContainer undoToThis { get; private set; }
 
-    public LogText(string text, int indent, bool important)
+    public LogText(string toFind, string playerName, string cardName, string number, int indent, bool important)
     {
-        this.text = text;
+        this.toFind = toFind;
+        this.playerName = playerName;
+        this.cardName = cardName;
+        this.number = number;
         this.indent = indent;
         this.important = important;
     }
@@ -153,13 +160,13 @@ public class Log : PhotonCompatible
         }
     }
 
-    public void AddMyText(string logText, bool important, int indent = 0, bool isUndo = true)
+    public void AddMyText(bool important, string toFind, string playerName, string cardName, string number, int indent = 0, bool isUndo = true)
     {
         if (indent >= 0)
-            NewRollback(() => AddToCurrent(logText, indent, important, isUndo));
+            NewRollback(() => AddToCurrent(important, toFind, indent, isUndo, playerName, cardName, number));
     }
 
-    void AddToCurrent(string logText, int indent, bool important, bool isUndo)
+    void AddToCurrent(bool important, string toFind, int indent, bool isUndo, string playerName, string cardName, string number)
     {
         if (!forward)
         {
@@ -180,11 +187,14 @@ public class Log : PhotonCompatible
         }
         else
         {
-            LogText saveText = new(logText, indent, important);
+            LogText saveText = new(toFind, playerName, cardName, number, indent, important);
             currentLogTexts.Add(saveText);
 
             int currentPosition = (int)PhotonNetwork.LocalPlayer.CustomProperties[ConstantStrings.MyPosition];
-            string targetText = $"{Translator.inst.SplitAndTranslate(currentPosition, logText, indent)}\n";
+            string targetText = "";
+            for (int i = 0; i < indent; i++)
+                targetText += "     ";
+            targetText += $"{Translator.inst.Packaging(toFind, playerName, cardName, number, currentPosition)}\n";
 
             allCurrent.text += targetText;
             if (important)
@@ -202,10 +212,10 @@ public class Log : PhotonCompatible
         }
     }
 
-    public void MasterText(string logText)
+    public void MasterText(bool important, string toFind, string playerName, string cardName, string number, int indent = 0)
     {
         if (AmMaster())
-            DoFunction(() => AddToPast(-1, logText, 0, true), RpcTarget.AllBuffered);
+            DoFunction(() => AddToPast(important, toFind, indent, playerName, cardName, number), RpcTarget.AllBuffered);
     }
 
     public void DoneWithTurn()
@@ -217,21 +227,24 @@ public class Log : PhotonCompatible
 
     public void ShareTexts()
     {
-        //Debug.Log($"sharing {currentLogTexts.Count} texts");
         int currentPosition = (int)GetPlayerProperty(PhotonNetwork.LocalPlayer, ConstantStrings.MyPosition);
         foreach (LogText nextLog in currentLogTexts)
-        {
-            DoFunction(() => AddToPast(currentPosition, nextLog.text, nextLog.indent, nextLog.important), RpcTarget.AllBuffered);
-        }
+            DoFunction(() => AddToPast(nextLog.important, nextLog.toFind, nextLog.indent, nextLog.playerName, nextLog.cardName, nextLog.number), RpcTarget.AllBuffered);
+
         allCurrent.text = "";
         importantCurrent.text = "";
         currentLogTexts.Clear();
     }
 
     [PunRPC]
-    void AddToPast(int owner, string logText, int indent, bool important)
+    void AddToPast(bool important, string toFind, int indent, string playerName, string cardName, string number)
     {
-        string targetText = $"{Translator.inst.SplitAndTranslate(owner, logText, indent)}\n";
+        int currentPosition = (int)PhotonNetwork.LocalPlayer.CustomProperties[ConstantStrings.MyPosition];
+        string targetText = "";
+        for (int i = 0; i < indent; i++)
+            targetText += "     ";
+        targetText += $"{Translator.inst.Packaging(toFind, playerName, cardName, number, currentPosition)}\n";
+
         allPast.text += targetText;
         if (important)
             importantPast.text += targetText;

@@ -1,12 +1,34 @@
 using UnityEngine;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class SetText : MonoBehaviour
 {
-    [SerializeField] string key;
+    [SerializeField] ToTranslate key;
+    TMP_Text textBox;
 
-    private void Start()
+    private void OnEnable()
     {
-        GetComponent<TMP_Text>().text = Translator.inst.Translate(key);
+        textBox = GetComponent<TMP_Text>();
+        if (SceneManager.GetActiveScene().buildIndex == 0)
+            SceneManager.sceneLoaded += OnSceneLoaded;
+        else
+            Translate();
+    }
+
+    void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    void Translate()
+    {
+        textBox.text = KeywordTooltip.instance.EditText(AutoTranslate.DoEnum(key));
+    }
+
+    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        if (SceneManager.GetActiveScene().buildIndex >= 1)
+            Translate();
     }
 }

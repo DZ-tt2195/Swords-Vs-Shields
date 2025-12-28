@@ -7,12 +7,12 @@ public class RedAbilities : Turn
     public override void MasterStart()
     {
         int currentRound = (int)PhotonCompatible.GetRoomProperty(ConstantStrings.CurrentRound);
-        Log.inst.MasterText($"Use Red-Num-{currentRound}");
+        Log.inst.MasterText(true, "Use_Red", "", "", currentRound.ToString());
     }
 
     public override void MasterEnd()
     {
-        Log.inst.MasterText($"Blank");
+        Log.inst.MasterText(true, "Blank", "", "", "");
     }
 
     public override void ForPlayer(Player player)
@@ -35,11 +35,11 @@ public class RedAbilities : Turn
 
         if (redCards.Count >= 1)
         {
-            MakeDecision.inst.ChooseDisplayOnScreen(redCards, "Use Red Instruction", ChooseToUse, false);
+            MakeDecision.inst.ChooseDisplayOnScreen(redCards, "Use_Red_Instruction", "", "", "", ChooseToUse, false);
 
             void ChooseToUse(Card card)
             {
-                Log.inst.AddMyText($"Resolve Card-Player-{player.name}-Card-{card.name}", false);
+                Log.inst.AddMyText(false, "Resolve_Card", player.name, card.name, "");
                 card.thisCard.HasType(AbilityType.Attack, player, card, 1);
 
                 HashSet<Card> newSet = new(alreadyDone);

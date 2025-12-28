@@ -130,7 +130,7 @@ public class Card : PhotonCompatible
     public void StunRPC(Player player, int increment, int logged = 0)
     {
         int roundNumber = (int)GetRoomProperty(ConstantStrings.CurrentRound) + increment;
-        Log.inst.AddMyText($"Stun Card-Card-{this.name}-Num-{roundNumber}", false, logged);
+        Log.inst.AddMyText(true, "Stun_Card", "", this.name, roundNumber.ToString(), logged);
         Log.inst.NewRollback(() => AddToArray(player, roundNumber, StunString()));
     }
 
@@ -144,7 +144,7 @@ public class Card : PhotonCompatible
     public void ProtectRPC(Player player, int increment, int logged = 0)
     {
         int roundNumber = (int)GetRoomProperty(ConstantStrings.CurrentRound) + increment;
-        Log.inst.AddMyText($"Protect Card-Card-{this.name}-Num-{roundNumber}", false, logged);
+        Log.inst.AddMyText(true, "Protect_Card", "", this.name, roundNumber.ToString(), logged);
         Log.inst.NewRollback(() => AddToArray(player, roundNumber, ProtectString()));
     }
 
@@ -170,9 +170,9 @@ public class Card : PhotonCompatible
         if (num == 0)
             return;
         else if (num > 0)
-            Log.inst.AddMyText($"Add Health Card-Player-{player.name}-Card-{this.name}-Num-{num}", false, logged);
+            Log.inst.AddMyText(false, "Add_Health_Card", player.name, this.name, num.ToString(), logged);
         else if (num < 0 && CanTakeDamage())
-            Log.inst.AddMyText($"Lose Health Card-Player-{player.name}-Card-{this.name}-Num-{Mathf.Abs(num)}", false, logged);
+            Log.inst.AddMyText(false, "Lose_Health_Card", player.name, this.name, Mathf.Abs(num).ToString(), logged);
         else
             return;
         Log.inst.NewRollback(() => ChangeInt(player, num, HealthString()));

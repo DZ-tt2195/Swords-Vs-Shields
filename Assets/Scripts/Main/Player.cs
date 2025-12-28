@@ -57,7 +57,7 @@ public class Player : PhotonCompatible
         resignButton = GameObject.Find("Resign Button").GetComponent<Button>();
         if (photonView.AmOwner)
         {
-            resignButton.onClick.AddListener(() => TurnManager.inst.TextForEnding($"Player Resigned-Player-{this.name}", myPosition));
+            resignButton.onClick.AddListener(() => TurnManager.inst.TextForEnding("Player_Resigned", this.name, "", "", myPosition));
             StartTurn();
         }
     }
@@ -86,7 +86,7 @@ public class Player : PhotonCompatible
         for (int i = 0; i < amount; i++)
         {
             Card card = myDeck[i];
-            Log.inst.AddMyText($"Draw Card-Player-{this.name}-Card-{card.name}", false, logged);
+            Log.inst.AddMyText(false, "Draw_Card", this.name, card.name, "", logged);
             toDraw.Add(card);
         }
         Log.inst.NewRollback(() => AddToHand(toDraw));
@@ -123,7 +123,7 @@ public class Player : PhotonCompatible
     public void DiscardRPC(Card card, int logged)
     {
         Log.inst.NewRollback(() => DiscardFromHand(card));
-        Log.inst.AddMyText($"Discard Card-Player-{this.name}-Card-{card.name}", false, logged);
+        Log.inst.AddMyText(false, "Discard_Card", this.name, card.name, "", logged);
     }
 
     void DiscardFromHand(Card card)
@@ -170,9 +170,9 @@ public class Player : PhotonCompatible
         if (num == 0)
             return;
         if (num > 0)
-            Log.inst.AddMyText($"Add Shield-Player-{this.name}-Num-{num}", false, logged);
+            Log.inst.AddMyText(false, "Add_Shield", this.name, "", num.ToString(), logged);
         else
-            Log.inst.AddMyText($"Lose Shield-Player-{this.name}-Num-{Mathf.Abs(num)}", false, logged);
+            Log.inst.AddMyText(false, "Lose_Shield", this.name, "", Mathf.Abs(num).ToString(), logged);
         Log.inst.NewRollback(() => ChangeResource(num, ConstantStrings.Shield));
     }
 
@@ -181,9 +181,9 @@ public class Player : PhotonCompatible
         if (num == 0)
             return;
         if (num > 0)
-            Log.inst.AddMyText($"Add Sword-Player-{this.name}-Num-{num}", false, logged);
+            Log.inst.AddMyText(false, "Add_Sword", this.name, "", num.ToString(), logged);
         else
-            Log.inst.AddMyText($"Lose Sword-Player-{this.name}-Num-{Mathf.Abs(num)}", false, logged);
+            Log.inst.AddMyText(false, "Lose_Sword", this.name, "", Mathf.Abs(num).ToString(), logged);
         Log.inst.NewRollback(() => ChangeResource(num, ConstantStrings.Sword));
     }
 
@@ -192,9 +192,9 @@ public class Player : PhotonCompatible
         if (num == 0)
             return;
         if (num > 0)
-            Log.inst.AddMyText($"Add Action-Player-{this.name}-Num-{num}", false, logged);
+            Log.inst.AddMyText(false, "Add_Action", this.name, "", num.ToString(), logged);
         else
-            Log.inst.AddMyText($"Lose Action-Player-{this.name}-Num-{Mathf.Abs(num)}", false, logged);
+            Log.inst.AddMyText(false, "Lose_Action", this.name, "", Mathf.Abs(num).ToString(), logged);
         Log.inst.NewRollback(() => ChangeResource(num, ConstantStrings.Action));
     }
 
@@ -203,9 +203,9 @@ public class Player : PhotonCompatible
         if (num == 0)
             return;
         if (num > 0)
-            Log.inst.AddMyText($"Add Health Player-Player-{this.name}-Num-{num}", false, logged);
+            Log.inst.AddMyText(false, "Add_Health_Player", this.name, "", num.ToString(), logged);
         else
-            Log.inst.AddMyText($"Lose Health Player-Player-{this.name}-Num-{Mathf.Abs(num)}", false, logged);
+            Log.inst.AddMyText(false, "Lose_Health_Player", this.name, "", Mathf.Abs(num).ToString(), logged);
         Log.inst.NewRollback(() => ChangeResource(num, ConstantStrings.MyHealth));
     }
 
@@ -238,7 +238,7 @@ public class Player : PhotonCompatible
 
         (int phase, Action action) = TurnManager.inst.GetTurnAction(this);
         if (phase >= 1)
-            Log.inst.AddMyText("Blank", true);
+            Log.inst.AddMyText(true, "Blank", "", "", "");
 
         Log.inst.NewDecisionContainer(() => action(), 0);
         Log.inst.NewDecisionContainer(() => EndTurn(), -1);
@@ -250,8 +250,8 @@ public class Player : PhotonCompatible
         Log.inst.inReaction.Add(Done);
         if (endPause)
         {
-            string instructions = (Log.inst.undosInLog.Count >= 1) ? "Pause to Undo" : "Pause to Read";
-            MakeDecision.inst.ChooseTextButton(new() { new("Done", Color.white) }, instructions, false);
+            string instructions = (Log.inst.undosInLog.Count >= 1) ? "Pause_to_Undo" : "Pause_to_Read";
+            MakeDecision.inst.ChooseTextButton(new() { new("Done", "", "", "", Color.white) }, instructions, "", "", "", false);
         }
 
         void Done()
@@ -312,11 +312,11 @@ public class Player : PhotonCompatible
         if (uiDictionary[ConstantStrings.Resources] || uiDictionary[ConstantStrings.MyHand])
         {
             myUI.infoText.text = KeywordTooltip.instance.EditText
-            ($"{this.name}: {GetHealth()} {Translator.inst.Translate("Health")}\n\n" +
-            $"{myHand.Count} {Translator.inst.Translate("Card")} " +
-            $"{GetAction()} {Translator.inst.Translate("Action")}\n" +
-            $"{GetShield()} {Translator.inst.Translate("Shield")} " +
-            $"{GetSword()} {Translator.inst.Translate("Sword")}");
+            ($"{this.name}: {GetHealth()} {AutoTranslate.DoEnum(ToTranslate.Health)}\n\n" +
+            $"{myHand.Count} {AutoTranslate.DoEnum(ToTranslate.Card)} " +
+            $"{GetAction()} {AutoTranslate.DoEnum(ToTranslate.Action)}\n" +
+            $"{GetShield()} {AutoTranslate.DoEnum(ToTranslate.Shield)} " +
+            $"{GetSword()} {AutoTranslate.DoEnum(ToTranslate.Sword)}");
         }
 
         AliveTroops();

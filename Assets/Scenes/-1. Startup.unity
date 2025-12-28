@@ -321,37 +321,37 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b49805f8d0bf47db8cba016e7572ea2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tooltipText: {fileID: 1828323579}
   linkedKeywords:
-  - englishString: Stunned
-    translatedString: 
+  - original: Stunned
+    translated: 
     description: 
     color: {r: 0, g: 0, b: 0, a: 0}
-  - englishString: Protected
-    translatedString: 
+  - original: Protected
+    translated: 
     description: 
     color: {r: 0, g: 0, b: 0, a: 0}
   spriteKeywords:
-  - englishString: Sword
-    translatedString: 
+  - original: Card
+    translated: 
     description: 
     color: {r: 0, g: 0, b: 0, a: 0}
-  - englishString: Shield
-    translatedString: 
+  - original: Sword
+    translated: 
     description: 
     color: {r: 0, g: 0, b: 0, a: 0}
-  - englishString: Card
-    translatedString: 
+  - original: Shield
+    translated: 
     description: 
     color: {r: 0, g: 0, b: 0, a: 0}
-  - englishString: Health
-    translatedString: 
+  - original: Action
+    translated: 
     description: 
     color: {r: 0, g: 0, b: 0, a: 0}
-  - englishString: Action
-    translatedString: 
+  - original: Health
+    translated: 
     description: 
     color: {r: 0, g: 0, b: 0, a: 0}
+  tooltipText: {fileID: 1828323579}
 --- !u!1 &300021384
 GameObject:
   m_ObjectHideFlags: 0
@@ -364,6 +364,7 @@ GameObject:
   - component: {fileID: 300021386}
   - component: {fileID: 300021385}
   - component: {fileID: 300021388}
+  - component: {fileID: 300021389}
   m_Layer: 0
   m_Name: Moves Between Scenes
   m_TagString: Untagged
@@ -438,6 +439,18 @@ MonoBehaviour:
   sceneViewId: 2
   InstantiationId: 0
   isRuntimeInstantiated: 0
+--- !u!114 &300021389
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 300021384}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 99c623fb6b6e74e26bbe122ffce4485b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GameFiles
 --- !u!1 &375275011 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 582953607664488025, guid: d50eb448d0731474ebebdd3627d1ec5a, type: 3}
@@ -540,6 +553,34 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 60009302}
     m_Modifications:
+    - target: {fileID: 244272173918100019, guid: d50eb448d0731474ebebdd3627d1ec5a, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 31e79ddad7b2d41c395ada76a18cbcdd, type: 2}
+    - target: {fileID: 244272173918100019, guid: d50eb448d0731474ebebdd3627d1ec5a, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: -3852492252101762229, guid: 31e79ddad7b2d41c395ada76a18cbcdd, type: 2}
+    - target: {fileID: 541214238893525850, guid: d50eb448d0731474ebebdd3627d1ec5a, type: 3}
+      propertyPath: m_fontSize
+      value: 44.75
+      objectReference: {fileID: 0}
+    - target: {fileID: 541214238893525850, guid: d50eb448d0731474ebebdd3627d1ec5a, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 31e79ddad7b2d41c395ada76a18cbcdd, type: 2}
+    - target: {fileID: 541214238893525850, guid: d50eb448d0731474ebebdd3627d1ec5a, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: -3852492252101762229, guid: 31e79ddad7b2d41c395ada76a18cbcdd, type: 2}
+    - target: {fileID: 629614651198809819, guid: d50eb448d0731474ebebdd3627d1ec5a, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 31e79ddad7b2d41c395ada76a18cbcdd, type: 2}
+    - target: {fileID: 629614651198809819, guid: d50eb448d0731474ebebdd3627d1ec5a, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: -3852492252101762229, guid: 31e79ddad7b2d41c395ada76a18cbcdd, type: 2}
     - target: {fileID: 943634960830580813, guid: d50eb448d0731474ebebdd3627d1ec5a, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -644,6 +685,14 @@ PrefabInstance:
       propertyPath: sceneViewId
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 7496745198302301943, guid: d50eb448d0731474ebebdd3627d1ec5a, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 31e79ddad7b2d41c395ada76a18cbcdd, type: 2}
+    - target: {fileID: 7496745198302301943, guid: d50eb448d0731474ebebdd3627d1ec5a, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: -3852492252101762229, guid: 31e79ddad7b2d41c395ada76a18cbcdd, type: 2}
     m_RemovedComponents:
     - {fileID: 4752275793854564576, guid: d50eb448d0731474ebebdd3627d1ec5a, type: 3}
     - {fileID: 3197849793019336440, guid: d50eb448d0731474ebebdd3627d1ec5a, type: 3}
@@ -792,8 +841,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Hi
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8c64c47af7c1c4fb5b88d184433c6c44, type: 2}
-  m_sharedMaterial: {fileID: -3852492252101762229, guid: 8c64c47af7c1c4fb5b88d184433c6c44, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 31e79ddad7b2d41c395ada76a18cbcdd, type: 2}
+  m_sharedMaterial: {fileID: -3852492252101762229, guid: 31e79ddad7b2d41c395ada76a18cbcdd, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -828,6 +877,7 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -1222,8 +1272,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Hi
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8c64c47af7c1c4fb5b88d184433c6c44, type: 2}
-  m_sharedMaterial: {fileID: -3852492252101762229, guid: 8c64c47af7c1c4fb5b88d184433c6c44, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 31e79ddad7b2d41c395ada76a18cbcdd, type: 2}
+  m_sharedMaterial: {fileID: -3852492252101762229, guid: 31e79ddad7b2d41c395ada76a18cbcdd, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1258,6 +1308,7 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -1360,8 +1411,8 @@ MonoBehaviour:
     name="Action"></link><sprite="Sword" name="Sword"><link="Health"><sprite="Health"
     name="Health"><link="Shield"><sprite="Shield" name="Shield"><link="Sword">
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 31e79ddad7b2d41c395ada76a18cbcdd, type: 2}
+  m_sharedMaterial: {fileID: -3852492252101762229, guid: 31e79ddad7b2d41c395ada76a18cbcdd, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1385,7 +1436,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 38.65
+  m_fontSize: 100
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -1396,6 +1447,7 @@ MonoBehaviour:
   m_VerticalAlignment: 256
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0

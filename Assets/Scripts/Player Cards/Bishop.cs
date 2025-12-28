@@ -23,11 +23,11 @@ public class Bishop : CardType
 
         if (availableTroops.Count == 0)
         {
-            Log.inst.AddMyText($"Card Failed-Card-{thisCard.name}", false, logged);
+            Log.inst.AddMyText(false, "Card_Failed", "", thisCard.name, "", logged);
         }
         else
         {
-            MakeDecision.inst.ChooseDisplayOnScreen(availableTroops, $"Target Instruction-Player-{player.name}-Card-{thisCard.name}", Raise, true);
+            MakeDecision.inst.ChooseDisplayOnScreen(availableTroops, "Target_Instruction", player.name, thisCard.name, "", Raise, true);
         }
 
         void Raise(Card card)
