@@ -312,11 +312,11 @@ public class Player : PhotonCompatible
         if (uiDictionary[ConstantStrings.Resources] || uiDictionary[ConstantStrings.MyHand])
         {
             myUI.infoText.text = KeywordTooltip.instance.EditText
-            ($"{this.name}: {GetHealth()} {AutoTranslate.DoEnum(ToTranslate.Health)}\n\n" +
-            $"{myHand.Count} {AutoTranslate.DoEnum(ToTranslate.Card)} " +
-            $"{GetAction()} {AutoTranslate.DoEnum(ToTranslate.Action)}\n" +
-            $"{GetShield()} {AutoTranslate.DoEnum(ToTranslate.Shield)} " +
-            $"{GetSword()} {AutoTranslate.DoEnum(ToTranslate.Sword)}");
+            ($"{this.name}: {GetHealth()} {AutoTranslate.Health()}\n\n" +
+            $"{myHand.Count} {AutoTranslate.Card()} " +
+            $"{GetAction()} {AutoTranslate.Action()}\n" +
+            $"{GetShield()} {AutoTranslate.Shield()} " +
+            $"{GetSword()} {AutoTranslate.Sword()}");
         }
 
         AliveTroops();

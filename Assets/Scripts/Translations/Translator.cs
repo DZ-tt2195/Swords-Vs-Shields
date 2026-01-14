@@ -84,6 +84,11 @@ public class Translator : PhotonCompatible
         return keyTranslate["English"].ContainsKey(key);
     }
 
+    public string Translate(ToTranslate key)
+    {
+        return Translate(key.ToString());
+    }
+
     public string Translate(string key, List<(string, string)> toReplace = null)
     {
         string answer;

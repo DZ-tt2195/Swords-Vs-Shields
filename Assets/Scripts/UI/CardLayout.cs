@@ -50,7 +50,7 @@ public class CardLayout : MonoBehaviour, IPointerClickHandler
 
         if (newCard)
         {
-            cardName.text = KeywordTooltip.instance.EditText($"{Translator.inst.Translate(dataFile.cardName)} {dataFile.startingHealth} {AutoTranslate.DoEnum(ToTranslate.Health)}");
+            cardName.text = KeywordTooltip.instance.EditText($"{Translator.inst.Translate(dataFile.cardName)} {dataFile.startingHealth} {AutoTranslate.Health()}");
             cardArt.sprite = dataFile.sprite;
             string textOne = Translator.inst.Translate($"{dataFile.cardName}_TextOne");
             string textTwo = Translator.inst.Translate($"{dataFile.cardName}_TextTwo");

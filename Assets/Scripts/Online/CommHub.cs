@@ -48,14 +48,14 @@ public class CommHub : PhotonCompatible
 
     void ChangeScrolling()
     {
+        if (scroll.value <= 0.2f)
+            Invoke(nameof(ScrollDown), 0.1f);
         LayoutRebuilder.ForceRebuildLayoutImmediate(allTexts.rectTransform);
-        Invoke(nameof(ScrollDown), 0.2f);
     }
 
     void ScrollDown()
     {
-        if (scroll.value <= 0.1f)
-            scroll.value = 0;
+        scroll.value = 0;
     }
 
     public override void OnPlayerLeftRoom(Photon.Realtime.Player otherPlayer)

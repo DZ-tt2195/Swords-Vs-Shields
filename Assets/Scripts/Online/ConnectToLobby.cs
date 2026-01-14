@@ -50,10 +50,10 @@ public class ConnectToLobby : MonoBehaviourPunCallbacks
 
         regionAndCode = new()
         {
-            (AutoTranslate.DoEnum(ToTranslate.US_West_Coast), "usw"),
-            (AutoTranslate.DoEnum(ToTranslate.US_East_Coast), "us"),
-            (AutoTranslate.DoEnum(ToTranslate.Europe), "eu"),
-            (AutoTranslate.DoEnum(ToTranslate.Asia), "asia")
+            (AutoTranslate.US_West_Coast(), "usw"),
+            (AutoTranslate.US_East_Coast(), "us"),
+            (AutoTranslate.Europe(), "eu"),
+            (AutoTranslate.Asia(), "asia")
         };
         foreach ((string, string) var in regionAndCode)
             regionDropdown.AddOptions(new List<string>() { var.Item1 });
@@ -81,7 +81,7 @@ public class ConnectToLobby : MonoBehaviourPunCallbacks
         string newName = username.text.Trim();
         if (newName == "")
         {
-            StartCoroutine(ErrorMessage(AutoTranslate.DoEnum(ToTranslate.Type_in_username)));
+            StartCoroutine(ErrorMessage(AutoTranslate.Type_in_username()));
             return false;
         }
         else
@@ -268,9 +268,9 @@ public class ConnectToLobby : MonoBehaviourPunCallbacks
     public override void OnDisconnected(DisconnectCause cause)
     {
         if (part1.gameObject.activeSelf)
-            StartCoroutine(ErrorMessage(AutoTranslate.DoEnum(ToTranslate.Failed_to_connect_to_server)));
+            StartCoroutine(ErrorMessage(AutoTranslate.Failed_to_connect_to_server()));
         else
-            StartCoroutine(ErrorMessage(AutoTranslate.DoEnum(ToTranslate.Disconnected_from_server)));
+            StartCoroutine(ErrorMessage(AutoTranslate.Disconnected_from_server()));
 
         part1.gameObject.SetActive(true);
         part2.gameObject.SetActive(false);

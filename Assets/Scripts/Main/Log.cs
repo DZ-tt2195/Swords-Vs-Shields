@@ -257,6 +257,9 @@ public class Log : PhotonCompatible
         importantPast.gameObject.SetActive(logTypeSlider.value == 0);
         importantCurrent.gameObject.SetActive(logTypeSlider.value == 0);
 
+        if (scroll.value <= 0.2f)
+            Invoke(nameof(ScrollDown), 0.1f);
+
         if (logTypeSlider.value == 1)
         {
             LayoutRebuilder.ForceRebuildLayoutImmediate(allPast.rectTransform);
@@ -267,13 +270,11 @@ public class Log : PhotonCompatible
             LayoutRebuilder.ForceRebuildLayoutImmediate(importantPast.rectTransform);
             LayoutRebuilder.ForceRebuildLayoutImmediate(importantCurrent.rectTransform);
         }
-        Invoke(nameof(ScrollDown), 0.2f);
     }
 
     void ScrollDown()
     {
-        if (scroll.value <= 0.1f)
-            scroll.value = 0;
+        scroll.value = 0;
     }
     /*
     void OnEnable()

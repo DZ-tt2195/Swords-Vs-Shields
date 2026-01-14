@@ -1,5 +1,5 @@
 Game_Designer	by Thomas Tang (DZ)
-Last_Update	Last Updated: Dec 28, 2025
+Last_Update	Last Updated: Jan 14, 2026
 Translator_Credit	Original Language
 Language	Language
 Loading	Loading
@@ -199,3 +199,5 @@ Update_0_Text	New translation features - you can download the English translatio
 Update_History	Update History
 Upload_Translation	Upload Translation
 Download_English	Download English
+Update_1	Jan 14, 2026
+Update_1_Text	Fixed log autoscroll \nGame should run in background (even if tab isn't selected)

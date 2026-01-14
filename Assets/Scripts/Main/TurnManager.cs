@@ -289,9 +289,9 @@ public class TurnManager : PhotonCompatible
 
         foreach (Player player in CreateGame.inst.listOfPlayers)
         {
-            text += $"{player.name} - {player.GetHealth()} {AutoTranslate.DoEnum(ToTranslate.Health)} ";
+            text += $"{player.name} - {player.GetHealth()} {AutoTranslate.Health()} ";
             if (player.myPosition == resignPosition)
-                text += AutoTranslate.DoEnum(ToTranslate.Resigned);
+                text += AutoTranslate.Resigned();
             text += "\n";
 
             List<string> cardsPlayed = GetStringList(ConstantStrings.AllCardsPlayed, player);
