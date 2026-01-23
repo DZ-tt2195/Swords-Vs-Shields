@@ -6,7 +6,7 @@ public class GreenAbilities : Turn
 {
     public override void MasterEnd()
     {
-        Log.inst.MasterText(true, "Blank", "", "", "");
+        Log.inst.MasterText(true, AutoTranslate.Blank());
     }
 
     public override void ForPlayer(Player player)
@@ -29,11 +29,11 @@ public class GreenAbilities : Turn
 
         if (greenCards.Count >= 1)
         {
-            MakeDecision.inst.ChooseDisplayOnScreen(greenCards, "Use_Green_Instruction", "", "", "", ChooseToUse, false);
+            MakeDecision.inst.ChooseDisplayOnScreen(greenCards, AutoTranslate.Use_Green_Instruction(), ChooseToUse, false);
 
             void ChooseToUse(Card card)
             {
-                Log.inst.AddMyText(false, "Resolve_Card", player.name, card.name, "");
+                Log.inst.AddMyText(false, OnlineTranslate.Online_Resolve_Card(player.name, card.name));
                 card.thisCard.HasType(AbilityType.Defend, player, card, 1);
 
                 HashSet<Card> newSet = new(alreadyDone);
@@ -45,14 +45,14 @@ public class GreenAbilities : Turn
         if (player.GetAction() >= 1)
         {
             if (greenCards.Count == 0)
-                MakeDecision.inst.ChooseTextButton(new() { new("Done", "", "", "", Decline) }, "Use_Green_Instruction", "", "", "", false);
+                MakeDecision.inst.ChooseTextButton(new() { new(AutoTranslate.Done(), Decline) }, AutoTranslate.Use_Green_Instruction(), false);
 
             List<Card> myHand = player.GetHand();
-            MakeDecision.inst.ChooseCardOnScreen(myHand, "Use_Green_Instruction", "", "", "", ChooseToPlay, false);
+            MakeDecision.inst.ChooseCardOnScreen(myHand, AutoTranslate.Use_Green_Instruction(), ChooseToPlay, false);
 
             void ChooseToPlay(Card card)
             {
-                Log.inst.AddMyText(true, "Play_Card", player.name, card.name, "");
+                Log.inst.AddMyText(true, OnlineTranslate.Online_Play_Card(player.name, card.name));
                 player.ActionRPC(-1, -1);
 
                 card.HealthRPC(player, card.thisCard.dataFile.startingHealth, -1);
@@ -63,7 +63,7 @@ public class GreenAbilities : Turn
 
             void Decline()
             {
-                Log.inst.AddMyText(false, "End_Turn", player.name, "", "");
+                Log.inst.AddMyText(false, OnlineTranslate.Online_End_Turn(player.name));
             }
         }
     }
@@ -85,7 +85,7 @@ public class GreenAbilities : Turn
             myHand.Remove(cardToPlay);
             myTroops.Add(cardToPlay);
             int currentRound = (int)PhotonCompatible.GetRoomProperty(ConstantStrings.CurrentRound);
-            myCardsPlayed.Add($"{cardToPlay.name}-{currentRound}");
+            myCardsPlayed.Add(OnlineTranslate.Online_Played_Card_Info(cardToPlay.name, currentRound.ToString()));
         }
         TurnManager.inst.WillChangePlayerProperty(player, ConstantStrings.MyHand, TurnManager.inst.ConvertCardList(myHand)); player.uiDictionary[ConstantStrings.MyHand] = true;
         TurnManager.inst.WillChangePlayerProperty(player, ConstantStrings.MyTroops, TurnManager.inst.ConvertCardList(myTroops)); player.uiDictionary[ConstantStrings.MyTroops] = true;

@@ -21,40 +21,26 @@ public class CardButtonInfo
         this.alpha = alpha;
         this.clickable = clickable;
     }
-
-    public CardData GetFile()
-    {
-        return this.card.thisCard.dataFile;
-    }
 }
 
 public class TextButtonInfo
 {
-    public string toFind;
-    public string playerName;
-    public string cardName;
-    public string number;
+    public string myText;
+    public Color buttonColor;
     public Action action;
-    public Color color;
 
-    public TextButtonInfo(string toFind, string playerName, string cardName, string number, Action action = null)
+    public TextButtonInfo(string myText, Action action = null)
     {
-        this.toFind = toFind;
-        this.playerName = playerName;
-        this.cardName = cardName;
-        this.number = number;
+        this.myText = myText;
+        this.buttonColor = Color.white;
         this.action = action;
-        this.color = Color.white;
     }
 
-    public TextButtonInfo(string toFind, string playerName, string cardName, string number, Color color, Action action = null)
+    public TextButtonInfo(string myText, Color color, Action action = null)
     {
-        this.toFind = toFind;
-        this.playerName = playerName;
-        this.cardName = cardName;
-        this.number = number;
+        this.myText = myText;
         this.action = action;
-        this.color = color;
+        this.buttonColor = color;
     }
 }
 
@@ -68,7 +54,7 @@ public class MakeDecision : PhotonCompatible
     [SerializeField] Transform findTextButtons;
     List<Button> textButtons = new();
     HashSet<ButtonSelect> availableUI = new();
-
+    [SerializeField] List<CardLayout> visualCards = new();
     [SerializeField] Button sliderConfirm;
     [SerializeField] Slider slider;
     [SerializeField] TMP_Text minimumText;
@@ -99,16 +85,20 @@ public class MakeDecision : PhotonCompatible
 
 #region Decisions
 
-    public void ChooseTextButton(List<TextButtonInfo> possibleChoices, string toFind, string playerName, string cardName, string number, bool autoResolve = true)
+    public void ChooseTextButton(List<TextButtonInfo> possibleChoices, string instructions, bool autoResolve = true)
     {
-        if (possibleChoices.Count == 1 && autoResolve)
+        if (possibleChoices.Count == 0)
+        {
+            return;
+        }
+        else if (possibleChoices.Count == 1 && autoResolve)
         {
             Log.inst.inReaction.Add(() => possibleChoices[0].action?.Invoke());
         }
-        else if (possibleChoices.Count >= 1 || !autoResolve)
+        else
         {
             Log.inst.SetUndoPoint(true);
-            Instructions(toFind, playerName, cardName, number);
+            instructionsText.text = KeywordTooltip.instance.EditText(instructions);
 
             for (int i = 0; i<textButtons.Count; i++)
             {
@@ -117,11 +107,10 @@ public class MakeDecision : PhotonCompatible
                 {
                     TextButtonInfo info = possibleChoices[i];
                     nextButton.gameObject.SetActive(true);
-                    nextButton.name = info.toFind;
+                    nextButton.name = info.myText;
 
-                    string translatedText = Translator.inst.Packaging(info.toFind, info.playerName, info.cardName, info.number);
-                    nextButton.transform.GetChild(0).GetComponent<TMP_Text>().text = translatedText;
-                    nextButton.image.color = info.color;
+                    nextButton.transform.GetChild(0).GetComponent<TMP_Text>().text = KeywordTooltip.instance.EditText(info.myText);
+                    nextButton.image.color = info.buttonColor;
                     nextButton.onClick.AddListener(Resolve);
 
                     void Resolve()
@@ -137,17 +126,20 @@ public class MakeDecision : PhotonCompatible
             }
         }
     }
-
-    public void ChooseCardOnScreen(List<Card> listOfCards, string toFind, string playerName, string cardName, string number, Action<Card> action = null, bool autoResolve = true)
+    public void ChooseCardOnScreen(List<Card> listOfCards, string instructions, Action<Card> action = null, bool autoResolve = true)
     {
-        if (listOfCards.Count == 1 && autoResolve)
+        if (listOfCards.Count == 0)
+        {
+            return;
+        }
+        else if (listOfCards.Count == 1 && autoResolve)
         {
             Log.inst.inReaction.Add(() => action?.Invoke(listOfCards[0]));
         }
-        else if (listOfCards.Count >= 1 || !autoResolve)
+        else
         {
             Log.inst.SetUndoPoint(true);
-            Instructions(toFind, playerName, cardName, number);
+            instructionsText.text = KeywordTooltip.instance.EditText(instructions);
 
             for (int j = 0; j < listOfCards.Count; j++)
             {
@@ -156,7 +148,7 @@ public class MakeDecision : PhotonCompatible
                 Button cardButton = nextCard.selectMe.button;
 
                 cardButton.interactable = true;
-                nextCard.selectMe.border.gameObject.SetActive(true);
+                nextCard.selectMe.SetBorder(true);
                 cardButton.onClick.AddListener(ClickedThis);
 
                 void ClickedThis()
@@ -167,17 +159,20 @@ public class MakeDecision : PhotonCompatible
             }
         }
     }
-
-    public void ChooseDisplayOnScreen(List<MiniCardDisplay> listOfDisplays, string toFind, string playerName, string cardName, string number, Action<Card> action = null, bool autoResolve = true)
+    public void ChooseDisplayOnScreen(List<MiniCardDisplay> listOfDisplays, string instructions, Action<Card> action = null, bool autoResolve = true)
     {
-        if (listOfDisplays.Count == 1 && autoResolve)
+        if (listOfDisplays.Count == 0)
+        {
+            return;
+        }
+        else if (listOfDisplays.Count == 1 && autoResolve)
         {
             Log.inst.inReaction.Add(() => action?.Invoke(listOfDisplays[0].card));
         }
-        else if (listOfDisplays.Count >= 1 || !autoResolve)
+        else
         {
             Log.inst.SetUndoPoint(true);
-            Instructions(toFind, playerName, cardName, number);
+            instructionsText.text = KeywordTooltip.instance.EditText(instructions);
 
             for (int j = 0; j < listOfDisplays.Count; j++)
             {
@@ -186,7 +181,7 @@ public class MakeDecision : PhotonCompatible
                 Button cardButton = nextDisplay.selectMe.button;
 
                 cardButton.interactable = true;
-                nextDisplay.selectMe.border.gameObject.SetActive(true);
+                nextDisplay.selectMe.SetBorder(true);
                 cardButton.onClick.AddListener(ClickedThis);
 
                 void ClickedThis()
@@ -198,8 +193,7 @@ public class MakeDecision : PhotonCompatible
         }
 
     }
-
-    public void ChooseFromSlider(int min, int max, string toFind, string playerName, string cardName, string number, Action<int> action = null, bool autoResolve = true)
+    public void ChooseFromSlider(int min, int max, string instructions, Action<int> action = null, bool autoResolve = true)
     {
         if (min == max && autoResolve)
         {
@@ -208,7 +202,7 @@ public class MakeDecision : PhotonCompatible
         else
         {
             Log.inst.SetUndoPoint(true);
-            Instructions(toFind, playerName, cardName, number);
+            instructionsText.text = KeywordTooltip.instance.EditText(instructions);
 
             slider.gameObject.SetActive(true);
             sliderConfirm.onClick.AddListener(DecisionMade);
@@ -226,7 +220,6 @@ public class MakeDecision : PhotonCompatible
             }
         }
     }
-
     /*
     public void ChooseCardInPopup(List<CardButtonInfo> possibleCards, string instructions, bool autoResolve = true)
     {
@@ -279,22 +272,20 @@ public class MakeDecision : PhotonCompatible
         {
             select.button.onClick.RemoveAllListeners();
             select.button.interactable = false;
-            select.border.gameObject.SetActive(false);
+            select.SetBorder(false);
         }
         availableUI.Clear();
         slider.gameObject.SetActive(false);
-
         instructionsText.text = "";
     }
 
     [PunRPC]
-    public string Instructions(string toFind, string playerName, string cardName, string number)
+    public string PackagedInstructions(string packagedText)
     {
-        string answer = Translator.inst.Packaging(toFind, playerName, cardName, number);
+        string answer = Translator.inst.UnPackage(packagedText);
         instructionsText.text = answer;
         return answer;
     }
 
 #endregion
-
 }

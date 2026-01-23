@@ -39,12 +39,14 @@ public class KeywordTooltip : MonoBehaviour
         foreach (KeywordHover hover in linkedKeywords)
         {
             hover.translated = Translator.inst.Translate(hover.original);
-            hover.description = Translator.inst.Translate($"{hover.original}_Text");
+            if (Translator.inst.TranslationExists($"{hover.original}_Text"))
+                hover.description = Translator.inst.Translate($"{hover.original}_Text");
         }
         foreach (KeywordHover hover in spriteKeywords)
         {
             hover.translated = Translator.inst.Translate(hover.original);
-            hover.description = Translator.inst.Translate($"{hover.original}_Text");
+            if (Translator.inst.TranslationExists($"{hover.original}_Text"))
+                hover.description = Translator.inst.Translate($"{hover.original}_Text");
         }
 
         foreach (KeywordHover hover in linkedKeywords)
@@ -74,6 +76,11 @@ public class KeywordTooltip : MonoBehaviour
         {
             string toReplace = link.translated;
             answer = answer.Replace(toReplace, $"<link=\"{link.original}\"><sprite=\"{link.original}\" name=\"{link.original}\"></link>");
+        }
+        foreach (var next in listOfCardRC)
+        {
+            string toReplace = next.Key;
+            answer = answer.Replace(toReplace, $"<link=\"{toReplace}\"><i>{toReplace}</i></link>");
         }
         return answer;
     }
@@ -113,7 +120,7 @@ public class KeywordTooltip : MonoBehaviour
 
         foreach (KeywordHover entry in linkedKeywords)
         {
-            if (entry.original.Equals(target))
+            if (entry.original.Equals(target) && !entry.description.Equals(""))
             {
                 tooltipText.text = entry.description;
                 tooltipText.transform.parent.position = CalculatePosition(mousePosition);
@@ -123,7 +130,7 @@ public class KeywordTooltip : MonoBehaviour
         }
         foreach (KeywordHover entry in spriteKeywords)
         {
-            if (entry.original.Equals(target))
+            if (entry.original.Equals(target) && !entry.description.Equals(""))
             {
                 tooltipText.text = entry.description;
                 tooltipText.transform.parent.position = CalculatePosition(mousePosition);

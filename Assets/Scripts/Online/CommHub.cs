@@ -29,19 +29,19 @@ public class CommHub : PhotonCompatible
         if (textToSend != "")
         {
             inputMessage.text = "";
-            ShareMessageRPC($"{PhotonNetwork.LocalPlayer.NickName}: {textToSend}", "", "", "", false);
+            ShareMessageRPC($"{PhotonNetwork.LocalPlayer.NickName}: {textToSend}", false);
         }
     }
 
-    public void ShareMessageRPC(string toFind, string playerName, string cardName, string number, bool translate)
+    public void ShareMessageRPC(string text, bool translate)
     {
-        DoFunction(() => ShareMessage(toFind, playerName, cardName, number, translate), RpcTarget.All);
+        DoFunction(() => ShareMessage(text, translate), RpcTarget.All);
     }
 
     [PunRPC]
-    void ShareMessage(string toFind, string playerName, string cardName, string number, bool translate)
+    void ShareMessage(string text, bool translate)
     {
-        string targetText = (translate) ? Translator.inst.Packaging(toFind, playerName, cardName, number) : toFind;
+        string targetText = (translate) ? Translator.inst.UnPackage(text) : text;
         allTexts.text += $"{targetText}\n";
         ChangeScrolling();
     }
@@ -65,13 +65,13 @@ public class CommHub : PhotonCompatible
         {
             if (otherPlayer.IsInactive)
             {
-                ShareMessageRPC("Player_Disconnected", otherPlayer.NickName, "", "", true);
+                ShareMessageRPC(OnlineTranslate.Online_Player_Disconnected(otherPlayer.NickName), true);
                 InstantChangePlayerProp(otherPlayer, ConstantStrings.Waiting, false);
             }
             else if (!(bool)GetRoomProperty(ConstantStrings.GameOver.ToString()))
             {
-                ShareMessageRPC("Player_Quit", otherPlayer.NickName, "", "", true);
-                TurnManager.inst.TextForEnding("Player_Resigned", otherPlayer.NickName, "", "", playerPosition); 
+                ShareMessageRPC(OnlineTranslate.Online_Player_Quit(otherPlayer.NickName), true);
+                TurnManager.inst.TextForEnding(OnlineTranslate.Online_Player_Resigned(otherPlayer.NickName), playerPosition); 
             }
         }
     }

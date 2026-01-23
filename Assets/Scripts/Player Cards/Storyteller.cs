@@ -28,17 +28,15 @@ public class Storyteller : CardType
 
         if (healing == 0)
         {
-            Log.inst.AddMyText(false, "Card_Failed", "", thisCard.name, "", logged);
+            Log.inst.AddMyText(false, OnlineTranslate.Online_Card_Failed(thisCard.name), logged);
         }
         else
         {
-            MakeDecision.inst.ChooseTextButton(new() { 
-            new("Pick_Player", player.name, thisCard.name, "", HealPlayer) 
-            }, $"Choose_One", player.name, thisCard.name, "", false);
+            MakeDecision.inst.ChooseTextButton(new() { new(AutoTranslate.Pick_Player(player.name), HealPlayer) }, AutoTranslate.Choose_One_Instruction(thisCard.name), false);
 
             List<MiniCardDisplay> availableTroops = player.AliveTroops();
             if (availableTroops.Count >= 1)
-                MakeDecision.inst.ChooseDisplayOnScreen(availableTroops, $"Choose_One", player.name, thisCard.name, "", HealCard, false);
+                MakeDecision.inst.ChooseDisplayOnScreen(availableTroops, AutoTranslate.Choose_One_Instruction(thisCard.name), HealCard, false);
 
             void HealCard(Card card)
             {

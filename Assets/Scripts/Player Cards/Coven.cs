@@ -19,9 +19,9 @@ public class Coven : CardType
         }
 
         if (canChoose.Count >= 1)
-            MakeDecision.inst.ChooseDisplayOnScreen(canChoose, "Target_Instruction", toChooseFrom.name, thisCard.name, "", Effects, true);
+            MakeDecision.inst.ChooseDisplayOnScreen(canChoose, AutoTranslate.Target_Instruction(toChooseFrom.name, thisCard.name), Effects, true);
         else
-            Log.inst.AddMyText(false, "Card_Failed", "", thisCard.name, "", logged);
+            Log.inst.AddMyText(false, OnlineTranslate.Online_Card_Failed(thisCard.name), logged);
 
         void Effects(Card card)
         {

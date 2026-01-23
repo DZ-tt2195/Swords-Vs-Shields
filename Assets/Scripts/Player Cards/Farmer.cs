@@ -25,17 +25,16 @@ public class Farmer : CardType
 
         if (availableTroops.Count == 0)
         {
-            Log.inst.AddMyText(false, "Card_Failed", "", thisCard.name, "", logged);
+            Log.inst.AddMyText(false, OnlineTranslate.Online_Card_Failed(thisCard.name), logged);
         }
         else
         {
-            MakeDecision.inst.ChooseDisplayOnScreen(availableTroops, "Target_Instruction", player.name, thisCard.name, "", Heal, true);
+            MakeDecision.inst.ChooseDisplayOnScreen(availableTroops, AutoTranslate.Target_Instruction(player.name, thisCard.name), Heal, true);
         }
 
         void Heal(Card card)
         {
             card.HealthRPC(player, 2, logged);
         }
-
     }
 }

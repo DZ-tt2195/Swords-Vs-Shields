@@ -99,7 +99,7 @@ public class TurnManager : PhotonCompatible
     void UpdateWaitingText(List<Photon.Realtime.Player> toSend, int playersWaiting)
     {
         foreach (Photon.Realtime.Player player in toSend)
-            MakeDecision.inst.DoFunction(() => MakeDecision.inst.Instructions("Waiting_on_Players", "", "", playersWaiting.ToString()), player);
+            MakeDecision.inst.DoFunction(() => MakeDecision.inst.PackagedInstructions(OnlineTranslate.Online_Waiting_on_Players(playersWaiting.ToString())), player);
     }
 
     void NextPhase()
@@ -140,9 +140,9 @@ public class TurnManager : PhotonCompatible
         if (leastHealth.Item2 <= 0)
         {
             if (leastHealth.Item1 != null)
-                TextForEnding("Player_Lost", leastHealth.Item1.name, "", "", -1);
+                TextForEnding(OnlineTranslate.Online_Player_Lost(leastHealth.Item1.name), -1);
             else
-                TextForEnding("Tie_Game", "", "", "", -1);
+                TextForEnding(OnlineTranslate.Online_Tie_Game(), -1);
             InstantChangeRoomProp(ConstantStrings.CurrentPhase, turnsInOrder.Count - 1);
         }
         else
@@ -273,10 +273,9 @@ public class TurnManager : PhotonCompatible
 
 #region Ending
 
-    public void TextForEnding(string toFind, string playerName, string cardName, string number, int resignPosition)
+    public void TextForEnding(string packagedText, int resignPosition)
     {
-        Log.inst.MasterText(true, toFind, playerName, cardName, number);
-        Log.inst.MasterText(true, toFind, playerName, cardName, number);
+        Log.inst.MasterText(true, packagedText);
         InstantChangeRoomProp(ConstantStrings.GameOver, true);
         DoFunction(() => ShowEnding(resignPosition), RpcTarget.All);
     }
@@ -297,9 +296,7 @@ public class TurnManager : PhotonCompatible
             List<string> cardsPlayed = GetStringList(ConstantStrings.AllCardsPlayed, player);
             for (int i = 0; i<cardsPlayed.Count; i++)
             {
-                string[] splitUp = cardsPlayed[i].Split('-');
-
-                text += Translator.inst.Packaging("Played_Card_Info", "", splitUp[0], splitUp[1]);
+                text += Translator.inst.UnPackage(cardsPlayed[i]);
                 text += ",";
             }
             text += "\n\n";

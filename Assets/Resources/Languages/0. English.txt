@@ -1,5 +1,5 @@
 Game_Designer	by Thomas Tang (DZ)
-Last_Update	Last Updated: Jan 14, 2026
+Last_Update	Last Updated: Jan 22, 2026
 Translator_Credit	Original Language
 Language	Language
 Loading	Loading
@@ -15,8 +15,8 @@ Disconnect	Disconnect
 Disconnected_from_server	Disconnected from the server.
 Failed_to_connect_to_server	Failed to connect to the server.
 Reconnect	Reconnect
-Online_Tutorial_1	To play multiplayer: Have 1 person create a room, then their room should be displayed below. Everyone also must have joined the same server region.
-Online_Tutorial_2	Click a button below to join a room, or manually type in the host's username (yellow rooms are spectator only)
+Tutorial_1	To play multiplayer: Have 1 person create a room, then their room should be displayed below. Everyone also must have joined the same server region.
+Tutorial_2	Click a button below to join a room, or manually type in the host's username (yellow rooms are spectator only)
 Create	Create
 Create_Room_with_players	Create a room with how many players?
 Enter_hostname	Enter host's username
@@ -38,12 +38,12 @@ Type_into_chat	Type into chat
 Undo	Undo
 Short	Short
 Long	Long
-Player_Playing	$Player$ is playing.
-Player_Spectating	$Player$ is spectating.
-Player_Reconnected	$Player$ reconnected.
-Player_Disconnected	$Player$ has disconnected.
-Player_Quit	$Player$ has quit the room.
-Waiting_on_Players	Waiting on $Num$ players...
+Online_Player_Playing	$Player$ is playing.
+Online_Player_Spectating	$Player$ is spectating.
+Online_Player_Reconnected	$Player$ reconnected.
+Online_Player_Disconnected	$Player$ has disconnected.
+Online_Player_Quit	$Player$ has quit the room.
+Online_Waiting_on_Players	Waiting on $Num$ players...
 Confirm	Confirm
 Decline	Decline
 Choose_One_Instruction	Choose one ($Card$).
@@ -56,43 +56,43 @@ Pause_to_Read	A pause to let you read things.
 Pause_to_Undo	Last chance to undo anything.
 Done	Done
 Card	Card
-Draw_Card	$Player$ draws $Card$.
-Draw_Card_Others	$Player$ draws 1 Card.
-Discard_Card	$Player$ discards $Card$.
-Discard_Card_Others	$Player$ discards 1 Card.
+Online_Draw_Card	$Player$ draws $Card$.
+Online_Draw_Card_Others	$Player$ draws 1 Card.
+Online_Discard_Card	$Player$ discards $Card$.
+Online_Discard_Card_Others	$Player$ discards 1 Card.
 Sword	Sword
-Add_Sword	$Player$ gets +$Num$ Sword.
-Lose_Sword	$Player$ loses $Num$ Sword.
+Online_Add_Sword	$Player$ gets +$Num$ Sword.
+Online_Lose_Sword	$Player$ loses $Num$ Sword.
 Shield	Shield
-Add_Shield	$Player$ gets +$Num$ Shield.
-Lose_Shield	$Player$ loses $Num$ Shield.
+Online_Add_Shield	$Player$ gets +$Num$ Shield.
+Online_Lose_Shield	$Player$ loses $Num$ Shield.
 Action	Action
-Add_Action	$Player$ gets +$Num$ Action.
-Lose_Action	$Player$ loses $Num$ Action.
+Online_Add_Action	$Player$ gets +$Num$ Action.
+Online_Lose_Action	$Player$ loses $Num$ Action.
 Health	Health
-Add_Health_Player	$Player$ gets +$Num$ Health.
-Lose_Health_Player	$Player$ loses $Num$ Health.
-Add_Health_Card	$Player$'s $Card$ gets +$Num$ Health.
-Lose_Health_Card	$Player$'s $Card$ loses $Num$ Health.
+Online_Add_Health_Player	$Player$ gets +$Num$ Health.
+Online_Lose_Health_Player	$Player$ loses $Num$ Health.
+Online_Add_Health_Card	$Player$'s $Card$ gets +$Num$ Health.
+Online_Lose_Health_Card	$Player$'s $Card$ loses $Num$ Health.
 Blank	
-Use_Green	Round $Num$ - Defend
-Use_Red	Round $Num$ - Attack
-Play_Card	$Player$ plays $Card$.
-Resolve_Card	$Player$ resolves $Card$.
-Card_Failed	$Card$ has no targets.
-End_Turn	$Player$ ends their turn.
+Online_Use_Green	Round $Num$ - Defend
+Online_Use_Red	Round $Num$ - Attack
+Online_Play_Card	$Player$ plays $Card$.
+Online_Resolve_Card	$Player$ resolves $Card$.
+Online_Card_Failed	$Card$ has no targets.
+Online_End_Turn	$Player$ ends their turn.
 Stunned	Stunned
 Stunned_Text	Abilities can't be used.
-Stun_Card	$Card$ is Stunned on Round $Num$.
+Online_Stun_Card	$Card$ is Stunned on Round $Num$.
 Protected	Protected
 Protected_Text	Can't lose Health.
-Protect_Card	$Card$ is Protected on Round $Num$.
+Online_Protect_Card	$Card$ is Protected on Round $Num$.
 Game_Over	Game Over
-Played_Card_Info	$Card$ ($Num$)
+Online_Played_Card_Info	$Card$ ($Num$)
 Leave	Leave
-Tie_Game	The game is a tie.
-Player_Resigned	$Player$ has resigned.
-Player_Lost	$Player$ has lost.
+Online_Tie_Game	The game is a tie.
+Online_Player_Resigned	$Player$ has resigned.
+Online_Player_Lost	$Player$ has lost.
 Resigned	(Resigned)
 Skirmisher	Skirmisher
 Skirmisher_TextOne	ATTACK: -2 Sword -> An Opponent or Foe loses 2 Health.
@@ -201,3 +201,5 @@ Upload_Translation	Upload Translation
 Download_English	Download English
 Update_1	Jan 14, 2026
 Update_1_Text	Fixed log autoscroll \nGame should run in background (even if tab isn't selected)
+Update_2	Jan 22, 2026
+Update_2_Text	Fixed art credits \nFixed reminder text \nYou can click on card names in the log to read the card \nFixed some instances of the wrong player name being shown

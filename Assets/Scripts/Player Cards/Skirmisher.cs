@@ -19,13 +19,11 @@ public class Skirmisher : CardType
     {
         player.SwordRPC(-2, logged);
         Player otherPlayer = CreateGame.inst.OtherPlayer(player.myPosition);
-        MakeDecision.inst.ChooseTextButton(new() { 
-            new("Pick_Player", player.name, thisCard.name, "", AttackPlayer) 
-            }, $"Choose_One", player.name, thisCard.name, "", false);
+        MakeDecision.inst.ChooseTextButton(new() { new(AutoTranslate.Pick_Player(otherPlayer.name), AttackPlayer) }, AutoTranslate.Choose_One_Instruction(thisCard.name), false);
 
         List<MiniCardDisplay> availableTroops = otherPlayer.AliveTroops();
         if (availableTroops.Count >= 1)
-            MakeDecision.inst.ChooseDisplayOnScreen(availableTroops, $"Choose_One", player.name, thisCard.name, "", AttackCard, false);
+            MakeDecision.inst.ChooseDisplayOnScreen(availableTroops, AutoTranslate.Choose_One_Instruction(thisCard.name), AttackCard, false);
 
         void AttackCard(Card card)
         {

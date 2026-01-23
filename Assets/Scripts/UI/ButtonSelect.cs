@@ -1,17 +1,22 @@
 using UnityEngine;
 using MyBox;
 using UnityEngine.UI;
-using Photon.Pun;
 
 [RequireComponent(typeof(Button))]
 public class ButtonSelect : MonoBehaviour
 {
     public Button button { get; private set; }
-    public Image border;
+    [SerializeField] Image border;
 
     private void Awake()
     {
         button = GetComponent<Button>();
+        SetBorder(false);
+    }
+
+    public void SetBorder(bool border)
+    {
+        this.border.gameObject.SetActive(border);
     }
 
     private void FixedUpdate()

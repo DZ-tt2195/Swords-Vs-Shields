@@ -13,11 +13,11 @@ public class Balancer : CardType
         List<MiniCardDisplay> availableTroops = chooseFrom.AliveTroops();
         if (availableTroops.Count == 0)
         {
-            Log.inst.AddMyText(false, "Card_Failed", "", thisCard.name, "", logged);
+            Log.inst.AddMyText(false, OnlineTranslate.Online_Card_Failed(thisCard.name), logged);
         }
         else
         {
-            MakeDecision.inst.ChooseDisplayOnScreen(availableTroops, "Target_Instruction", chooseFrom.name, thisCard.name, "", Target, true);
+            MakeDecision.inst.ChooseDisplayOnScreen(availableTroops, AutoTranslate.Target_Instruction(chooseFrom.name, thisCard.name), Target, true);
         }
 
         void Target(Card card)

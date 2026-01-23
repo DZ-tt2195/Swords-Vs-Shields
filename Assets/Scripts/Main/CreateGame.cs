@@ -54,11 +54,11 @@ public class CreateGame : PhotonCompatible
 
             if (PlayerPrefs.GetString(ConstantStrings.LastRoom).Equals(PhotonNetwork.CurrentRoom.Name))
             {
-                CommHub.inst.ShareMessageRPC("Player_Reconnected", playerName, "", "", true);
+                CommHub.inst.ShareMessageRPC(OnlineTranslate.Online_Player_Reconnected(playerName), true);
             }
             else if ((bool)GetRoomProperty(ConstantStrings.JoinAsSpec))
             {
-                CommHub.inst.ShareMessageRPC("Player_Spectating", playerName, "", "", true);
+                CommHub.inst.ShareMessageRPC(OnlineTranslate.Online_Player_Spectating(playerName), true);
                 ExitGames.Client.Photon.Hashtable playerProps = new()
                 {
                     [ConstantStrings.Waiting] = true,
@@ -69,7 +69,7 @@ public class CreateGame : PhotonCompatible
             }
             else
             {
-                CommHub.inst.ShareMessageRPC("Player_Playing", playerName, "", "", true);
+                CommHub.inst.ShareMessageRPC(OnlineTranslate.Online_Player_Playing(playerName), true);
                 PlayerPrefs.SetString(ConstantStrings.LastRoom, PhotonNetwork.CurrentRoom.Name);
                 MakePlayerAndCards();
 

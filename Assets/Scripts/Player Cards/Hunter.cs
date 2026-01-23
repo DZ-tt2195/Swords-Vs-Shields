@@ -15,9 +15,9 @@ public class Hunter : CardType
 
         List<MiniCardDisplay> availableTroops = otherPlayer.AliveTroops();
         if (availableTroops.Count == 0)
-            Log.inst.AddMyText(false, "Card_Failed", "", thisCard.name, "", logged);
+            Log.inst.AddMyText(false, OnlineTranslate.Online_Card_Failed(thisCard.name), logged);
         else
-            MakeDecision.inst.ChooseDisplayOnScreen(availableTroops, "Target_Instruction", player.name, thisCard.name, "", Protected, true);
+            MakeDecision.inst.ChooseDisplayOnScreen(availableTroops, AutoTranslate.Target_Instruction(player.name, thisCard.name), Protected, true);
 
         void Protected(Card card)
         {

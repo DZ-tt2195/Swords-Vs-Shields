@@ -1,82 +1,12 @@
 public static class AutoTranslate 
-{ 
-
+{
 public static string Player_Count (string Current,string Max) => Translator.inst.Translate("Player_Count", new() {("Current", Current),("Max", Max)});
-
 public static string Attempt_to_reconnect (string Room) => Translator.inst.Translate("Attempt_to_reconnect", new() {("Room", Room)});
-
 public static string Failed_to_reconnect (string Room) => Translator.inst.Translate("Failed_to_reconnect", new() {("Room", Room)});
-
-public static string Player_Playing (string Player) => Translator.inst.Translate("Player_Playing", new() {("Player", Player)});
-
-public static string Player_Spectating (string Player) => Translator.inst.Translate("Player_Spectating", new() {("Player", Player)});
-
-public static string Player_Reconnected (string Player) => Translator.inst.Translate("Player_Reconnected", new() {("Player", Player)});
-
-public static string Player_Disconnected (string Player) => Translator.inst.Translate("Player_Disconnected", new() {("Player", Player)});
-
-public static string Player_Quit (string Player) => Translator.inst.Translate("Player_Quit", new() {("Player", Player)});
-
-public static string Waiting_on_Players (string Num) => Translator.inst.Translate("Waiting_on_Players", new() {("Num", Num)});
-
 public static string Choose_One_Instruction (string Card) => Translator.inst.Translate("Choose_One_Instruction", new() {("Card", Card)});
-
 public static string Discard_Instruction (string Card) => Translator.inst.Translate("Discard_Instruction", new() {("Card", Card)});
-
 public static string Target_Instruction (string Player,string Card) => Translator.inst.Translate("Target_Instruction", new() {("Player", Player),("Card", Card)});
-
 public static string Pick_Player (string Player) => Translator.inst.Translate("Pick_Player", new() {("Player", Player)});
-
-public static string Draw_Card (string Player,string Card) => Translator.inst.Translate("Draw_Card", new() {("Player", Player),("Card", Card)});
-
-public static string Draw_Card_Others (string Player) => Translator.inst.Translate("Draw_Card_Others", new() {("Player", Player)});
-
-public static string Discard_Card (string Player,string Card) => Translator.inst.Translate("Discard_Card", new() {("Player", Player),("Card", Card)});
-
-public static string Discard_Card_Others (string Player) => Translator.inst.Translate("Discard_Card_Others", new() {("Player", Player)});
-
-public static string Add_Sword (string Player,string Num) => Translator.inst.Translate("Add_Sword", new() {("Player", Player),("Num", Num)});
-
-public static string Lose_Sword (string Player,string Num) => Translator.inst.Translate("Lose_Sword", new() {("Player", Player),("Num", Num)});
-
-public static string Add_Shield (string Player,string Num) => Translator.inst.Translate("Add_Shield", new() {("Player", Player),("Num", Num)});
-
-public static string Lose_Shield (string Player,string Num) => Translator.inst.Translate("Lose_Shield", new() {("Player", Player),("Num", Num)});
-
-public static string Add_Action (string Player,string Num) => Translator.inst.Translate("Add_Action", new() {("Player", Player),("Num", Num)});
-
-public static string Lose_Action (string Player,string Num) => Translator.inst.Translate("Lose_Action", new() {("Player", Player),("Num", Num)});
-
-public static string Add_Health_Player (string Player,string Num) => Translator.inst.Translate("Add_Health_Player", new() {("Player", Player),("Num", Num)});
-
-public static string Lose_Health_Player (string Player,string Num) => Translator.inst.Translate("Lose_Health_Player", new() {("Player", Player),("Num", Num)});
-
-public static string Add_Health_Card (string Player,string Card,string Num) => Translator.inst.Translate("Add_Health_Card", new() {("Player", Player),("Card", Card),("Num", Num)});
-
-public static string Lose_Health_Card (string Player,string Card,string Num) => Translator.inst.Translate("Lose_Health_Card", new() {("Player", Player),("Card", Card),("Num", Num)});
-
-public static string Use_Green (string Num) => Translator.inst.Translate("Use_Green", new() {("Num", Num)});
-
-public static string Use_Red (string Num) => Translator.inst.Translate("Use_Red", new() {("Num", Num)});
-
-public static string Play_Card (string Player,string Card) => Translator.inst.Translate("Play_Card", new() {("Player", Player),("Card", Card)});
-
-public static string Resolve_Card (string Player,string Card) => Translator.inst.Translate("Resolve_Card", new() {("Player", Player),("Card", Card)});
-
-public static string Card_Failed (string Card) => Translator.inst.Translate("Card_Failed", new() {("Card", Card)});
-
-public static string End_Turn (string Player) => Translator.inst.Translate("End_Turn", new() {("Player", Player)});
-
-public static string Stun_Card (string Card,string Num) => Translator.inst.Translate("Stun_Card", new() {("Card", Card),("Num", Num)});
-
-public static string Protect_Card (string Card,string Num) => Translator.inst.Translate("Protect_Card", new() {("Card", Card),("Num", Num)});
-
-public static string Played_Card_Info (string Card,string Num) => Translator.inst.Translate("Played_Card_Info", new() {("Card", Card),("Num", Num)});
-
-public static string Player_Resigned (string Player) => Translator.inst.Translate("Player_Resigned", new() {("Player", Player)});
-
-public static string Player_Lost (string Player) => Translator.inst.Translate("Player_Lost", new() {("Player", Player)});
-
 public static string Game_Designer() => Translator.inst.Translate("Game_Designer");
 public static string Last_Update() => Translator.inst.Translate("Last_Update");
 public static string Translator_Credit() => Translator.inst.Translate("Translator_Credit");
@@ -94,8 +24,8 @@ public static string Disconnect() => Translator.inst.Translate("Disconnect");
 public static string Disconnected_from_server() => Translator.inst.Translate("Disconnected_from_server");
 public static string Failed_to_connect_to_server() => Translator.inst.Translate("Failed_to_connect_to_server");
 public static string Reconnect() => Translator.inst.Translate("Reconnect");
-public static string Online_Tutorial_1() => Translator.inst.Translate("Online_Tutorial_1");
-public static string Online_Tutorial_2() => Translator.inst.Translate("Online_Tutorial_2");
+public static string Tutorial_1() => Translator.inst.Translate("Tutorial_1");
+public static string Tutorial_2() => Translator.inst.Translate("Tutorial_2");
 public static string Create() => Translator.inst.Translate("Create");
 public static string Create_Room_with_players() => Translator.inst.Translate("Create_Room_with_players");
 public static string Enter_hostname() => Translator.inst.Translate("Enter_hostname");
@@ -133,7 +63,6 @@ public static string Protected() => Translator.inst.Translate("Protected");
 public static string Protected_Text() => Translator.inst.Translate("Protected_Text");
 public static string Game_Over() => Translator.inst.Translate("Game_Over");
 public static string Leave() => Translator.inst.Translate("Leave");
-public static string Tie_Game() => Translator.inst.Translate("Tie_Game");
 public static string Resigned() => Translator.inst.Translate("Resigned");
 public static string Skirmisher() => Translator.inst.Translate("Skirmisher");
 public static string Skirmisher_TextOne() => Translator.inst.Translate("Skirmisher_TextOne");
@@ -242,7 +171,7 @@ public static string Upload_Translation() => Translator.inst.Translate("Upload_T
 public static string Download_English() => Translator.inst.Translate("Download_English");
 public static string Update_1() => Translator.inst.Translate("Update_1");
 public static string Update_1_Text() => Translator.inst.Translate("Update_1_Text");
+public static string Update_2() => Translator.inst.Translate("Update_2");
+public static string Update_2_Text() => Translator.inst.Translate("Update_2_Text");
 }
-public enum ToTranslate {
-Game_Designer,Last_Update,Translator_Credit,Language,Loading,Select_Region,US_West_Coast,US_East_Coast,Europe,Asia,Offline,Connect,Enter_username,Disconnect,Disconnected_from_server,Failed_to_connect_to_server,Reconnect,Online_Tutorial_1,Online_Tutorial_2,Create,Create_Room_with_players,Enter_hostname,Join,Type_in_username,Encyclopedia,Close,Starting_Health,Type_1,Type_2,Any,Defend,Attack,Play,Type_into_chat,Undo,Short,Long,Confirm,Decline,Use_Green_Instruction,Use_Red_Instruction,Pause_to_Read,Pause_to_Undo,Done,Card,Sword,Shield,Action,Health,Blank,Stunned,Stunned_Text,Protected,Protected_Text,Game_Over,Leave,Tie_Game,Resigned,Skirmisher,Skirmisher_TextOne,Skirmisher_TextTwo,Trader,Trader_TextOne,Trader_TextTwo,Archer,Archer_TextOne,Archer_TextTwo,Dragon,Dragon_TextOne,Dragon_TextTwo,Bee,Bee_TextOne,Ninja,Ninja_TextOne,Squire,Squire_TextOne,Squire_TextTwo,Cannon,Cannon_TextOne,Cannon_TextTwo,Angel,Angel_TextOne,Partier,Partier_TextOne,Partier_TextTwo,Trickster,Trickster_TextOne,Minstrel,Minstrel_TextOne,Minstrel_TextTwo,Acolyte,Acolyte_TextOne,Acolyte_TextTwo,Coven,Coven_TextOne,Coven_TextTwo,Demon,Demon_TextOne,Demon_TextTwo,Security,Security_TextOne,Security_TextTwo,Investor,Investor_TextOne,Gladiator,Gladiator_TextOne,Raider,Raider_TextOne,Guardian,Guardian_TextOne,Guardian_TextTwo,Vampire,Vampire_TextOne,Vampire_TextTwo,Innkeeper,Innkeeper_TextOne,Bureaucrat,Bureaucrat_TextOne,Blacksmith,Blacksmith_TextOne,Vassal,Vassal_TextOne,Mercenary,Mercenary_TextOne,Mercenary_TextTwo,Leprechaun,Leprechaun_TextOne,Berserker,Berserker_TextOne,Berserker_TextTwo,Barbarian,Barbarian_TextOne,Recruiter,Recruiter_TextOne,Recruiter_TextTwo,Mob,Mob_TextOne,Bishop,Bishop_TextOne,Hunter,Hunter_TextOne,Researcher,Researcher_TextOne,Researcher_TextTwo,Golem,Golem_TextOne,Golem_TextTwo,Balancer,Balancer_TextOne,Balancer_TextTwo,Farmer,Farmer_TextOne,Captain,Captain_TextOne,Storyteller,Storyteller_TextOne,Royalty,Royalty_TextOne,Update_0,Update_0_Text,Update_History,Upload_Translation,Download_English,Update_1,Update_1_Text
-}
+public enum ToTranslate {Game_Designer,Last_Update,Translator_Credit,Language,Loading,Select_Region,US_West_Coast,US_East_Coast,Europe,Asia,Offline,Connect,Enter_username,Disconnect,Disconnected_from_server,Failed_to_connect_to_server,Reconnect,Tutorial_1,Tutorial_2,Create,Create_Room_with_players,Enter_hostname,Join,Type_in_username,Encyclopedia,Close,Starting_Health,Type_1,Type_2,Any,Defend,Attack,Play,Type_into_chat,Undo,Short,Long,Confirm,Decline,Use_Green_Instruction,Use_Red_Instruction,Pause_to_Read,Pause_to_Undo,Done,Card,Sword,Shield,Action,Health,Blank,Stunned,Stunned_Text,Protected,Protected_Text,Game_Over,Leave,Resigned,Skirmisher,Skirmisher_TextOne,Skirmisher_TextTwo,Trader,Trader_TextOne,Trader_TextTwo,Archer,Archer_TextOne,Archer_TextTwo,Dragon,Dragon_TextOne,Dragon_TextTwo,Bee,Bee_TextOne,Ninja,Ninja_TextOne,Squire,Squire_TextOne,Squire_TextTwo,Cannon,Cannon_TextOne,Cannon_TextTwo,Angel,Angel_TextOne,Partier,Partier_TextOne,Partier_TextTwo,Trickster,Trickster_TextOne,Minstrel,Minstrel_TextOne,Minstrel_TextTwo,Acolyte,Acolyte_TextOne,Acolyte_TextTwo,Coven,Coven_TextOne,Coven_TextTwo,Demon,Demon_TextOne,Demon_TextTwo,Security,Security_TextOne,Security_TextTwo,Investor,Investor_TextOne,Gladiator,Gladiator_TextOne,Raider,Raider_TextOne,Guardian,Guardian_TextOne,Guardian_TextTwo,Vampire,Vampire_TextOne,Vampire_TextTwo,Innkeeper,Innkeeper_TextOne,Bureaucrat,Bureaucrat_TextOne,Blacksmith,Blacksmith_TextOne,Vassal,Vassal_TextOne,Mercenary,Mercenary_TextOne,Mercenary_TextTwo,Leprechaun,Leprechaun_TextOne,Berserker,Berserker_TextOne,Berserker_TextTwo,Barbarian,Barbarian_TextOne,Recruiter,Recruiter_TextOne,Recruiter_TextTwo,Mob,Mob_TextOne,Bishop,Bishop_TextOne,Hunter,Hunter_TextOne,Researcher,Researcher_TextOne,Researcher_TextTwo,Golem,Golem_TextOne,Golem_TextTwo,Balancer,Balancer_TextOne,Balancer_TextTwo,Farmer,Farmer_TextOne,Captain,Captain_TextOne,Storyteller,Storyteller_TextOne,Royalty,Royalty_TextOne,Update_0,Update_0_Text,Update_History,Upload_Translation,Download_English,Update_1,Update_1_Text,Update_2,Update_2_Text}

@@ -24,11 +24,11 @@ public class Barbarian : CardType
 
         if (availableTroops.Count == 0)
         {
-            Log.inst.AddMyText(false, "Card_Failed", "", thisCard.name, "", logged);
+            Log.inst.AddMyText(false, OnlineTranslate.Online_Card_Failed(thisCard.name), logged);
         }
         else
         {
-            MakeDecision.inst.ChooseDisplayOnScreen(availableTroops, "Target_Instruction", otherPlayer.name, thisCard.name, "", Attack, true);
+            MakeDecision.inst.ChooseDisplayOnScreen(availableTroops, AutoTranslate.Target_Instruction(otherPlayer.name, thisCard.name), Attack, true);
         }
 
         void Attack(Card card)

@@ -23,9 +23,9 @@ public class Gladiator : CardType
         List<MiniCardDisplay> availableTroops = otherPlayer.AliveTroops().Where(display => IsAttack(display.card.thisCard.dataFile)).ToList();
 
         if (availableTroops.Count == 0)
-            Log.inst.AddMyText(false, "Card_Failed", "", thisCard.name, "", logged);
+            Log.inst.AddMyText(false, OnlineTranslate.Online_Card_Failed(thisCard.name), logged);
         else
-            MakeDecision.inst.ChooseDisplayOnScreen(availableTroops, "Target_Instruction", player.name, thisCard.name, "", Attack, true);
+            MakeDecision.inst.ChooseDisplayOnScreen(availableTroops, AutoTranslate.Target_Instruction(otherPlayer.name, thisCard.name), Attack, true);
 
         bool IsAttack(CardData card)
         {

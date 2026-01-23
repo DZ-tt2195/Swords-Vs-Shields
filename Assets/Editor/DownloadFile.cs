@@ -13,7 +13,7 @@ public static class FileManager
     public static void DownloadTSV()
     {
         Debug.Log($"starting downloads");
-        EditorCoroutineUtility.StartCoroutineOwnerless(Download("TSVs/0. English", "1t-hSHonNfzuxCmlJTtRS5ITwkhDuF6mBJoBnRDbs0nk", "32263315"));
+        EditorCoroutineUtility.StartCoroutineOwnerless(Download("Languages/0. English", "1t-hSHonNfzuxCmlJTtRS5ITwkhDuF6mBJoBnRDbs0nk", "32263315"));
         EditorCoroutineUtility.StartCoroutineOwnerless(Download("Player Cards", "1t-hSHonNfzuxCmlJTtRS5ITwkhDuF6mBJoBnRDbs0nk", "0"));
     }
     static IEnumerator Download(string fileName, string spreadsheetID, string sheetGID)
@@ -38,17 +38,18 @@ public static class FileManager
     [MenuItem("Tools/Make enums and functions")]
     public static void EnumsAndFunctions()
     {
-        TextAsset englishFile = Resources.Load<TextAsset>("TSVs/0. English");
+        TextAsset englishFile = Resources.Load<TextAsset>("Languages/0. English");
         Dictionary<string, string> newDictionary = Translator.ReadLanguageFile(englishFile.text);
         
         List<string> noConvert = new();
         List<(string, List<string>)> needConvert = new();
+        List<(string, List<string>)> online = new();
 
         foreach (var KVP in newDictionary)
         {
             string key = KVP.Key;
             string value = KVP.Value;
-            
+
             Regex regex = new(@"\$(.*?)\$");
             List<string> allMatches = new();
             foreach (Match m in regex.Matches(value).Cast<Match>())
@@ -58,19 +59,31 @@ public static class FileManager
                     allMatches.Add(match);
             }
 
-            if (allMatches.Count == 0)
-                noConvert.Add(key);
+            if (key.Contains("Online"))
+            {
+                online.Add((key, allMatches));
+            }
             else
-                needConvert.Add((key, allMatches));
+            {
+                if (allMatches.Count == 0)
+                    noConvert.Add(key);
+                else
+                    needConvert.Add((key, allMatches));
+            }
         }
 
         using (StreamWriter writer = new StreamWriter("Assets/Scripts/Translations/AutoTranslate.cs"))
         {
-            writer.WriteLine("public static class AutoTranslate \n{ \n");
+            writer.WriteLine("public static class AutoTranslate \n{");
 
+            string needSubEnum = "";
             for (int i = 0; i < needConvert.Count; i++)
             {
                 (string key, List<string> replace) = needConvert[i];
+                needSubEnum += key;
+                if (i < noConvert.Count - 1)
+                    needSubEnum += ",";
+
                 string nextCode = $"public static string {key} (";
                 for (int j = 0; j < replace.Count; j++)
                 {
@@ -88,27 +101,60 @@ public static class FileManager
                     if (j < replace.Count - 1)
                         nextCode += ",";
                 }
-                nextCode += "});\n";
+                nextCode += "});";
                 writer.WriteLine(nextCode);
             }
 
-            string nextEnum = "";
+            string toTranslateEnum = "";
             for (int i = 0; i < noConvert.Count; i++)
             {
                 string toAdd = noConvert[i];
                 writer.WriteLine($"public static string {toAdd}() => Translator.inst.Translate(\"{toAdd}\");");
-                nextEnum += toAdd;
+                toTranslateEnum += toAdd;
                 if (i < noConvert.Count - 1)
-                    nextEnum += ",";
+                    toTranslateEnum += ",";
             }
             writer.WriteLine("}");
             
-            writer.WriteLine("public enum ToTranslate {");
-            writer.WriteLine(nextEnum);
-            writer.WriteLine("}");
+            writer.WriteLine("public enum ToTranslate {" + toTranslateEnum + "}");
+            //writer.WriteLine("public enum NeedSub {" + needSubEnum + "}");
         }
 
-        Debug.Log($"{noConvert.Count} enum lines, {needConvert.Count} converted lines");
+        using (StreamWriter writer = new StreamWriter("Assets/Scripts/Translations/OnlineTranslate.cs"))
+        {
+            writer.WriteLine("public static class OnlineTranslate \n{");
+            string onlineEnum = "";
+
+            for (int i = 0; i < online.Count; i++)
+            {
+                (string key, List<string> replace) = online[i];
+                onlineEnum += key;
+                if (i < online.Count - 1)
+                    onlineEnum += ",";
+
+                string nextCode = $"public static string {key} (";
+                for (int j = 0; j < replace.Count; j++)
+                {
+                    nextCode += $"string {replace[j]}";
+                    if (j < replace.Count - 1)
+                        nextCode += ",";
+                }
+                nextCode += $") => $\"{key}";
+                for (int j = 0; j<replace.Count; j++)
+                {
+                    nextCode += "\\t" + replace[j];
+                    nextCode += "\\t" + "{" + replace[j] + "}";
+                }
+
+                nextCode += $"\";";
+                writer.WriteLine(nextCode);
+            }
+
+            writer.WriteLine("}");
+            //writer.WriteLine("public enum OnlinePackage {" + onlineEnum + "}");
+        }
+
+        Debug.Log($"{noConvert.Count} enum lines, {needConvert.Count} converted lines, {online.Count} online lines");
         AssetDatabase.Refresh();
     }
 }

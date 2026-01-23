@@ -19,13 +19,11 @@ public class Guardian : CardType
     protected override void DoAbilityOne(Player player, Card thisCard, int logged)
     {
         player.ShieldRPC(-1, logged);
-        MakeDecision.inst.ChooseTextButton(new() { 
-            new("Pick_Player", player.name, thisCard.name, "", HealPlayer) 
-            }, $"Choose_One", player.name, thisCard.name, "", false);
+        MakeDecision.inst.ChooseTextButton(new() { new(AutoTranslate.Pick_Player(player.name), HealPlayer) }, AutoTranslate.Choose_One_Instruction(thisCard.name), false);
 
         List<MiniCardDisplay> availableTroops = player.AliveTroops();
         if (availableTroops.Count >= 1)
-            MakeDecision.inst.ChooseDisplayOnScreen(availableTroops, $"Choose_One", player.name, thisCard.name, "", HealCard, false);
+            MakeDecision.inst.ChooseDisplayOnScreen(availableTroops, AutoTranslate.Choose_One_Instruction(thisCard.name), HealCard, false);
 
         void HealCard(Card card)
         {
@@ -43,11 +41,11 @@ public class Guardian : CardType
         List<MiniCardDisplay> availableTroops = player.AliveTroops();
         if (availableTroops.Count == 0)
         {
-            Log.inst.AddMyText(false, "Card_Failed", "", thisCard.name, "", logged);
+            Log.inst.AddMyText(false, OnlineTranslate.Online_Card_Failed(thisCard.name), logged);
         }
         else
         {
-            MakeDecision.inst.ChooseDisplayOnScreen(availableTroops, "Target_Instruction", player.name, thisCard.name, "", Protect, true);
+            MakeDecision.inst.ChooseDisplayOnScreen(availableTroops, AutoTranslate.Target_Instruction(player.name, thisCard.name), Protect, true);
         }
         void Protect(Card card)
         {
