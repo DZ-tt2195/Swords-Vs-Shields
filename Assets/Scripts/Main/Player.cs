@@ -286,7 +286,7 @@ public class Player : PhotonCompatible
         {
             List<Vector2> handPositions = ObjectPositions(myHand.Count, -700, 475, 225, (onBottom ? -550 : 550), true);
 
-            int thisPlayerPosition = (int)GetPlayerProperty(PhotonNetwork.LocalPlayer, ConstantStrings.MyPosition.ToString());
+            int thisPlayerPosition = (int)GetPlayerProperty(PhotonNetwork.LocalPlayer, ConstantStrings.MyPosition);
             for (int i = 0; i < myHand.Count; i++)
             {
                 Card nextCard = myHand[i];

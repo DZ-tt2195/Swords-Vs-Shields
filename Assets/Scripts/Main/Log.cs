@@ -95,7 +95,6 @@ public class Log : PhotonCompatible
     [SerializeField] Scrollbar scroll;
     [SerializeField] TMP_Text allPast;
     [SerializeField] TMP_Text importantPast;
-
     List<LogText> currentLogTexts = new();
     [SerializeField] TMP_Text allCurrent;
     [SerializeField] TMP_Text importantCurrent;
@@ -122,7 +121,7 @@ public class Log : PhotonCompatible
         this.bottomType = this.GetType();
         inst = this;
 
-        undoButton.onClick.AddListener(() => InvokeUndo(undosInLog[^1].undoToThis, true));
+        undoButton.onClick.AddListener(() => InvokeUndo(undosInLog[0].undoToThis, true));
         undoButton.gameObject.SetActive(false);
         groupToWait = new(this);
         forward = true;
@@ -175,9 +174,14 @@ public class Log : PhotonCompatible
 
             void RemoveText(TMP_Text textBox)
             {
-                int lastNewline = textBox.text.LastIndexOf('\n');
-                int secondNewLastLine = textBox.text.LastIndexOf('\n', lastNewline-1);
-                textBox.text = textBox.text[..secondNewLastLine];
+                string text = textBox.text.TrimEnd('\n');
+                int lastNewline = text.LastIndexOf('\n');
+                if (lastNewline < 0)
+                {
+                    textBox.text = "\n";
+                    return;
+                }
+                textBox.text = text[..(lastNewline + 1)];
             }
         }
         else
@@ -210,7 +214,7 @@ public class Log : PhotonCompatible
     public void MasterText(bool important, string packagedText, int indent = 0)
     {
         if (AmMaster())
-            DoFunction(() => AddToPast(important, packagedText, indent), RpcTarget.AllBuffered);
+            DoFunction(() => AddToPast(important, packagedText, indent, -1), RpcTarget.AllBuffered);
     }
 
     public void DoneWithTurn()
@@ -224,7 +228,7 @@ public class Log : PhotonCompatible
     {
         int currentPosition = (int)GetPlayerProperty(PhotonNetwork.LocalPlayer, ConstantStrings.MyPosition);
         foreach (LogText nextLog in currentLogTexts)
-            DoFunction(() => AddToPast(nextLog.important, nextLog.packagedText, nextLog.indent), RpcTarget.AllBuffered);
+            DoFunction(() => AddToPast(nextLog.important, nextLog.packagedText, nextLog.indent, currentPosition), RpcTarget.AllBuffered);
 
         allCurrent.text = "";
         importantCurrent.text = "";
@@ -232,13 +236,12 @@ public class Log : PhotonCompatible
     }
 
     [PunRPC]
-    void AddToPast(bool important, string packagedText, int indent)
+    void AddToPast(bool important, string packagedText, int indent, int playerPosition)
     {
-        int currentPosition = (int)PhotonNetwork.LocalPlayer.CustomProperties[ConstantStrings.MyPosition];
         string targetText = "";
         for (int i = 0; i < indent; i++)
             targetText += "     ";
-        targetText += $"{Translator.inst.UnPackage(packagedText, currentPosition)}\n";
+        targetText += $"{Translator.inst.UnPackage(packagedText, playerPosition)}\n";
 
         allPast.text += targetText;
         if (important)

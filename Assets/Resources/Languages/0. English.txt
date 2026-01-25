@@ -1,5 +1,5 @@
 Game_Designer	by Thomas Tang (DZ)
-Last_Update	Last Updated: Jan 22, 2026
+Last_Update	Last Updated: Jan 28, 2026
 Translator_Credit	Original Language
 Language	Language
 Loading	Loading
@@ -43,7 +43,7 @@ Online_Player_Spectating	$Player$ is spectating.
 Online_Player_Reconnected	$Player$ reconnected.
 Online_Player_Disconnected	$Player$ has disconnected.
 Online_Player_Quit	$Player$ has quit the room.
-Online_Waiting_on_Players	Waiting on $Num$ players...
+Online_Waiting_on_Players	Waiting on players ($Num$ more)
 Confirm	Confirm
 Decline	Decline
 Choose_One_Instruction	Choose one ($Card$).
@@ -201,5 +201,5 @@ Upload_Translation	Upload Translation
 Download_English	Download English
 Update_1	Jan 14, 2026
 Update_1_Text	Fixed log autoscroll \nGame should run in background (even if tab isn't selected)
-Update_2	Jan 22, 2026
-Update_2_Text	Fixed art credits \nFixed reminder text \nYou can click on card names in the log to read the card \nFixed some instances of the wrong player name being shown
+Update_2	Jan 28, 2026
+Update_2_Text	Fixed art credits \nFixed reminder text \nYou can click on card names in the log to read the card \nFixed some instances of the wrong player name being shown \nFixed being able to see other player's draw in log \nAdded fonts for some languages \nFixed undo issues

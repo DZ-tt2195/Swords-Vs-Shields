@@ -112,7 +112,7 @@ public class Translator : PhotonCompatible
         if (toReplace != null)
         {
             foreach ((string one, string two) in toReplace)
-                answer = answer.Replace($"${one}$", two);
+                answer = answer.Replace($"${one}$", Translate(two));
         }
         return answer;
     }
@@ -141,14 +141,15 @@ public class Translator : PhotonCompatible
         string targetText;
         string[] splitUp = toSplit.Split('\t');
 
-        if (TranslationExists($"{splitUp[0]}_Others") && (int)PhotonNetwork.LocalPlayer.CustomProperties[ConstantStrings.MyPosition] != owner)
+        int myPosition = (int)PhotonNetwork.LocalPlayer.CustomProperties[ConstantStrings.MyPosition];
+        if (TranslationExists($"{splitUp[0]}_Others") && myPosition >= 0 && myPosition != owner)
             targetText = $"{splitUp[0]}_Others";
         else
             targetText = splitUp[0];
 
         List<(string, string)> toReplace = new();
         for (int i = 1; i<splitUp.Length; i+=2)
-            toReplace.Add((splitUp[i], Translate(splitUp[i+1])));
+            toReplace.Add((splitUp[i], splitUp[i+1]));
 
         string translated = Translate(targetText, toReplace);
         return KeywordTooltip.instance.EditText(translated);
