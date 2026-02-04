@@ -1484,6 +1484,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CommHub
   scroll: {fileID: 1879995345}
   allTexts: {fileID: 137811038}
+  placeholder: {fileID: 971077800}
   inputMessage: {fileID: 566964605}
   uploadMessage: {fileID: 233372912}
 --- !u!114 &176790718
@@ -6049,6 +6050,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DecisionManager
   instructionsText: {fileID: 1595118521}
   findTextButtons: {fileID: 735515497}
+  visualCards: []
   sliderConfirm: {fileID: 1752158606}
   slider: {fileID: 5380632698592418570}
   minimumText: {fileID: 8036832353591802597}
@@ -9191,7 +9193,6 @@ GameObject:
   - component: {fileID: 971077801}
   - component: {fileID: 971077800}
   - component: {fileID: 971077799}
-  - component: {fileID: 971077798}
   m_Layer: 5
   m_Name: Placeholder
   m_TagString: Untagged
@@ -9218,19 +9219,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &971077798
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 971077796}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 159b66c071ced43f499eb58b9b7c8b01, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SetText
-  key: 33
 --- !u!114 &971077799
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9271,7 +9259,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Type into chat
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 31e79ddad7b2d41c395ada76a18cbcdd, type: 2}
   m_sharedMaterial: {fileID: -3852492252101762229, guid: 31e79ddad7b2d41c395ada76a18cbcdd, type: 2}
@@ -9298,7 +9286,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 72
+  m_fontSize: 18
   m_fontSizeBase: 14
   m_fontWeight: 400
   m_enableAutoSizing: 1

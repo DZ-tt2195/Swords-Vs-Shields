@@ -1,5 +1,5 @@
 Game_Designer	by Thomas Tang (DZ)
-Last_Update	Last Updated: Jan 28, 2026
+Last_Update	Last Updated: Feb 3, 2026
 Translator_Credit	Original Language
 Language	Language
 Loading	Loading
@@ -34,7 +34,7 @@ Any	Any
 Defend	Defend
 Attack	Attack
 Play	Play
-Type_into_chat	Type into chat
+Message_All	Type into chat (message all)
 Undo	Undo
 Short	Short
 Long	Long
@@ -203,3 +203,6 @@ Update_1	Jan 14, 2026
 Update_1_Text	Fixed log autoscroll \nGame should run in background (even if tab isn't selected)
 Update_2	Jan 28, 2026
 Update_2_Text	Fixed art credits \nFixed reminder text \nYou can click on card names in the log to read the card \nFixed some instances of the wrong player name being shown \nFixed being able to see other player's draw in log \nAdded fonts for some languages \nFixed undo issues
+Message_Specs	Type into chat (message spectators)
+Update_3	Feb 3, 2026
+Update_3_Text	Fixed a wrong display in the chat \nSpectators can only message each other
